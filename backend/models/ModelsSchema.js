@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ModelsSauceSchema = mongoose.Schema({
+const ModelsSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },
     manufacturer: { type: String, required: true },
@@ -16,4 +16,4 @@ const ModelsSauceSchema = mongoose.Schema({
 
 // Exporter le schéma 
 
-module.exports = mongoose.model('ModelsSauce', ModelsSauceSchema);
+module.exports = mongoose.model('ModelsSchema', ModelsSchema);

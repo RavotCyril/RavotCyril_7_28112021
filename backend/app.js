@@ -15,7 +15,7 @@ const helmet = require('helmet');
 const path = require('path');
 /* Importe les routes User et Sauces */
 const userRoutes = require('./routes/user');
-const saucesRoutes = require('./routes/sauces');
+const postRoutes = require('./routes/post');
 
 // Connexion à la base de données MongoDb
 
@@ -78,7 +78,7 @@ app.use(helmet());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 /* Enregistre les routes sauces et auth de l'application */
-app.use('/api/sauces', saucesRoutes);
+app.use('/api/articles', postRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
