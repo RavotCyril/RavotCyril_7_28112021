@@ -2,8 +2,8 @@
 
 /* Framework node.js */
 const express = require('express');
-/* Rend les interactions fluides entre MongoDB et Node.Js */
-const mongoose = require('mongoose');
+/* Rend les interactions fluides entre MongoDB ou d'autres base de données avec Node.Js */
+// const mongoose = require('mongoose');
 /* Dotenv est un module sans dépendance qui charge les variables d'environnement 
 d'un fichier .env dans process.env.
 Le stockage de la configuration dans l'environnement séparé du code est basé sur
@@ -17,14 +17,25 @@ const path = require('path');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 
-// Connexion à la base de données MongoDb
-
-mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_NAME + ".lwef4.mongodb.net/P6-Piquante?retryWrites=true&w=majority", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
+// Connexion à la base de données MySQL
+/*  Option 3: Passing parameters separately (other dialects)
+Passer des paramètres séparément (autres dialectes)*/
+const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'mysql' /* | 'mariadb' | 'postgres' | 'mssql' */
+});
+try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+} catch (error) {
+    console.error('Unable to connect to the database:', error);
+}
+// mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_NAME + ".lwef4.mongodb.net/P6-Piquante?retryWrites=true&w=majority", {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true
+//     })
+//     .then(() => console.log('Connexion à MongoDB réussie !'))
+//     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 // Lancement d'express 
 

@@ -14,7 +14,9 @@ exports.signup = (req, res, next) => {
         .then(hash => {
             const user = new User({
                 email: req.body.email,
-                password: hash
+                password: hash,
+                firstName: req.body.firstName,
+                name: req.body.name
             });
             user.save()
                 .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
@@ -37,7 +39,7 @@ exports.login = (req, res, next) => {
                     }
                     res.status(200).json({
                         userId: user._id,
-                        /*  Id généré par MongoDB */
+                        /*  Id généré par la base de données */
                         token: jwt.sign({ userId: user._id }, /* Token d'authentification */
                             process.env.DB_TOKEN, { expiresIn: '24h' } /* Temps de validité du Token */
                         )
