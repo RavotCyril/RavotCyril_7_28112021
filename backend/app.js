@@ -16,20 +16,22 @@ const path = require('path');
 /* Importe les routes User et Sauces */
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
-
+const models = require('../models');
 // Connexion à la base de données MySQL
 /*  Option 3: Passing parameters separately (other dialects)
 Passer des paramètres séparément (autres dialectes)*/
-const sequelize = new Sequelize('database', 'username', 'password', {
-    host: 'localhost',
-    dialect: 'mysql' /* | 'mariadb' | 'postgres' | 'mssql' */
+
+models.sequelize.sync().then(function() {
+    /**
+     * Listen on provided port, on all network interfaces.
+     */
+    server.listen(port, function() {
+        debug('Express server listening on port ' + server.address().port);
+    });
+    server.on('error', onError);
+    server.on('listening', onListening);
 });
-try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-} catch (error) {
-    console.error('Unable to connect to the database:', error);
-}
+
 // mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_NAME + ".lwef4.mongodb.net/P6-Piquante?retryWrites=true&w=majority", {
 //         useNewUrlParser: true,
 //         useUnifiedTopology: true
