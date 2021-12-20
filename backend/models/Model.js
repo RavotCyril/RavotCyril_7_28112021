@@ -5,25 +5,15 @@
 
 const Sequelize = require('sequelize');
 
-/* Il s'agit du chemin de connexion MySQL. Il contient le nom d'utilisateur, le mot de passe, 
-le nom d'hôte, le port de la base de données et le nom de la base de données. */
+/* Il s'agit du chemin de connexion MySQL. Il contient le nom de la base de données,
+le nom d'utilisateur, le mot de passe, le nom d'hôte */
 
-const path = 'mysql://root:lollol69.@localhost:3306/groupomania';
-
-/* /* On test la connexion à la base de donnée MYSQL.
-Un message de validation apparait quand on est connecté à la base de données MySQL. 
-Ou un message d'erreur si ce n'est pas le cas */
-
-const sequelize = new Sequelize(path, { operatorsAliases: false });
-
-sequelize.authenticate().then(() => {
-	console.log('Connection established successfully.');
- }).catch(err => {
-	console.error('Unable to connect to the database:', err);
- }).finally(() => {
-	sequelize.close();
- });
-// On exporte pour utiliser notre connexion depuis les autre fichiers.
+const sequelize = new Sequelize('groupomania', 'root', 'lollol69.', {
+host: 'localhost3306',
+dialect: 'mysql',
+logging: false,//passer a true pour voir les différentes requêtes effectuées par l'ORM
+});
+//on exporte pour utiliser notre connexion depuis les autre fichiers.
 const exports = module.exports = {};
 exports.sequelize = sequelize;
 
