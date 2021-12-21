@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from '../assets/Logo-Groupomania';
 import './App.css';
 
 function App() {
