@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 /* Package pour créer et vérifier les tokens d'anthentification */
 const jwt = require('jsonwebtoken');
 /* Model schéma User */
-const User = require('../models/User');
 const dotenv = require('dotenv')
 dotenv.config();
 

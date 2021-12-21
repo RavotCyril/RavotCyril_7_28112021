@@ -16,7 +16,6 @@ const path = require('path');
 /* Importe les routes User et Sauces */
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
-const models = require('../models');
 // Connexion à la base de données MySQL
 /* le nom de la base de données, le nom d’utilisateur, le mot de passe MySQL afin d’établir la connexion :*/
 const { Sequelize } = require('sequelize');
@@ -27,9 +26,9 @@ const sequelize = new Sequelize("groupomania", "root", "lollol69.", {
 try {
     sequelize.authenticate();
     console.log('Connecté à la base de données MySQL!');
-  } catch (error) {
+} catch (error) {
     console.error('Impossible de se connecter, erreur suivante :', error);
-  }
+}
 
 // mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_NAME + ".lwef4.mongodb.net/P6-Piquante?retryWrites=true&w=majority", {
 //         useNewUrlParser: true,

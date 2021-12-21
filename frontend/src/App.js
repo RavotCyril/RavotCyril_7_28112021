@@ -1,5 +1,6 @@
 import logo from '../assets/Logo-Groupomania';
 import './App.css';
+import '../styles/style.css'
 
 function App() {
   return (

@@ -1,4 +1,4 @@
-const model = require('../models/Model');
+const Model = require('../models/Model');
 const fs = require('fs');
 
 // Créer un article / post
