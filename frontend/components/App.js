@@ -3,7 +3,6 @@ import Banner from './Banner'
 import logo from '../assets/Logo-Groupomania'
 import Cart from './Cart'
 import Footer from './Footer'
-import ShoppingList from './ShoppingList'
 import '../styles/Layout.css'
 
 function App() {
@@ -16,12 +15,10 @@ function App() {
 	return (
 		<div>
 			<Banner>
-				<img src={logo} alt='logo-la-maison-jungle' className='lmj-logo' />
-				<h1 className='lmj-title'>La maison jungle</h1>
+				<img src={logo} alt='logo-groupomania' className='logo' />
 			</Banner>
-			<div className='lmj-layout-inner'>
+			<div className='layout-inner'>
 				<Cart cart={cart} updateCart={updateCart} />
-				<ShoppingList cart={cart} updateCart={updateCart} />
 			</div>
 			<Footer />
 		</div>
