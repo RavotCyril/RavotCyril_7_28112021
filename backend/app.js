@@ -18,10 +18,11 @@ const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 // Connexion à la base de données MySQL
 /* le nom de la base de données, le nom d’utilisateur, le mot de passe MySQL afin d’établir la connexion :*/
-const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize("groupomania", "root", "lollol69.", {
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize("elevage", "root", "Lollol69.", {
     dialect: "mysql",
-    host: "localhost3306"
+    host: "localhost",
+    port: 3306
 });
 try {
     sequelize.authenticate();
