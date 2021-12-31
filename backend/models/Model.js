@@ -36,6 +36,7 @@ const User = sequelize.define('user', {
     email: { type: Sequelize.STRING(255), allowNull: false, unique: true },
     password: { type: Sequelize.STRING(255), allowNull: false, unique: true },
     vote: { type: Sequelize.NUMBER(1), allowNull: false, unique: true },
+    role: { type: Sequelize.INTEGER, allowNull: false, unique: true },
 }, { tableName: 'user', timestamps: false, underscored: true });
 exports.User = User;
 
