@@ -6,9 +6,19 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv')
 dotenv.config();
 
+
+const Model = require('../models/Model')
+
 /* Exporte la fonction  Inscription utilisateur  */
 
 exports.signup = (req, res, next) => {
+
+
+    // Model.User.findAll().then(users => {
+    //         //on récupère ici un tableau "users" contenant une liste d'utilisateurs
+    //         console.log(users);
+    //         res.status(201).json({ utilisateurs: users })
+    //     }).catch(error => res.status(400).json({ message: error.message }));
     bcrypt.hash(req.body.password, 10) /* Le sel à utiliser dans le cryptage. S'il est spécifié sous forme de nombre, un sel sera généré avec le nombre de tours spécifié et utilisé. */
         .then(hash => {
             const user = new User({
