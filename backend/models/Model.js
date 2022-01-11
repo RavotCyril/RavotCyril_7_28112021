@@ -40,6 +40,9 @@ exports.User = User;
 
 User.belongsTo(Role); //l'utilisateur à un rôle.
 
+
+// TODO créer les tables article, commentaire,vote
+
 // init();
 
 // //on importe le modèle
