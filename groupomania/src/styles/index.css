@@ -3,7 +3,7 @@
 
 {
     font-family: "Roboto Regular";
-    src: url("/my-app/src/font/Roboto-Regular.ttf")format (truetype);
+    src: url("/src/font/Roboto-Regular.ttf")format (truetype);
 }
 
 body {

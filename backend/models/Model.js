@@ -40,7 +40,7 @@ exports.User = User;
 
 User.belongsTo(Role); //l'utilisateur à un rôle.
 
-//init();
+// init();
 
 // //on importe le modèle
 // const Model = require('../models/Model');
@@ -55,5 +55,4 @@ User.belongsTo(Role); //l'utilisateur à un rôle.
 
 async function init(){
     await sequelize.sync()
-
 }

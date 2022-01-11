@@ -1,5 +1,6 @@
-
-import './App.css';
+import logo from './build/Logo-Groupomania.png';
+import './styles/index.css';
+import './styles/Normalize.css';
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Edit <code>src/index.js</code> and save to reload.
         </p>
         <a
           className="App-link"
