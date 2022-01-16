@@ -9,27 +9,14 @@ d'un fichier .env dans process.env.
 Le stockage de la configuration dans l'environnement séparé du code est basé sur
 la méthodologie de l'application Twelve-Factor. */
 require('dotenv').config()
-    /* Définit des en têtes http supplémentaires securisés  */
+/* Définit des en têtes http supplémentaires securisés  */
 const helmet = require('helmet');
 /* Donne accès au chemin de nos fichiers. */
 const path = require('path');
 /* Importe les routes User et articles */
+const postRoutes = require('./routes/articles');
 const userRoutes = require('./routes/user');
-const postRoutes = require('./routes/post');
-// Connexion à la base de données MySQL
-/* le nom de la base de données, le nom d’utilisateur, le mot de passe MySQL afin d’établir la connexion :*/
-// const Sequelize = require('sequelize');
-// const sequelize = new Sequelize("groupomania", "root", "Lollol69.", {
-//     dialect: "mysql",
-//     host: "localhost",
-//     port: 3306
-// });
-// try {
-//     sequelize.authenticate();
-//     console.log('Connecté à la base de données MySQL!');
-// } catch (error) {
-//     console.error('Impossible de se connecter, erreur suivante :', error);
-// }
+
 
 // mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_NAME + ".lwef4.mongodb.net/P6-Piquante?retryWrites=true&w=majority", {
 //         useNewUrlParser: true,
