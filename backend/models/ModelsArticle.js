@@ -1,4 +1,3 @@
-/* authentification  */
 
 /* Importation du module Sequelize  */
 
@@ -56,7 +55,7 @@ const Article = sequelize.define('article', {
     article_id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     sujet: { type: Sequelize.STRING(255), allowNull: false, },
     texte: { type: Sequelize.STRING(255), allowNull: false, unique: true },
-    data: { type: Sequelize.STRING(255), allowNull: false, unique: true },
+    date: { type: Sequelize.STRING(255), allowNull: false, unique: true },
     image: { type: Sequelize.INTEGER, allowNull: false },
     user_id: { type: Sequelize.INTEGER, allowNull: false },
 }, { tableName: 'article', timestamps: false, underscored: true });

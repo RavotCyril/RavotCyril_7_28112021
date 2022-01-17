@@ -14,7 +14,7 @@ const helmet = require('helmet');
 /* Donne accès au chemin de nos fichiers. */
 const path = require('path');
 /* Importe les routes User et articles */
-const postRoutes = require('./routes/articles');
+const articlesRoutes = require('./routes/articles');
 const userRoutes = require('./routes/user');
 
 
@@ -77,7 +77,7 @@ app.use(helmet());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 /* Enregistre les routes des articles et auth de l'application */
-app.use('/api/articles', postRoutes);
+app.use('/api/articles', articlesRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;

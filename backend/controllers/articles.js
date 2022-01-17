@@ -3,27 +3,30 @@ const fs = require('fs');
 
 // Créer un article / post
 exports.createModelsArticle = (req, res, next) => {
-    console.log("Test Article Debut")
+    console.log("Test Article crée Debut")
     // Appel du body de l'article ou du post crée.
     let article = JSON.parse(req.body.article);
     const modelsArticle = new ModelsArticle({
         ...article,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        likes: 0,
-        dislikes: 0,
-        usersLiked: [],
-        usersDisliked: []
+        article_id: req.body.article_id,
+        sujet: req.body.sujet,
+        texte: req.body.texte,
+        date: req.body.date,
+        image: req.body.image,
+        user_id: req.body.user_id,
     });
     modelsArticle.save()
         .then(() => res.status(201).json({ message: 'article enregistrée !' }))
         .catch(error => {
             res.status(400).json({ error })
         });
-    console.log("Test Article Fin")
+    console.log("Test Article crée fin")
 };
-// Afficher un seule article / post
+// Afficher un seule article / GET
 
 exports.getOneModelsArticle = (req, res, next) => {
+    console.log("Test 1 Article Affiché Debut")
+
     ModelsArticle.findOne({
         _id: req.params.id,
     })
@@ -38,10 +41,13 @@ exports.getOneModelsArticle = (req, res, next) => {
                 });
             }
         );
+    console.log("Test 1 Article affiché fin")
 };
-// Modifier un article / post  
+// Modifier un article / PUT  
 
 exports.modifyModelsArticle = (req, res, next) => {
+    console.log("Test Article modifié Debut")
+
     if (req.file) {
         // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
         ModelsArticle.findOne({ _id: req.params.id })
@@ -65,11 +71,14 @@ exports.modifyModelsArticle = (req, res, next) => {
         ModelsArticle.updateOne({ _id: req.params.id }, { ...article, _id: req.params.id })
             .then(() => res.status(200).json({ message: 'article modifié !' }))
             .catch(error => res.status(400).json({ error }));
+        console.log("Test Article modifié fin")
     }
 };
-// Supprimer un article / post 
+// Supprimer un article / DELETE 
 
 exports.deleteModelsArticle = (req, res, next) => {
+    console.log("Test Article supprimé Debut")
+
     ModelsArticle.findOne({ _id: req.params.id })
         .then(ModelsArticle => {
             const filename = ModelsArticle.imageUrl.split('/images/')[1];
@@ -80,10 +89,12 @@ exports.deleteModelsArticle = (req, res, next) => {
             });
         })
         .catch(error => res.status(500).json({ error }));
+    console.log("Test Article supprimé fin")
 };
-// Afficher tous les articles / post
+// Afficher tous les articles / GET
 
 exports.getAllModelsArticle = (req, res, next) => {
+    console.log("Test Tous les Articles affiché Debut")
     ModelsArticle.find().then(
         (ModelsArticle) => {
             res.status(200).json(ModelsArticle);
@@ -95,8 +106,9 @@ exports.getAllModelsArticle = (req, res, next) => {
             });
         }
     );
+    console.log("Test Tous les Articles affiché fin")
 };
-// Définit le statut "like" pour l'userId fourni. 
+// Définit le statut "like" pour l'userId fourni.   POST
 
 exports.createLikeModelsArticle = (req, res, next) => {
     /* UserId  */
