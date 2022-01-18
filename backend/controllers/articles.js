@@ -5,21 +5,26 @@ const fs = require('fs');
 exports.createModelsArticle = (req, res, next) => {
     console.log("Test Article crée Debut")
     // Appel du body de l'article ou du post crée.
-    let article = JSON.parse(req.body.article);
-    const modelsArticle = new ModelsArticle({
-        ...article,
-        article_id: req.body.article_id,
-        sujet: req.body.sujet,
-        texte: req.body.texte,
-        date: req.body.date,
-        image: req.body.image,
-        user_id: req.body.user_id,
-    });
-    modelsArticle.save()
-        .then(() => res.status(201).json({ message: 'article enregistrée !' }))
-        .catch(error => {
-            res.status(400).json({ error })
-        });
+    // console.log(req.body)
+    let article = req.body.article;
+    article.date = Date.now().toString();
+    console.log(article)
+    ModelsArticle.Article.create({ ...article }).then(() => res.status(201).json({ message: 'article créé !' }))
+        .catch(error => res.status(400).json({ message: error.message }));
+    // const modelsArticle = new ModelsArticle({
+    //     ...article,
+    //     article_id: req.body.article_id,
+    //     sujet: req.body.sujet,
+    //     texte: req.body.texte,
+    //     date: req.body.date,
+    //     image: req.body.image,
+    //     user_id: req.body.user_id,
+    // });
+    // modelsArticle.save()
+    //     .then(() => res.status(201).json({ message: 'article enregistrée !' }))
+    //     .catch(error => {
+    //         res.status(400).json({ error })
+    //     });
     console.log("Test Article crée fin")
 };
 // Afficher un seule article / GET
