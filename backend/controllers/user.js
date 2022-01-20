@@ -24,24 +24,12 @@ exports.signup = (req, res, next) => {
                 .catch(error => res.status(400).json({ message: error.message }));
         })
         .catch(error => res.status(500).json({ error }));
+    console.log("Fin Inscription")
 };
-console.log("Fin Inscription")
 
 /* Exporte la fonction connexion utilisateur */
 
 exports.login = (req, res, next) => {
-    //console.log("Début Tentative de Connexion")
-    // Model.User.findAll({
-    //     // where: { role_id: 1 }, //on veux uniquement ceux qui ont le role "1"
-    //     email: req.body.email,
-
-    // }).then(User => {
-    //     console.log(User);
-    //     if(!user){
-    //         console.log("utilisateur ")
-    //     }
-    //     res.status(201).json({ message: 'Utilisateur connecté !' })
-    // }).catch(error => res.status(400).json({ message: error.message }));
     console.log("Récupération utilisateur tableau crée")
     Model.User.findOne({ email: req.body.email })
         .then(User => {
