@@ -12,7 +12,7 @@ exports.createModelsArticle = (req, res, next) => {
     ModelsArticle.Article.create(
         {
             ...article,
-            // image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            image: `${req.protocol}://${req.get('host')}/images/${req.file}`,
             image: 'backend/images/Sport.jpg',
             like: 0,
             dislike: 0,
@@ -45,19 +45,18 @@ exports.getOneModelsArticle = (req, res, next) => {
 
 exports.modifyModelsArticle = (req, res, next) => {
     console.log("Test Article modifié Debut")
-
     if (req.file) {
         // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
-        ModelsArticle.Article.findOne({ userId: req.params.id })
-            .then(ModelsArticle => {
-                const filename = ModelsArticle.image.split('/images/')[1];
+        ModelsArticle.Article.findOne({ article_id: req.params.id })
+            .then(Article => {
+                const filename = Article.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
                     // Une fois que l'ancienne image est supprimée dans le dossier image.On peut mettre à jour le reste des données de l'article
                     const article = {
                         ...JSON.parse(req.body.article),
                         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                     }
-                    ModelsArticle.update({ userId: req.params.id }, { ...article, userId: req.params.id })
+                    ModelsArticle.Article.update({ article_id: req.params.id }, { ...article, article_id: req.params.id })
                         .then(() => res.status(200).json({ message: 'article modifié !' }))
                         .catch(error => res.status(400).json({ error }));
                 })
@@ -66,7 +65,7 @@ exports.modifyModelsArticle = (req, res, next) => {
     } else {
         // Si l'image n'est jamais modifiée
         const article = { ...req.body };
-        ModelsArticle.Article.update({ userId: req.params.id }, { ...article, userId: req.params.id })
+        ModelsArticle.Article.update({ article_id: req.params.id }, { ...article, article_id: req.params.id })
             .then(() => res.status(200).json({ message: 'article modifié !' }))
             .catch(error => res.status(400).json({ error }));
         console.log("Test Article modifié fin")
@@ -77,11 +76,11 @@ exports.modifyModelsArticle = (req, res, next) => {
 exports.deleteModelsArticle = (req, res, next) => {
     console.log("Test Article supprimé Debut")
 
-    ModelsArticle.Article.findOne({ userId: req.params.id })
+    ModelsArticle.Article.findOne({ article_id: req.params.id })
         .then(ModelsArticle => {
             const filename = ModelsArticle.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
-                ModelsArticle.destroy({ userId: req.params.id })
+                ModelsArticle.destroy({ article_id: req.params.id })
                     .then(() => res.status(200).json({ message: 'article supprimée !' }))
                     .catch(error => res.status(400).json({ error }));
             });
@@ -106,33 +105,33 @@ exports.getAllModelsArticle = (req, res, next) => {
     );
     console.log("Test Tous les Articles affiché fin")
 };
-// Définit le statut "like" pour l'userId fourni.   POST
+// Définit le statut "like" pour le vote_id fourni.   POST
 
 exports.createLikeModelsArticle = (req, res, next) => {
-    /* UserId  */
-    const user_id = req.body.user_id;
+    /* vote_id  */
+    const vote_id = req.body.vote_id;
     /* Like présent dans le body */
     const like = req.body.like;
     /* l'id de l'article / post */
     const article_id = req.params.article_id;
-    ModelsArticle.Article.findOne({ userId: article })
+    ModelsArticle.Article.findOne({ vote_id: article })
         .then(vote => {
             switch (like) {
                 // Dislike : Si like = -1, l'utilisateur n'aime pas l'article / post
                 case -1:
                     console.log('Je n`aime pas');
-                    article_id.push(user_id);
+                    article_id.push(vote_id);
                     article_id.dislike += 1;
                     break;
                 // Je ne sais pas  : Si like = 0, L'utilisateur annule son like ou son dislike
 
                 case 0:
                     console.log('je sais pas');
-                    if (ModelsArticle.Vote.indexOf(user_id) != -1) {
-                        article_id.splice(user_id, 1)
+                    if (ModelsArticle.Vote.indexOf(vote_id) != -1) {
+                        article_id.splice(vote_id, 1)
                         article_id.like -= 1;
-                    } else if (ModelsArticle.Vote.indexOf(user_id) != -1) {
-                        article_id.splice(user_id, 1)
+                    } else if (ModelsArticle.Vote.indexOf(vote_id) != -1) {
+                        article_id.splice(vote_id, 1)
                         article_id.dislike -= 1;
                     }
                     break;
@@ -140,7 +139,7 @@ exports.createLikeModelsArticle = (req, res, next) => {
 
                 case 1:
                     console.log('j`aime');
-                    article_id.push(user_id);
+                    article_id.push(vote_id);
                     article_id.like += 1;
                     break;
             };
@@ -195,7 +194,7 @@ exports.modifyModelsCommentaire = (req, res, next) => {
 
     if (req.file) {
         // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
-        ModelsArticle.Article.findOne({ userId: req.params.id })
+        ModelsArticle.Commentaire.findOne({ commentaire_id: req.params.id })
             .then(ModelsArticle => {
                 const filename = ModelsArticle.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
@@ -204,7 +203,7 @@ exports.modifyModelsCommentaire = (req, res, next) => {
                         ...JSON.parse(req.body.article),
                         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                     }
-                    ModelsArticle.update({ userId: req.params.id }, { ...article, userId: req.params.id })
+                    ModelsArticle.update({ commentaire_id: req.params.id }, { ...article, commentaire_id: req.params.id })
                         .then(() => res.status(200).json({ message: 'article modifié !' }))
                         .catch(error => res.status(400).json({ error }));
                 })
@@ -212,8 +211,8 @@ exports.modifyModelsCommentaire = (req, res, next) => {
             .catch(error => res.status(500).json({ error }));
     } else {
         // Si l'image n'est jamais modifiée
-        const article = { ...req.body };
-        ModelsArticle.Article.update({ userId: req.params.id }, { ...article, userId: req.params.id })
+        const commentaire = { ...req.body };
+        ModelsArticle.Commentaire.update({ commentaire_id: req.params.id }, { ...commentaire, commentaire_id: req.params.id })
             .then(() => res.status(200).json({ message: 'article modifié !' }))
             .catch(error => res.status(400).json({ error }));
         console.log("Test Article modifié fin")
@@ -224,11 +223,11 @@ exports.modifyModelsCommentaire = (req, res, next) => {
 exports.deleteModelsCommentaire = (req, res, next) => {
     console.log("Test Article supprimé Debut")
 
-    ModelsArticle.Article.findOne({ userId: req.params.id })
+    ModelsArticle.Article.findOne({ commentaire_id: req.params.id })
         .then(ModelsArticle => {
             const filename = ModelsArticle.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
-                ModelsArticle.destroy({ userId: req.params.id })
+                ModelsArticle.destroy({ commentaire_id: req.params.id })
                     .then(() => res.status(200).json({ message: 'article supprimée !' }))
                     .catch(error => res.status(400).json({ error }));
             });

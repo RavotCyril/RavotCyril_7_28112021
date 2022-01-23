@@ -3,7 +3,6 @@ const http = require('http');
 /* Application */
 const app = require('./app');
 
-
 /* Dotenv est un module sans dépendance qui charge les variables d'environnement d'un fichier 
 .env dans process.env. Le stockage de la configuration 
 dans l'environnement séparé du code est basé sur la méthodologie de l'application Twelve-Factor. */
