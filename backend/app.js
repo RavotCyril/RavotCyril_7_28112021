@@ -78,6 +78,7 @@ app.use(helmet());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 /* Enregistre les routes des articles et auth de l'application */
 app.use('/api/articles', articlesRoutes);
+app.use('/api/commentaire', articlesRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
