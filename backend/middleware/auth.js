@@ -9,7 +9,6 @@ module.exports = (req, res, next) => {
         const decodedToken = jwt.verify(token, process.env.DB_TOKEN); /* Décode le token */
         console.log(decodedToken)
         const user_id = decodedToken.user_id; /* userId du token décodé précedemment */
-        console.log(user_id)
         if (req.body.user_id && req.body.user_id !== user_id) {
             /* Si on a un userId dans la requete et qu'il est différent de l'userId encodé 
             dans le token cela envoie " invalid user id " */
