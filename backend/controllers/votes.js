@@ -1,15 +1,16 @@
-const Article = require('../models/votes');
+const Models = require('../models/articles');
 
 // Définit le statut "like" pour le userID fourni.   POST
 
 exports.createLikeModelsArticle = (req, res, next) => {
 	/* userId  */
-	const userId = req.body.userId;
+	console.log("Debut Like");
+	const userId = req.body.user_id;
 	/* Like présent dans le body */
 	const like = req.body.like;
 	/* l'id de l'article / post */
 	const article_id = req.params.id;
-	Article.findOne({ where: { vote_id: article_id } })
+	Models.Article.findOne({ where: { vote_id: article_id } })
 		.then(article_id => {
 			switch (like) {
 				// Dislike : Si like = -1, l'utilisateur n'aime pas l'article / post
@@ -44,4 +45,5 @@ exports.createLikeModelsArticle = (req, res, next) => {
 				})
 				.catch(error => res.status(403).json({ error }))
 		});
+	console.log("Fin Like");
 };

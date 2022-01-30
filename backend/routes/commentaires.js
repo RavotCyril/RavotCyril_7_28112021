@@ -3,15 +3,15 @@ const router = express.Router();
 
 const commentairesCtrl = require('../controllers/commentaires');
 const auth = require('../middleware/auth');
-const multer = require('../middleware/multer-config');
-
-
 
 //* Routes Commentaires  */
 
-router.get('/', auth, multer, commentairesCtrl.getAllModelsCommentaire);
-router.post('/', auth, multer, commentairesCtrl.createModelsCommentaire);
-router.put('/:id', auth, multer, commentairesCtrl.modifyModelsCommentaire);
+router.get('/', auth, commentairesCtrl.getAllModelsCommentaire);
+router.post('/', auth, commentairesCtrl.createModelsCommentaire);
+router.put('/:id', auth, commentairesCtrl.modifyModelsCommentaire);
 router.delete('/:id', auth, commentairesCtrl.deleteModelsCommentaire);
+
+
+/* Exporte le routeur Express */
 
 module.exports = router;

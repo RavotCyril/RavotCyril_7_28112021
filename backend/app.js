@@ -14,9 +14,10 @@ const helmet = require('helmet');
 /* Donne accès au chemin de nos fichiers. */
 const path = require('path');
 /* Importe les routes User et articles */
-const articlesRoutes = require('./routes/articles');
 const userRoutes = require('./routes/user');
-const commentairesRoutes = require('./routes/commentaire');
+const articlesRoutes = require('./routes/articles');
+const commentairesRoutes = require('./routes/commentaires');
+const votesRoutes = require('./routes/votes');
 
 
 // mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_NAME + ".lwef4.mongodb.net/P6-Piquante?retryWrites=true&w=majority", {
@@ -78,8 +79,9 @@ app.use(helmet());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 /* Enregistre les routes des articles et auth de l'application */
-app.use('/api/articles', articlesRoutes);
-app.use('/api/commentaire', commentairesRoutes);
 app.use('/api/auth', userRoutes);
+app.use('/api/articles', articlesRoutes);
+app.use('/api/commentaires', commentairesRoutes);
+app.use('/api/votes', votesRoutes);
 
 module.exports = app;

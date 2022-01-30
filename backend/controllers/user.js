@@ -2,11 +2,11 @@
 const bcrypt = require('bcrypt');
 /* Package pour créer et vérifier les tokens d'anthentification */
 const jwt = require('jsonwebtoken');
-/* Model schéma User */
+/* Models schéma User */
 const dotenv = require('dotenv')
 dotenv.config();
 
-const Model = require('../models/user')
+const Models = require('../models/user')
 
 /* Exporte la fonction  Inscription utilisateur  */
 
@@ -14,7 +14,7 @@ exports.signup = (req, res, next) => {
     console.log("Début Inscription")
     bcrypt.hash(req.body.password, 10) /* Le sel à utiliser dans le cryptage. S'il est spécifié sous forme de nombre, un sel sera généré avec le nombre de tours spécifié et utilisé. */
         .then(hash => {
-            Model.User.create({
+            Models.User.create({
                 user_id: req.body.user_id,
                 firstname: req.body.firstname,
                 email: req.body.email,
@@ -31,7 +31,7 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     console.log("Début connexion")
-    Model.User.findOne({ where: { email: req.body.email } })
+    Models.User.findOne({ where: { email: req.body.email } })
         .then(User => {
             if (!User) {
                 return res.status(401).json({ error: 'Utilisateur non trouvé !' });

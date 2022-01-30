@@ -59,20 +59,11 @@ exports.modifyModelsArticle = (req, res, next) => {
                 .catch(error => res.status(400).json({ error }));
         })
     }).catch(() => res.status(500).json({ message: 'Erreur Article non modifié !' }));
-    // } else {
-    //     // Si l'image n'est jamais modifiée
-    //     const article = { ...req.body };
-    //     Models.Article.update({ article_id: req.params.id }, { ...article, article_id: req.params.id })
-    //         .then(() => res.status(200).json({ message: 'article modifié !' }))
-    //         .catch(error => res.status(400).json({ error }));
-    //     console.log("Test Article modifié fin")
-    // }
 };
 // Supprimer un article / DELETE 
 
 exports.deleteModelsArticle = (req, res, next) => {
     console.log("Test Article supprimé Debut")
-
     Models.Article.findOne({ where: { article_id: req.params.id } })
         .then(Models => {
             const filename = Models.image.split('/images/')[1];

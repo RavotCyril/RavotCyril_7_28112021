@@ -7,3 +7,8 @@ const auth = require('../middleware/auth');
 //* Routes Articles + Like  */
 
 router.post('/:id/like', auth, votesCtrl.createLikeModelsArticle);
+
+
+/* Exporte le routeur Express */
+
+module.exports = router;

@@ -12,4 +12,5 @@ router.post('/login', userCtrl.login);
 
 
 /* Exporte le routeur Express */
+
 module.exports = router;
