@@ -80,16 +80,17 @@ exports.deleteModelsArticle = (req, res, next) => {
 
 exports.getAllModelsArticle = (req, res, next) => {
     console.log("Test Tous les Articles affiché Debut")
-    Models.Article.findAll().then(
-        (Models) => {
-            res.status(200).json(Models);
-        }
-    ).catch(
-        (error) => {
-            res.status(400).json({
-                error: error
-            });
-        }
-    );
+    Models.Article.findAll()
+        .then(
+            (Models) => {
+                res.status(200).json(Models);
+            }
+        ).catch(
+            (error) => {
+                res.status(400).json({
+                    error: error
+                });
+            }
+        );
     console.log("Test Tous les Articles affiché fin")
 };
