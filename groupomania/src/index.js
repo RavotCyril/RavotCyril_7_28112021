@@ -1,15 +1,18 @@
 import logo from './build/Logo-Groupomania.png';
 import './styles/index.css';
 import './styles/Normalize.css';
+import HeaderJB from './components/header'
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/index.js</code> and save to reload.
         </p>
+
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -19,6 +22,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <HeaderJB />
     </div>
   );
 }
