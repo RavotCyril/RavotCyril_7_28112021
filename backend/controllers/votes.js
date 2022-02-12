@@ -12,7 +12,6 @@ exports.createLikeModelsArticle = (req, res, next) => {
 	/* Like présent dans le body */
 	const like = req.body.vote.like;
 	/* l'id de l'article / post */
-	const article = req.params.id;
 	let voteBody = req.body.vote;
 
 	Models.Vote.findOne({ where: { article_id: voteBody.article_id, user_id: userId } })
@@ -39,7 +38,10 @@ exports.createLikeModelsArticle = (req, res, next) => {
 
 					}
 					break;
-			};
-		});
-
-};
+			}
+		})
+		.catch(error => {
+			console.log(error)
+			res.status(500).json({ error })
+	  });
+	};
