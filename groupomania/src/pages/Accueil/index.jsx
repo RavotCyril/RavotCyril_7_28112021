@@ -1,78 +1,70 @@
+/* Importations des bibliothèques react + Yarn 
+-> styled-components  + react-router-dom  */
+
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import Card from "../../components/Article";
+
+/* Importations des pages de styles + images */
+
 import colors from "../../utils/style/colors";
-import { Loader } from "../../utils/style/Atoms";
-import { useFetch, useTheme } from "../../utils/hooks";
+import { StyledLink } from "../../utils/style/Atoms";
+import { useTheme } from "../../utils/hooks";
+import HomeIllustration from "../../assets/home-illustration.svg";
 
-const CardsContainer = styled.div`
-  display: grid;
-  gap: 24px;
-  grid-template-rows: 350px 350px;
-  grid-template-columns: repeat(2, 1fr);
-  align-items: center;
-  justify-items: center;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 30px;
-  text-align: center;
-  padding-bottom: 30px;
-  color: ${({ theme }) => (theme === "light" ? "#000000" : "#ffffff")};
-`;
-
-const PageSubtitle = styled.h2`
-  font-size: 20px;
-  color: ${colors.secondary};
-  font-weight: 300;
-  text-align: center;
-  padding-bottom: 30px;
-  color: ${({ theme }) => (theme === "light" ? "#000000" : "#ffffff")};
-`;
-
-const LoaderWrapper = styled.div`
+const HomeWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-function Freelances() {
-  const { theme } = useTheme();
-  const { data, isLoading, error } = useFetch(
-    `http://localhost:8000/freelances`
-  );
+const HomerContainer = styled.div`
+  margin: 30px;
+  background-color: ${({ theme }) =>
+    theme === "light" ? colors.backgroundLight : colors.backgroundDark};
+  padding: 60px 90px;
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+`;
 
-  const freelancersList = data?.freelancersList;
-
-  if (error) {
-    return <span>Il y a un problème</span>;
+const LeftCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  ${StyledLink} {
+    max-width: 250px;
   }
+`;
+
+const StyledTitle = styled.h2`
+  padding-bottom: 30px;
+  max-width: 280px;
+  line-height: 50px;
+  color: ${({ theme }) => (theme === "light" ? "#000000" : "#ffffff")};
+`;
+
+const Illustration = styled.img`
+  flex: 1;
+`;
+
+function Home() {
+  const { theme } = useTheme();
 
   return (
-    <div>
-      <PageTitle theme={theme}>Trouvez votre prestataire</PageTitle>
-      <PageSubtitle theme={theme}>
-        Chez Shiny nous réunissons les meilleurs profils pour vous.
-      </PageSubtitle>
-      {isLoading ? (
-        <LoaderWrapper>
-          <Loader theme={theme} data-testid="loader" />
-        </LoaderWrapper>
-      ) : (
-        <CardsContainer>
-          {freelancersList?.map((profile) => (
-            <Link key={`freelance-${profile.id}`} to={`/profile/${profile.id}`}>
-              <Card
-                label={profile.job}
-                title={profile.name}
-                picture={profile.picture}
-                theme={theme}
-              />
-            </Link>
-          ))}
-        </CardsContainer>
-      )}
-    </div>
+    <HomeWrapper>
+      <HomerContainer theme={theme}>
+        <LeftCol>
+          <StyledTitle theme={theme}>
+            Repérez vos besoins, on s’occupe du reste, avec les meilleurs
+            talents
+          </StyledTitle>
+          <StyledLink to="/survey/1" $isFullLink>
+            Faire le test
+          </StyledLink>
+        </LeftCol>
+        <Illustration src={HomeIllustration} />
+      </HomerContainer>
+    </HomeWrapper>
   );
 }
 
-export default Freelances;
+export default Home;

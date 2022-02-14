@@ -1,5 +1,10 @@
+/* Importations Bibliothèques React-router - Yarn  
+-> Styled-Components  */
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
+/* Importations styles + images + (style ) thème    */
+
 import { StyledLink } from "../../utils/style/Atoms";
 import LightLogo from "../../assets/light-logo.png";
 import DarkLogo from "../../assets/dark-logo.png";
@@ -18,15 +23,6 @@ const NavContainer = styled.nav`
   align-items: center;
 `;
 
-const StyledLink = styled(Link)`
-  padding: 15px;
-  color: #8186a0;
-  text-decoration: none;
-  font-size: 18px;
-  ${(props) =>
-    props.$isFullLink &&
-    `color: white; border-radius: 30px; background-color: ${colors.primary};`}
-`;
 function Header() {
   const { theme } = useTheme();
 

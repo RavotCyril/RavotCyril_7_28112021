@@ -1,4 +1,10 @@
+/* Importations Bibliothèques React - Yarn  
+-> Styled-Components  */
+
 import styled from "styled-components";
+
+/* Importations styles + images  */
+
 import colors from "../../utils/style/colors";
 import { useTheme } from "../../utils/hooks";
 import ErrorIllustration from "../../assets/404.svg";

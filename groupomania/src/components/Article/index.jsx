@@ -1,6 +1,12 @@
-import PropTypes from "prop-types";
+/* Importations Bibliothèques React - Yarn  
+->  Component - PropTypes- Styled-Components  */
+
 import { Component } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
+
+/* /* Importations page styles +  image   */
+
 import colors from "../../utils/style/colors";
 import DefaultPicture from "../../assets/LogoGroupomania.png";
 
@@ -10,7 +16,6 @@ const CardLabel = styled.span`
   font-weight: normal;
   padding-left: 15px;
 `;
-
 const CardTitle = styled.div`
   color: ${({ theme }) => (theme === "light" ? "#000000" : "#ffffff")};
   font-size: 22px;

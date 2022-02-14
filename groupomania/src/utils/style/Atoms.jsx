@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
-import colors from './colors'
-import styled, { keyframes } from 'styled-components'
+import { Link } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
+import colors from "./colors";
 
 const rotate = keyframes`
   from {
@@ -10,8 +10,7 @@ const rotate = keyframes`
   to {
     transform: rotate(360deg);
   }
-`
-
+`;
 export const Loader = styled.div`
   padding: 10px;
   border: 6px solid ${colors.primary};
@@ -20,7 +19,7 @@ export const Loader = styled.div`
   animation: ${rotate} 1s infinite linear;
   height: 0;
   width: 0;
-`
+`;
 
 export const StyledLink = styled(Link)`
   padding: 10px 15px;
@@ -33,4 +32,4 @@ export const StyledLink = styled(Link)`
     `color: white; 
     border-radius: 30px; 
     background-color: ${colors.primary};`}
-`
+`;

@@ -1,6 +1,12 @@
+/* Importations des bibliothèques react + Yarn 
+-> styled-components  + react-router-dom  */
+
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+
+/* Importations des pages de styles */
+
 import colors from "../../utils/style/colors";
 import { ThemeContext } from "../../utils/context";
 
