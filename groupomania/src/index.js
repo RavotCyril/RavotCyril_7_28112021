@@ -1,29 +1,41 @@
-import logo from "./Logos/Logo-Groupomania.png";
+/* Importations de toutes les pages de l'application + styles  */
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Header from "./components/Header";
+import Accueil from "/pages/Accueil";
+import Logo from "./logos/Logo-Groupomania.png";
+import Inscription from "./pages/Inscription";
+import Connexion from "./pages/Connexion";
+import Error from "./components/Error";
+import GlobalStyle from "./utils/style/GlobalStyle";
 import "./styles/index.css";
 import "./styles/Normalize.css";
-import Header from "./components/header";
-import reportWebVitals from "./reportWebVitals";
 
-function App() {
-  return (
-    <div className="App">
+ReactDOM.render(
+  <React.StrictMode>
+    <Router>
+      <GlobalStyle />
+      <h1>Magnifique</h1>
       <Header />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/index.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-export default App;
-reportWebVitals();
+      <Switch>
+        <Route exact path="/logo">
+          <Logo />
+        </Route>
+        <Route exact path="/Accueil">
+          <Accueil />
+        </Route>
+        <Route path="/Inscription">
+          <Inscription />
+        </Route>
+        <Route path="/Connexion">
+          <Connexion />
+        </Route>
+        <Route path="*">
+          <Error />
+        </Route>
+      </Switch>
+    </Router>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
