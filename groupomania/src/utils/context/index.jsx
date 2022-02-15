@@ -1,3 +1,6 @@
+/* Importations des bibliothèques react + Yarn 
+-> React  + useState + createContext */
+
 import React, { useState, createContext } from "react";
 
 export const ThemeContext = createContext();

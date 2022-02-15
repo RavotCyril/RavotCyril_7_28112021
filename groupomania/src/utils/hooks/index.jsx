@@ -1,3 +1,6 @@
+/* Importations des bibliothèques react
+-> ThemeContext */
+
 import { useState, useEffect, useContext } from "react";
 import { ThemeContext } from "../context";
 

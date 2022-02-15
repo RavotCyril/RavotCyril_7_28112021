@@ -1,3 +1,6 @@
+/* Importations des bibliothèques react + Yarn 
+-> React-router-dom  + Styled keyframes  + styled-components + colors styles */
+
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import colors from "./colors";

@@ -1,3 +1,7 @@
+/* Importations des bibliothèques react + Yarn 
+-> React  + useContext + styled-components + page context */
+
+import React from "react";
 import { useContext } from "react";
 import { createGlobalStyle } from "styled-components";
 import { ThemeContext } from "../context";
