@@ -1,14 +1,13 @@
 /* Importations Bibliothèques React - Yarn  
 ->  Component - PropTypes- Styled-Components  */
-
-import { Component } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
 /* /* Importations page styles +  image   */
 
 import colors from "../../utils/style/colors";
-import DefaultPicture from "../../assets/LogoGroupomania.png";
+import DefaultPicture from "../../assets/LogoGroupomaniaLight.png";
 
 const CardLabel = styled.span`
   color: ${({ theme }) => (theme === "light" ? colors.primary : "#ffffff")};
@@ -25,14 +24,12 @@ const CardTitle = styled.div`
   display: flex;
   align-items: center;
 `;
-
 const CardImage = styled.img`
   height: 150px;
   width: 150px;
   align-self: center;
   border-radius: 50%;
 `;
-
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,7 +57,7 @@ class Card extends Component {
     return (
       <CardWrapper theme={theme} onClick={this.setFavorite}>
         <CardLabel theme={theme}>{label}</CardLabel>
-        <CardImage src={picture} alt="freelance" />
+        <CardImage src={picture} alt="Article" />
         <CardTitle theme={theme}>{title}</CardTitle>
       </CardWrapper>
     );
@@ -68,10 +65,10 @@ class Card extends Component {
 }
 
 Card.propTypes = {
-  label: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
-  theme: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  title: PropTypes.string,
+  picture: PropTypes.string,
+  theme: PropTypes.string,
 };
 
 Card.defaultProps = {

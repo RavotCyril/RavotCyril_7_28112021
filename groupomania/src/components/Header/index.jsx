@@ -1,16 +1,18 @@
 /* Importations Bibliothèques React-router - Yarn  
 -> Styled-Components  */
+
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-/* Importations styles + images + (style ) thème    */
+/* Importations styles + images + (style ) thème */
 
 import { StyledLink } from "../../utils/style/Atoms";
-import LightLogo from "../../assets/light-logo.png";
-import DarkLogo from "../../assets/dark-logo.png";
+import LightLogo from "../../assets/LogoGroupomaniaLight.png";
+import DarkLogo from "../../assets/LogoGroupomaniaBlack.png";
 import { useTheme } from "../../utils/hooks";
 
-/* Permet de donner un styled-components  ( styles CSS ) aux liens*/
+/* Permet de donner un styled-components  ( styles CSS ) aux liens */
 
 const HomeLogo = styled.img`
   height: 70px;
@@ -31,13 +33,15 @@ function Header() {
       <Link to="/">
         <HomeLogo src={theme === "light" ? DarkLogo : LightLogo} />
       </Link>
-      <StyledLink to="/Accueil">Accueil</StyledLink>
-      {/* Ici on passe la prop $isFullLink  . Ce qui nous permet d'utiliser la prop directement dans le style :
-      On va pouvoir passer des props à nos composants directement depuis notre composant React */}
-      <StyledLink to="/Connexion" $isFullLink>
-        Connexion
-      </StyledLink>
-      <StyledLink to="/Inscription">Inscription</StyledLink>
+      <div>
+        <StyledLink $theme={theme} to="/">
+          Accueil
+        </StyledLink>
+        <StyledLink $theme={theme} to="/Connexion">
+          Connexion
+        </StyledLink>
+        <StyledLink to="/Inscription">Inscription</StyledLink>
+      </div>
     </NavContainer>
   );
 }

@@ -1,6 +1,6 @@
 /* Importations Bibliothèques React - Yarn  
 -> Styled-Components  */
-
+import React from "react";
 import styled from "styled-components";
 
 /* Importations styles + images  */

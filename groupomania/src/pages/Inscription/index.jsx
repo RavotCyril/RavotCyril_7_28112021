@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import colors from "../../utils/style/colors";
 import { ThemeContext } from "../../utils/context";
 
-const ProfileWrapper = styled.div`
+const SignupWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -21,7 +21,7 @@ const ProfileWrapper = styled.div`
     theme === "light" ? colors.backgroundLight : colors.backgroundDark};
 `;
 
-const ProfileDetails = styled.div`
+const SignupDetails = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 50px;
@@ -93,14 +93,14 @@ const Availability = styled.span`
   position: relative;
 `;
 
-function Profile() {
+function Signup() {
   const { id: queryId } = useParams();
-  const [profileData, setProfileData] = useState({});
+  const [profileData, setSignupData] = useState({});
   useEffect(() => {
-    fetch(`http://localhost:8000/freelance?id=${queryId}`)
+    fetch(`http://localhost:8000/api/auth/signup?id=${queryId}`)
       .then((response) => response.json())
       .then((jsonResponse) => {
-        setProfileData(jsonResponse?.freelanceData);
+        setSignupData(jsonResponse?.freelanceData);
       });
   }, [queryId]);
 
@@ -110,9 +110,9 @@ function Profile() {
   return (
     <ThemeContext.Consumer>
       {({ theme }) => (
-        <ProfileWrapper theme={theme}>
+        <SignupWrapper theme={theme}>
           <Picture src={picture} alt={name} height={150} width={150} />
-          <ProfileDetails theme={theme}>
+          <SignupDetails theme={theme}>
             <TitleWrapper>
               <Title>{name}</Title>
               <Location>{location}</Location>
@@ -130,11 +130,11 @@ function Profile() {
               {available ? "Disponible maintenant" : "Indisponible"}
             </Availability>
             <Price>{tjm} € / jour</Price>
-          </ProfileDetails>
-        </ProfileWrapper>
+          </SignupDetails>
+        </SignupWrapper>
       )}
     </ThemeContext.Consumer>
   );
 }
 
-export default Profile;
+export default Signup;

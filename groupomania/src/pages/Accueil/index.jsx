@@ -1,6 +1,6 @@
 /* Importations des bibliothèques react + Yarn 
 -> styled-components  + react-router-dom  */
-
+import React from "react";
 import styled from "styled-components";
 
 /* Importations des pages de styles + images */
@@ -8,7 +8,6 @@ import styled from "styled-components";
 import colors from "../../utils/style/colors";
 import { StyledLink } from "../../utils/style/Atoms";
 import { useTheme } from "../../utils/hooks";
-import HomeIllustration from "../../assets/home-illustration.svg";
 
 const HomeWrapper = styled.div`
   display: flex;
@@ -42,10 +41,6 @@ const StyledTitle = styled.h2`
   color: ${({ theme }) => (theme === "light" ? "#000000" : "#ffffff")};
 `;
 
-const Illustration = styled.img`
-  flex: 1;
-`;
-
 function Home() {
   const { theme } = useTheme();
 
@@ -57,11 +52,7 @@ function Home() {
             Repérez vos besoins, on s’occupe du reste, avec les meilleurs
             talents
           </StyledTitle>
-          <StyledLink to="/survey/1" $isFullLink>
-            Faire le test
-          </StyledLink>
         </LeftCol>
-        <Illustration src={HomeIllustration} />
       </HomerContainer>
     </HomeWrapper>
   );

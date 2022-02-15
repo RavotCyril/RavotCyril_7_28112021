@@ -2,11 +2,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
-import Accueil from "./pages/Accueil";
+import Home from "./pages/Accueil";
 import Header from "./components/Header";
-import Logo from "./logos/Logo-Groupomania.png";
-import Inscription from "./pages/Inscription";
 import Connexion from "./pages/Connexion";
 import Article from "./pages/Article";
 import Error from "./components/Error";
@@ -23,22 +20,14 @@ ReactDOM.render(
           <GlobalStyle />
           <Header />
           <Routes>
-            <Route exact path="/Logo">
-              <Logo />
-            </Route>
-            <Route exact path="/Accueil">
-              <Accueil />
-            </Route>
-            <Route exact path="/Inscription">
-              <Inscription />
-            </Route>
-            <Route exact path="/Connexion">
+            <Route path="/" element={<Home />} />
+            <Route exact path="/connexion">
               <Connexion />
             </Route>
-            <Route exact path="/Article">
+            <Route exact path="/article">
               <Article />
             </Route>
-            <Route exact path="*">
+            <Route path="*">
               <Error />
             </Route>
           </Routes>

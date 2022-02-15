@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import colors from "../../utils/style/colors";
 import { ThemeContext } from "../../utils/context";
 
-const ProfileWrapper = styled.div`
+const LoginWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -14,7 +14,7 @@ const ProfileWrapper = styled.div`
   background-color: ${({ theme }) =>
     theme === "light" ? colors.backgroundLight : colors.backgroundDark};
 `;
-const ProfileDetails = styled.div`
+const LoginDetails = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 50px;
@@ -86,14 +86,14 @@ const Availability = styled.span`
   position: relative;
 `;
 
-function Profile() {
+function Login() {
   const { id: queryId } = useParams();
-  const [profileData, setProfileData] = useState({});
+  const [profileData, setLoginData] = useState({});
   useEffect(() => {
-    fetch(`http://localhost:8000/freelance?id=${queryId}`)
+    fetch(`http://localhost:8000/api/auth/login/id=${queryId}`)
       .then((response) => response.json())
       .then((jsonResponse) => {
-        setProfileData(jsonResponse?.freelanceData);
+        setLoginData(jsonResponse?.articleData);
       });
   }, [queryId]);
 
@@ -103,9 +103,9 @@ function Profile() {
   return (
     <ThemeContext.Consumer>
       {({ theme }) => (
-        <ProfileWrapper theme={theme}>
+        <LoginWrapper theme={theme}>
           <Picture src={picture} alt={name} height={150} width={150} />
-          <ProfileDetails theme={theme}>
+          <LoginDetails theme={theme}>
             <TitleWrapper>
               <Title>{name}</Title>
               <Location>{location}</Location>
@@ -123,11 +123,11 @@ function Profile() {
               {available ? "Disponible maintenant" : "Indisponible"}
             </Availability>
             <Price>{tjm} € / jour</Price>
-          </ProfileDetails>
-        </ProfileWrapper>
+          </LoginDetails>
+        </LoginWrapper>
       )}
     </ThemeContext.Consumer>
   );
 }
 
-export default Profile;
+export default Login;

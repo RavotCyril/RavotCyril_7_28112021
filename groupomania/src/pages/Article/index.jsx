@@ -1,6 +1,6 @@
 /* Importations des bibliothèques react + Yarn 
 -> styled-components  + react-router-dom  */
-
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -40,13 +40,12 @@ const LoaderWrapper = styled.div`
   justify-content: center;
 `;
 
-function Freelances() {
+function articles() {
   const { theme } = useTheme();
   const { data, isLoading, error } = useFetch(
-    `http://localhost:8000/freelances`
+    `http://localhost:8000/api/api/articles`
   );
-
-  const freelancersList = data?.freelancersList;
+  const articlesList = data?.articlesList;
 
   if (error) {
     return <span>Il y a un problème</span>;
@@ -64,12 +63,12 @@ function Freelances() {
         </LoaderWrapper>
       ) : (
         <CardsContainer>
-          {freelancersList?.map((profile) => (
-            <Link key={`freelance-${profile.id}`} to={`/profile/${profile.id}`}>
+          {articlesList?.map((article) => (
+            <Link key={`article-${article.id}`} to={`/article/${article.id}`}>
               <Article
-                label={profile.job}
-                title={profile.name}
-                picture={profile.picture}
+                label={article.job}
+                title={article.name}
+                picture={article.picture}
                 theme={theme}
               />
             </Link>
@@ -80,4 +79,4 @@ function Freelances() {
   );
 }
 
-export default Freelances;
+export default articles;
