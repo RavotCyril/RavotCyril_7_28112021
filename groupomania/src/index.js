@@ -2,37 +2,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Accueil";
 import Header from "./components/Header";
-import Connexion from "./pages/Connexion";
-import Article from "./pages/Article";
-import Error from "./components/Error";
-import GlobalStyle from "./utils/style/GlobalStyle";
-import { ThemeProvider, SurveyProvider } from "./utils/context";
-// import "./styles/index.css";
-// import "./styles/Normalize.css";
+import Home from "./pages/Accueil";
+import Signup from "./pages/Inscription";
+import Login from "./pages/Connexion";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <ThemeProvider>
-        <SurveyProvider>
-          <GlobalStyle />
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route exact path="/connexion">
-              <Connexion />
-            </Route>
-            <Route exact path="/article">
-              <Article />
-            </Route>
-            <Route path="*">
-              <Error />
-            </Route>
-          </Routes>
-        </SurveyProvider>
-      </ThemeProvider>
+      <Header isConnected="false" profil="" />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Signup />} />
+        <Route path="/" element={<Login />} />
+      </Routes>
     </Router>
   </React.StrictMode>,
   document.getElementById("root")

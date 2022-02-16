@@ -1,81 +1,49 @@
-/* Importations Bibliothèques React - Yarn  
-->  Component - PropTypes- Styled-Components  */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+/* Importations des bibliothèques react + Yarn 
+-> styled-components  + react-router-dom  */
+import React from "react";
+import { Link } from "react-router-dom";
 
-/* /* Importations page styles +  image   */
+/* Importations des pages de styles + images */
 
-import colors from "../../utils/style/colors";
-import DefaultPicture from "../../assets/LogoGroupomaniaLight.png";
+import Article from "../../components/Article";
 
-const CardLabel = styled.span`
-  color: ${({ theme }) => (theme === "light" ? colors.primary : "#ffffff")};
-  font-size: 22px;
-  font-weight: normal;
-  padding-left: 15px;
-`;
-const CardTitle = styled.div`
-  color: ${({ theme }) => (theme === "light" ? "#000000" : "#ffffff")};
-  font-size: 22px;
-  font-weight: normal;
-  align-self: center;
-  height: 25px;
-  display: flex;
-  align-items: center;
-`;
-const CardImage = styled.img`
-  height: 150px;
-  width: 150px;
-  align-self: center;
-  border-radius: 50%;
-`;
-const CardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 15px;
-  background-color: ${({ theme }) =>
-    theme === "light" ? colors.backgroundLight : colors.backgroundDark};
-  border-radius: 30px;
-  width: 300px;
-  height: 300px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
+function articles() {
+  const { theme } = useTheme();
+  const { data, isLoading, error } = useFetch(
+    `http://localhost:8000/api/api/articles`
+  );
+  const articlesList = data?.articlesList;
 
-class Card extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  if (error) {
+    return <span>Il y a un problème</span>;
   }
 
-  render() {
-    const { theme, picture, label, title } = this.props;
-
-    return (
-      <CardWrapper theme={theme} onClick={this.setFavorite}>
-        <CardLabel theme={theme}>{label}</CardLabel>
-        <CardImage src={picture} alt="Article" />
-        <CardTitle theme={theme}>{title}</CardTitle>
-      </CardWrapper>
-    );
-  }
+  return (
+    <div>
+      <PageTitle theme={theme}>Trouvez votre prestataire</PageTitle>
+      <PageSubtitle theme={theme}>
+        Chez Shiny nous réunissons les meilleurs profils pour vous.
+      </PageSubtitle>
+      {isLoading ? (
+        <LoaderWrapper>
+          <Loader theme={theme} data-testid="loader" />
+        </LoaderWrapper>
+      ) : (
+        <CardsContainer>
+          {articlesList?.map((article) => (
+            <Link key={`article-${article.id}`} to={`/article/${article.id}`}>
+              <Article
+                label={article.job}
+                title={article.name}
+                picture={article.picture}
+                theme={theme}
+              />
+            </Link>
+          ))}
+        </CardsContainer>
+      )}
+    </div>
+  );
 }
 
-Card.propTypes = {
-  label: PropTypes.string,
-  title: PropTypes.string,
-  picture: PropTypes.string,
-  theme: PropTypes.string,
-};
-
-Card.defaultProps = {
-  label: "",
-  title: "",
-  picture: DefaultPicture,
-  theme: "light",
-};
-
-export default Card;
+export default articles;

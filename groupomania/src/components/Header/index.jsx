@@ -3,46 +3,22 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-
-/* Importations styles + images + (style ) thème */
-
-import { StyledLink } from "../../utils/style/Atoms";
-import LightLogo from "../../assets/LogoGroupomaniaLight.png";
-import DarkLogo from "../../assets/LogoGroupomaniaBlack.png";
-import { useTheme } from "../../utils/hooks";
-
-/* Permet de donner un styled-components  ( styles CSS ) aux liens */
-
-const HomeLogo = styled.img`
-  height: 70px;
-`;
-
-const NavContainer = styled.nav`
-  padding: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+// import profil from "../../pages/Inscription";
+// import isConnected from "../../pages/Connexion";
 
 function Header() {
-  const { theme } = useTheme();
-
   return (
-    <NavContainer>
-      <Link to="/">
-        <HomeLogo src={theme === "light" ? DarkLogo : LightLogo} />
+    <div>
+      <Link to="/auth" value="lalalala">
+        <p>Salut !</p>
       </Link>
-      <div>
-        <StyledLink $theme={theme} to="/">
-          Accueil
-        </StyledLink>
-        <StyledLink $theme={theme} to="/Connexion">
-          Connexion
-        </StyledLink>
-        <StyledLink to="/Inscription">Inscription</StyledLink>
-      </div>
-    </NavContainer>
+      <Link to="/auth" value="lalalala">
+        {"bonjour "}
+      </Link>
+      <Link to="/auth" value="lalalala">
+        {"bonjour "}
+      </Link>
+    </div>
   );
 }
 export default Header;

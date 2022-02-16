@@ -1,16 +1,23 @@
-@font-face
-/* Police de la page */
+/* Importations des bibliothèques react + Yarn 
+-> React  + useContext + styled-components + page context */
 
-{
+import React, { useContext } from "react";
+import { createGlobalStyle } from "styled-components";
+import { ThemeContext } from "../context";
+
+const StyledGlobalStyle = createGlobalStyle`
+    /* Police de la page */
+
+*{
     font-family: "Roboto Regular";
     src: url("/src/font/Roboto-Regular.ttf")format (truetype);
 }
-
 body {
     font-family: "Roboto", sans-serif;
+      background-color: ${({ isDarkMode }) =>
+        isDarkMode ? "#2F2E41" : "white"};
+        margin: 0;
 }
-
-
 /* Afficher la marque ou le nom du site avec Bootstrap. Ici j'affiche l'image du logo Groupomania */
 
 .navbar-brand img {
@@ -19,7 +26,6 @@ body {
     object-fit: cover;
     object-position: center;
 }
-
 h1 {
     text-align: center;
     padding: 50px 0px;
@@ -79,3 +85,9 @@ h1 {
         object-position: center;
     }
 } 
+`;
+function GlobalStyle() {
+  const { theme } = useContext(ThemeContext);
+  return <StyledGlobalStyle isDarkMode={theme === "dark"} />;
+}
+export default GlobalStyle;
