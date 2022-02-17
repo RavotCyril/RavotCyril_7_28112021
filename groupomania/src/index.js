@@ -6,15 +6,20 @@ import Header from "./components/Header";
 import Home from "./pages/Accueil";
 import Signup from "./pages/Inscription";
 import Login from "./pages/Connexion";
+// import Error from "./components/Error";
+import "./Styles/App.css";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Header isConnected="false" profil="" />
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/" element={<Signup />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/Inscription" element={<Signup />} />
+        <Route path="/Connexion" element={<Login />} />
+        {/* <Route path="*">
+          <Error />
+        </Route> */}
       </Routes>
     </Router>
   </React.StrictMode>,

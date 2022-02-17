@@ -1,3 +1,7 @@
+/* Importations Bibliothèques React-router - Yarn  
+-> Styled-Components  */
+
+import "../../Styles/App.css";
 /* Importations list + context + colors + hooks + loader */
 
 export function formatQueryParams(answers) {

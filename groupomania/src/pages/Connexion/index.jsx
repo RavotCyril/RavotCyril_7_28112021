@@ -1,32 +1,46 @@
 /* Importations des bibliothèques react + Yarn 
 -> styled-components  + react-router-dom  */
 import React from "react";
-import Accueil from "../../pages/Accueil";
-import Inscription from "../../pages/Inscription";
+import "../../Styles/App.css";
 
 // /* Importations des pages de styles + images */
 
 function Login() {
   return (
-    <div>
-      <link>
-        <Accueil />
-      </link>
-      <p>Connexion</p>
-      <link>
-        <Inscription />
-      </link>
-    </div>
+    <main>
+      <form className="container-fluid">
+        <div className="row">
+          <div className="form-group col-8 my-4 mx-auto">
+            <label htmlFor="exampleInputEmail">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              id="exampleInputEmail"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+            />
+          </div>
+          <div className="form-group col-8 my-4 mx-auto">
+            <label htmlFor="exampleInputPassword">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="exampleInputPassword"
+              placeholder="Password"
+            />
+          </div>
+          <div className="row">
+            <button
+              type="submit"
+              className="btn btn-primary col-4 my-4 mx-auto"
+            >
+              Connexion
+            </button>
+          </div>
+        </div>
+      </form>
+    </main>
   );
-  // const { id: queryId } = useParams();
-  // const [profileData, setLoginData] = useState({});
-  // useEffect(() => {
-  //   fetch(`http://localhost:8000/api/auth/login/id=${queryId}`)
-  //     .then((response) => response.json())
-  //     .then((jsonResponse) => {
-  //       setLoginData(jsonResponse?.articleData);
-  //     });
-  // }, [queryId]);
 }
 
 export default Login;
