@@ -14,7 +14,10 @@ function Header() {
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark">
             <a className="navbar-brand ">
-              <img src="/Logo-Groupomania.png" alt="Logo Groupomania" />
+              <img
+                src="../../assets/LogoGroupomaniaLight.png"
+                alt="Logo Groupomania"
+              />
             </a>
             <button
               className="navbar-toggler"
