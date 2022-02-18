@@ -28,46 +28,48 @@ function Signup() {
   }
   return (
     <main>
-      <div>Pour rejoindre le forum cest part ici !</div>
       <form className="container-fluid">
+        <h1 className="form-group H1Signup col-12 mx-auto">
+          Veuillez remplir ce formulaire pour vous enregistrer sur le forum !
+        </h1>
         <div className="row">
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="exampleInputFirstname">Firstname </label>
+            <label htmlFor="exampleInputFirstname">Prénom </label>
             <input
               type="text"
               className="form-control"
               id="exampleInputFirstname"
               aria-describedby="FirstnameHelp"
-              placeholder="Enter Firstname"
+              placeholder="Entrer votre prénom"
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="exampleInputName">Name</label>
+            <label htmlFor="exampleInputName">Nom</label>
             <input
               type="text"
               className="form-control"
               id="exampleInputName"
               aria-describedby="NameHelp"
-              placeholder="Enter Name"
+              placeholder="Entrer votre nom"
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="exampleInputEmail">Email address</label>
+            <label htmlFor="exampleInputEmail">Email</label>
             <input
               type="email"
               className="form-control"
               id="exampleInputEmail"
               aria-describedby="emailHelp"
-              placeholder="Enter email"
+              placeholder="Entrer votre émail"
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="exampleInputPassword">Password</label>
+            <label htmlFor="exampleInputPassword">Mot de passe</label>
             <input
               type="password"
               className="form-control"
               id="exampleInputPassword"
-              placeholder="Password"
+              placeholder="Mot De Passe avec au moins 8 caractères 2 chiffres 1 majuscule et 1 miniscule"
             />
           </div>
           <div className="row">
@@ -75,7 +77,7 @@ function Signup() {
               type="submit"
               className="btn btn-primary col-4 my-4 mx-auto"
             >
-              Valider
+              S`enregistrer
             </button>
           </div>
         </div>
