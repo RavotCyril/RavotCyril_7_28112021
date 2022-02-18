@@ -4,7 +4,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../Styles/App.css";
-
+import Logo from "../../assets/LogoGroupomaniaWhite.png";
 // import profil from "../../pages/Inscription";
 // import isConnected from "../../pages/Connexion";
 function Header() {
@@ -13,12 +13,9 @@ function Header() {
       <div className="Menu container-fluid m-0">
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark">
-            <a className="navbar-brand ">
-              <img
-                src="../../assets/LogoGroupomaniaLight.png"
-                alt="Logo Groupomania"
-              />
-            </a>
+            <Link to="/" className="navbar-brand">
+              <img src={Logo} alt="Logo Groupomania" />
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
@@ -36,19 +33,13 @@ function Header() {
             >
               <ul className="navbar-nav p-3">
                 <li className="nav-item">
-                  <Link to="/" value="lalalala">
-                    Accueuil
-                  </Link>
+                  <Link to="/">Accueuil</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/Inscription" value="lalalala">
-                    Inscription
-                  </Link>
+                  <Link to="/Inscription">Inscription</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/Connexion" value="lalalala">
-                    Connexion
-                  </Link>
+                  <Link to="/Connexion">Connexion</Link>
                 </li>
               </ul>
             </div>

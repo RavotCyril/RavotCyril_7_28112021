@@ -25,6 +25,10 @@ a {
   margin: 10px;
   text-decoration: none;
 }
+
+li:hover {
+  background: white;
+}
 .Menu {
   background: #132944;
   box-shadow: inset 0px 0px 10px 10px #112442;
