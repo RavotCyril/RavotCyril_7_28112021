@@ -12,7 +12,7 @@ function Signup() {
   useEffect(() => {
     async function fetchFreelances() {
       try {
-        const response = await fetch(`http://localhost:8000/signup`);
+        const response = await fetch(`http://localhost:8000/api/auth/signup`);
         const { signupList } = await response.json();
         setFreelancesList(signupList);
       } catch (err) {
@@ -85,6 +85,7 @@ function Signup() {
       {signupList.map((profile, index) => (
         <img
           key={`${profile.firstname}-${index}`}
+          label={profile.name}
           label={profile.email}
           title={profile.password}
         />

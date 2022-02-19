@@ -1,11 +1,29 @@
 /* Importations des bibliothèques react + Yarn 
 -> styled-components  + react-router-dom  */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../Styles/App.css";
 
 // /* Importations des pages de styles + images */
-
 function Login() {
+  const [error, setError] = useState(false);
+  const [loginList, setFreelancesList] = useState([]);
+
+  useEffect(() => {
+    async function fetchFreelances() {
+      try {
+        const response = await fetch(`http://localhost:8000/api/auth/login`);
+        const { loginList } = await response.json();
+        setFreelancesList(loginList);
+      } catch (err) {
+        console.log(err);
+        setError(true);
+      }
+    }
+    fetchFreelances();
+  }, []);
+  if (error) {
+    return <span>Oups il y a eu un problème</span>;
+  }
   return (
     <main>
       <form className="container-fluid">
@@ -43,6 +61,9 @@ function Login() {
           </div>
         </div>
       </form>
+      {loginList.map((profile, index) => (
+        <img label={profile.email} title={profile.password} />
+      ))}
     </main>
   );
 }
