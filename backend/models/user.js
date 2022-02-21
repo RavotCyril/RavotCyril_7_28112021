@@ -6,8 +6,8 @@ const { Sequelize } = require('sequelize');
 /* Il s'agit du chemin de connexion MySQL. Il contient le nom de la base de données,
 le nom d'utilisateur, le mot de passe, le nom d'hôte */
 
-const sequelize = new Sequelize('groupomaniabis', 'root', 'Lollol69.', {
-	host: 'localhost',
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+	host:  process.env.DB_HOST,
 	dialect: 'mysql',
 	logging: false, //passer a true pour voir les différentes requêtes effectuées par l'ORM
 

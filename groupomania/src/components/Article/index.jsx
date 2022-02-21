@@ -4,14 +4,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 /* Importations des pages de styles + images */
-
-function articles() {
-  const { data, error } = useFetch(`http://localhost:8000/api/articles/`);
-  const articlesList = data?.articlesList;
-
-  if (error) {
-    return <span>Il y a un problème</span>;
-  }
   return (
     <div>
       {articlesList?.map((article) => (
