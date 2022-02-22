@@ -1,15 +1,24 @@
 /* Importations Bibliothèques React - Yarn  
 -> Styled-Components  */
 import React from "react";
+import "../../Styles/App.css";
+import ImageError from "../../assets/404.svg";
 
 /* Importations styles + images  */
 
 function Error() {
   return (
-    <p>
-      Il semblerait que la page que vous cherchez n’existe pas
-      <img src="../../assets/404.svg" alt="Image d'erreur" />;
-    </p>
+    <div className="Menu container-fluid m-0">
+      <div className="row">
+        <h1 className="p-1">
+          ERROR <br></br>Il semblerait que la page que vous cherchez n’existe
+          pas.
+        </h1>
+        <div className="col-6 mx-auto">
+          <img src={ImageError} alt="Image d'erreur" />;
+        </div>
+      </div>
+    </div>
   );
 }
 

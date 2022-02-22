@@ -14,9 +14,6 @@ body {
   object-fit: cover;
   object-position: center;
 }
-navbar-collapse {
-  list-style: none;
-}
 h1 {
   color: black;
   font-size: 1.5rem;

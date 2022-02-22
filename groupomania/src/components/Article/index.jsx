@@ -4,42 +4,36 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 /* Importations des pages de styles + images */
+
+import Article from "../../components/Article";
+
+function articles() {
   return (
     <div>
-      {articlesList?.map((article) => (
-        <Link key={`article-${article.id}`} to={`/articles/${article.id}`}>
-          sujet={article.sujet}
-          texte={article.texte}
-          date={article.date}
-          image={article.image}
-        </Link>
-      ))}
-      )
+      <PageTitle theme={theme}>Trouvez votre prestataire</PageTitle>
+      <PageSubtitle theme={theme}>
+        Chez Shiny nous réunissons les meilleurs profils pour vous.
+      </PageSubtitle>
+      {isLoading ? (
+        <LoaderWrapper>
+          <Loader theme={theme} data-testid="loader" />
+        </LoaderWrapper>
+      ) : (
+        <CardsContainer>
+          {articlesList?.map((article) => (
+            <Link key={`article-${article.id}`} to={`/article/${article.id}`}>
+              <Article
+                label={article.job}
+                title={article.name}
+                picture={article.picture}
+                theme={theme}
+              />
+            </Link>
+          ))}
+        </CardsContainer>
+      )}
     </div>
   );
 }
+
 export default articles;
-
-function commentaires(commentaire) {
-  const { data, error } = useFetch(`http://localhost:8000/api/commentaires/${commentaire.id}`);
-  const commentairesList = data?.commentairesList;
-
-  if (error) {
-    return <span>Il y a un problème</span>;
-  }
-  return (
-    <div>
-      {commentairesList?.map((commentaire) => (
-        <Link
-          key={`commentaire-${commentaire.id}`}
-          to={`/commentaire/${commentaire.id}`}
-        >
-          texte={commentaire.texte}
-        </Link>
-      ))}
-      )
-    </div>
-  );
-}
-
-export default commentaires;
