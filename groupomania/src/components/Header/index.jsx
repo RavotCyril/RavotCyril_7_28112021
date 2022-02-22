@@ -15,7 +15,7 @@ function Header() {
       <div className="Menu container-fluid m-0">
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark">
-            <NavLink to="/Home" className="navbar-brand">
+            <NavLink to="/Home" className="navbar-brand border-0">
               <img src={Logo} alt="Logo Groupomania" />
             </NavLink>
             <button
