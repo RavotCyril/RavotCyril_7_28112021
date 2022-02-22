@@ -2,7 +2,7 @@
 -> Styled-Components  */
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 // import profil from "../../pages/Inscription";
@@ -13,9 +13,9 @@ function Header() {
       <div className="Menu container-fluid m-0">
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark">
-            <Link to="/Home" className="navbar-brand">
+            <NavLink to="/Home" className="navbar-brand">
               <img src={Logo} alt="Logo Groupomania" />
-            </Link>
+            </NavLink>
             <button
               className="navbar-toggler"
               type="button"
@@ -33,13 +33,24 @@ function Header() {
             >
               <ul className="navbar-nav p-3">
                 <li className="nav-item">
-                  <Link to="/Home">Accueil</Link>
+                  <NavLink to="/MyForums" className="navbar-brand">
+                    Forum
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link to="/Signup">Inscription</Link>
+                  <NavLink to="/Home" className="navbar-brand">
+                    Accueil
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link to="/Login">Connexion</Link>
+                  <NavLink to="/Signup" className="navbar-brand">
+                    Inscription
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/Login" className="navbar-brand">
+                    Connexion
+                  </NavLink>
                 </li>
               </ul>
             </div>

@@ -6,8 +6,16 @@
 body {
   font-family: "Roboto Regular", sans-serif;
 }
-/* Afficher la marque ou le nom du site avec Bootstrap. Ici j'affiche l'image du logo Groupomania */
+.navbar-dark .navbar-brand {
+  color: white;
+}
+.navbar-dark .navbar-brand:hover {
+  color: rgb(0, 84, 180);
+}
 
+.navbar-brand:focus {
+  border-bottom: 3px solid rgb(0, 84, 180);
+}
 .navbar-brand img {
   width: 10rem;
   height: auto;
@@ -36,9 +44,6 @@ a {
   text-decoration: none;
 }
 
-li:hover {
-  background: white;
-}
 .Menu {
   background: #132944;
   box-shadow: inset 0px 0px 10px 10px #112442;

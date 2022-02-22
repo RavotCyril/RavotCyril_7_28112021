@@ -2,11 +2,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+/* Importations Components */
 import Header from "./components/Header";
-import Home from "./pages/Home";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Error from "./components/Error";
+
+/* Importations Pages */
+
+import MyForums from "./pages/Forum/MyForums";
+import NewTopic from "./pages/Forum/NewTopic";
+import Home from "./pages/Home";
 
 // import Error from "./components/Error";
 import "./Styles/App.css";
@@ -17,6 +24,8 @@ ReactDOM.render(
       <Header />
       <Routes>
         <Route path="/Home" element={<Home />} />
+        <Route path="/MyForums" element={<MyForums />} />
+        <Route path="/NewTopic" element={<NewTopic />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
         <Route path="*" element={<Error />} />
