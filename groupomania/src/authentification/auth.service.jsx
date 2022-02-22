@@ -1,3 +1,6 @@
+/* Importations des bibliothèques react + Yarn + Axios (API) ... 
+-> Si besoin styled-components  + react-router-dom  */
+
 import axios from "axios";
 const ApiUrl = "http://localhost:3000/api/auth/";
 

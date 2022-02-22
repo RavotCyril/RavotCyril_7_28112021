@@ -1,12 +1,14 @@
-/* Importations Bibliothèques React-router - Yarn  
+/* Importations Bibliothèques React-router - Yarn - ...  
 -> Styled-Components  */
 
 import React from "react";
 import { NavLink } from "react-router-dom";
+
+// /* Importations des pages de styles + logo + images */
+
 import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
-// import profil from "../../pages/Inscription";
-// import isConnected from "../../pages/Connexion";
+
 function Header() {
   return (
     <header>

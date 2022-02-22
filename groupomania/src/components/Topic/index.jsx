@@ -1,9 +1,7 @@
 /* Importations des bibliothèques react + Yarn 
--> styled-components  + react-router-dom  */
+-> Si besoin styled-components  + react-router-dom  */
 import React from "react";
 import { NavLink } from "react-router-dom";
-
-/* Importations des pages de styles + images */
 
 function articles() {
   return (

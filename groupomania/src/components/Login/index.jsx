@@ -1,9 +1,9 @@
 /* Importations des bibliothèques react + Yarn 
--> styled-components  + react-router-dom  */
+-> Si besoin styled-components  + react-router-dom  */
 import React from "react";
-import "../../Styles/App.css";
 
 // /* Importations des pages de styles + images */
+import "../../Styles/App.css";
 
 function Login() {
   return (
