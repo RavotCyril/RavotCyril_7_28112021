@@ -18,12 +18,12 @@ function NewTopic() {
   Avec le callback , [] en fin de fonction */
   useEffect(() => {
     axios
-      .post("https://restcountries.com/v3.1/all")
+      .post("http://localhost:3000/api/articles/")
       .then((res) => console.log(res));
   }, []);
 
   return (
-    <main Menu container-fluid m-0>
+    <main className="container-fluid Menu m-0">
       <div className="row">
         <h1>Nouveau sujet</h1>
         <div className="sujet">

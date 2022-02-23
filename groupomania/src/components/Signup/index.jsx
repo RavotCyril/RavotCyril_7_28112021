@@ -22,44 +22,6 @@ function Signup() {
   };
   // {data;}
   // {setData;}
-  // Variable errorTag -> Fonction du code d'erreur avec message en cas de mauvais caractères dans les inputs.
-
-  let errorTag = (tag, message, valid, invalid) => {
-    const container = document.querySelector("." + tag);
-
-    if (invalid) {
-      container.classList.add("invalid");
-      container.textContent = message;
-    } else if (valid) {
-      container.classList.remove("invalid");
-      container.textContent = message;
-    }
-  };
-  // Variable validTag -> Fonction du code de validation avec message en cas de données exactes.
-
-  let validTag = (tag, message, valid, invalid) => {
-    const container = document.querySelector("." + tag);
-
-    if (valid) {
-      container.classList.add("valid");
-      container.textContent = message;
-    } else if (invalid) {
-      container.classList.remove("valid");
-      container.textContent = message;
-    }
-  };
-  let Email = (value) => {
-    if (!value.match(/[a-z]+@[\w-]+\.[a-z]{2,4}$/i)) {
-      errorTag(
-        "ClassErrorInputMailTag",
-        "Le mail n'est pas validé il manque l'un des caractères indispensable suivant: @ ou .fr ou le .com",
-        false,
-        true
-      );
-    } else {
-      validTag("ClassErrorInputMailTag", "Email validé", true, false);
-    }
-  };
   return (
     <main>
       <form
@@ -72,23 +34,13 @@ function Signup() {
         </h1>
         <div className="row">
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="exampleInputFirstname">Prénom </label>
+            <label htmlFor="InputFirstname">Prénom</label>
             <input
               type="text"
               className="form-control"
-              id="exampleInputFirstname"
+              id="Firstname"
               aria-describedby="FirstnameHelp"
               placeholder="Entrer votre prénom"
-            />
-          </div>
-          <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="exampleInputName">Nom</label>
-            <input
-              type="text"
-              className="form-control"
-              id="exampleInputName"
-              aria-describedby="NameHelp"
-              placeholder="Entrer votre nom"
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
@@ -101,14 +53,13 @@ function Signup() {
               aria-describedby="emailHelp"
               placeholder="Entrer votre émail"
             />
-            {Email}
           </div>
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="exampleInputPassword">Mot de passe</label>
+            <label htmlFor="InputPassword">Mot de passe</label>
             <input
               type="password"
               className="form-control"
-              id="exampleInputPassword"
+              id="InputPassword"
               placeholder="Mot De Passe avec au moins 8 caractères 2 chiffres 1 majuscule et 1 minuscule"
             />
           </div>

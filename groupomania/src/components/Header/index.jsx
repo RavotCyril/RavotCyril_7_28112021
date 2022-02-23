@@ -12,7 +12,7 @@ import Logo from "../../assets/LogoGroupomaniaWhite.png";
 function Header() {
   return (
     <header>
-      <div className="Menu container-fluid m-0">
+      <div className="container-fluid Menu m-0">
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark">
             <NavLink to="/Home" className="navbar-brand border-0">

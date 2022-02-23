@@ -18,17 +18,6 @@ const userRoutes = require('./routes/user');
 const articlesRoutes = require('./routes/articles');
 const commentairesRoutes = require('./routes/commentaires');
 const votesRoutes = require('./routes/votes');
-
-
-// mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@" + process.env.DB_NAME + ".lwef4.mongodb.net/P6-Piquante?retryWrites=true&w=majority", {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true
-//     })
-//     .then(() => console.log('Connexion à MongoDB réussie !'))
-//     .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-// Lancement d'express 
-
 const app = express();
 
 // Middlewares

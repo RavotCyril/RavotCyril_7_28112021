@@ -8,7 +8,7 @@ import ImageError from "../../assets/404.svg";
 
 function Error() {
   return (
-    <div className="Menu container-fluid m-0">
+    <div className="container-fluid Menu m-0">
       <div className="row">
         <h1 className="p-1">
           ERROR <br></br>Il semblerait que la page que vous cherchez n’existe

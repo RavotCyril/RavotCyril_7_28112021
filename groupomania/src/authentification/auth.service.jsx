@@ -23,6 +23,7 @@ class AuthService {
   }
   signup(email, password) {
     return axios.post(ApiUrl + "signup", {
+      firstname,
       email,
       password,
     });
