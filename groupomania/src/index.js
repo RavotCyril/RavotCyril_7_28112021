@@ -17,7 +17,6 @@ import Home from "./pages/Home";
 
 // import Error from "./components/Error";
 import "./Styles/App.css";
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>

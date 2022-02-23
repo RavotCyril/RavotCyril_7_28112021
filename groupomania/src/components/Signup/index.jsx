@@ -40,7 +40,6 @@ function Signup() {
               type="text"
               className="form-control"
               id="Firstname"
-              setAttribute="required"
               aria-describedby="Tapper votre Prénom"
               placeholder="Entrer votre prénom"
             />
@@ -52,7 +51,6 @@ function Signup() {
               type="email"
               className="form-control"
               id="Email"
-              setAttribute="required"
               aria-describedby="Tapper votre Email"
               placeholder="Entrer votre émail"
             />
@@ -62,7 +60,6 @@ function Signup() {
             <input
               name="Password"
               type="password"
-              setAttribute="required"
               className="form-control"
               id="Password"
               aria-describedby="Tapper votre mot de passe"
@@ -72,7 +69,6 @@ function Signup() {
           <div className="row">
             <input
               type="submit"
-              setAttribute="required"
               className="form-control btn btn-primary col-4 my-4 mx-auto"
               value="S`enregistrer"
               aria-describedby="Bouton de validation pour s'enregistrer"
