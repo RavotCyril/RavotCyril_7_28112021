@@ -25,8 +25,9 @@ function Login() {
         </h1>
         <div className="row">
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="InputEmail">Email</label>
+            <label htmlFor="Email">Email</label>
             <input
+              name="Email"
               type="email"
               className="form-control"
               id="Email"
@@ -35,8 +36,9 @@ function Login() {
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="InputPassword">Mot de passe</label>
+            <label htmlFor="Password">Mot de passe</label>
             <input
+              name="Password"
               type="password"
               className="form-control"
               id="Password"
@@ -44,12 +46,12 @@ function Login() {
             />
           </div>
           <div className="row">
-            <button
+            <input
               type="submit"
+              setAttribute="required"
               className="btn btn-primary col-4 my-4 mx-auto"
-            >
-              Se connecter
-            </button>
+              value="Se connecter"
+            />
           </div>
         </div>
       </form>

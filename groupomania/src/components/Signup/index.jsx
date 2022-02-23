@@ -34,43 +34,49 @@ function Signup() {
         </h1>
         <div className="row">
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="InputFirstname">Prénom</label>
+            <label htmlFor="Firstname">Prénom</label>
             <input
+              name="Firstname"
               type="text"
               className="form-control"
               id="Firstname"
-              aria-describedby="FirstnameHelp"
+              setAttribute="required"
+              aria-describedby="Tapper votre Prénom"
               placeholder="Entrer votre prénom"
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="Email">Email</label>
             <input
+              name="Email"
               type="email"
-              className="form-control ClassErrorInputMailTag"
+              className="form-control"
               id="Email"
-              required=""
-              aria-describedby="emailHelp"
+              setAttribute="required"
+              aria-describedby="Tapper votre Email"
               placeholder="Entrer votre émail"
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="InputPassword">Mot de passe</label>
+            <label htmlFor="Password">Mot de passe</label>
             <input
+              name="Password"
               type="password"
+              setAttribute="required"
               className="form-control"
-              id="InputPassword"
+              id="Password"
+              aria-describedby="Tapper votre mot de passe"
               placeholder="Mot De Passe avec au moins 8 caractères 2 chiffres 1 majuscule et 1 minuscule"
             />
           </div>
           <div className="row">
-            <button
+            <input
               type="submit"
               setAttribute="required"
-              className="btn btn-primary col-4 my-4 mx-auto"
-            >
-              S`enregistrer
-            </button>
+              className="form-control btn btn-primary col-4 my-4 mx-auto"
+              value="S`enregistrer"
+              aria-describedby="Bouton de validation pour s'enregistrer"
+            />
           </div>
         </div>
       </form>
