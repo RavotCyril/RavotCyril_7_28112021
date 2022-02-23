@@ -2,7 +2,7 @@
 -> Si besoin styled-components  + react-router-dom ... */
 
 import axios from "axios";
-import authHeader from "./auth.header";
+import AuthHeader from "./auth.header";
 
 const ApiUrl = "http://localhost:8080/api/test/";
 
@@ -11,10 +11,10 @@ class UserService {
     return axios.get(ApiUrl + "all");
   }
   getUserBoard() {
-    return axios.get(ApiUrl + "user", { headers: authHeader() });
+    return axios.get(ApiUrl + "user", { headers: AuthHeader() });
   }
   getAdminBoard() {
-    return axios.get(ApiUrl + "admin", { headers: authHeader() });
+    return axios.get(ApiUrl + "admin", { headers: AuthHeader() });
   }
 }
 export default new UserService();

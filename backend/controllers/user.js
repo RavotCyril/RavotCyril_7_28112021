@@ -11,17 +11,19 @@ const Models = require('../models/user')
 /* Exporte la fonction  Inscription utilisateur  */
 
 exports.signup = (req, res, next) => {
-    console.log("Début Inscription")
+   
     bcrypt.hash(req.body.password, 10) /* Le sel à utiliser dans le cryptage. S'il est spécifié sous forme de nombre, un sel sera généré avec le nombre de tours spécifié et utilisé. */
         .then(hash => {
             Models.User.create({
                 user_id: req.body.user_id,
-                firstname: req.body.firstname,
+                firstname: req.body.firstName,
                 email: req.body.email,
                 password: hash,
                 role_id: req.body.role_id
             }).then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-                .catch(error => res.status(400).json({ message: error.message }));
+                .catch(error => {
+                    console.log(error.message)
+                    res.status(400).json({ message: error.message })});
         })
         .catch(error => res.status(500).json({ error }));
     console.log("Fin Inscription")

@@ -3,6 +3,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+/* Authentification */
+// import AuthHeader from "./authentification/AuthentificationHeader/auth.header.jsx";
+// import AuthService from "./authentification/AuthentificationService/auth.service.jsx";
+// import UserService from "./authentification/AuthentificationUser/user.service.jsx";
 /* Importations Components */
 import Header from "./components/Header";
 import Signup from "./components/Signup";
@@ -21,6 +25,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Header />
+      {/* <AuthHeader /> */}
+      {/* <AuthService />
+      <UserService /> */}
       <Routes>
         <Route path="/Home" element={<Home />} />
         <Route path="/MyForums" element={<MyForums />} />

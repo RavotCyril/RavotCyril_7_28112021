@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+/* Crud pour Créer, Modifier ou Supprimer un Article  */
 
 function articles(props) {
   /* Permet de déstructurer l'article ( article.Sujet article.Texte article.date ... ) 
@@ -126,9 +127,6 @@ function articles(props) {
               </p>
             </div>
           </div>
-          <button type="submit">Envoyer</button>
-          <button type="submit">Modifier</button>
-          <button type="submit">Annuler</button>
         </div>
       </form>
     </main>

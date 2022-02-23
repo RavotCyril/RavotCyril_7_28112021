@@ -3,13 +3,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Topic from "../../../components/Topic";
+import DeleteArticle from "../../../components/Topic/DeleteTopic";
 /* Fonction pour pouvoir crée un nouveau Sujet. (Article)
 Avec :
 Data = Les données lus ( 1ere donnée lu)
 SetData = les données modifiés  ( 2me donnée lu suite à une modification )
 useState = Renvoie une valeur avec état et une fonction pour la mettre à jour.
 */
-function NewTopic() {
+function NewTopic(article) {
   const [data, setData] = useState([]);
   // const { article } = props;
   let article_id = "Formidable1";
@@ -31,6 +32,9 @@ function NewTopic() {
             <Topic article={article} key={article_id} />
           ))}
           {setData}
+        </div>
+        <div className="btn-container">
+          <DeleteArticle id={article.id} />
         </div>
       </div>
     </main>

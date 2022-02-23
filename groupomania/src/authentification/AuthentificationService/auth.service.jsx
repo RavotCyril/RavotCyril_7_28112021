@@ -21,7 +21,7 @@ class AuthService {
   logout() {
     localStorage.removeItem("User");
   }
-  signup(email, password) {
+  signup(firstname, email, password) {
     return axios.post(ApiUrl + "signup", {
       firstname,
       email,
