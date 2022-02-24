@@ -2,28 +2,31 @@
 import "../../Styles/App.css";
 /* Importations des variables l'hors de la vérification 
 du mot de passe du formulaire d'enregistrement */
-
-function password() {
-  var myInput = document.getElementById("Password");
+function miseEnAttenteErrorPassword() {
+  //Traitement
+  setTimeout(errorPassword, 5000); //On attend 5 secondes avant d'exécuter la fonction
+}
+function errorPassword() {
+  var myInputPassword = document.getElementById("Password");
   var letter = document.getElementById("letter");
   var capital = document.getElementById("capital");
   var number = document.getElementById("number");
   var length = document.getElementById("length");
 
   // When the user clicks on the password field, show the message box
-  myInput.onfocus = function () {
-    document.getElementById("message").style.display = "block";
+  myInputPassword.onfocus = function () {
+    document.getElementById("messagePassword").style.display = "block";
   };
 
   // When the user clicks outside of the password field, hide the message box
-  myInput.onblur = function () {
-    document.getElementById("message").style.display = "none";
+  myInputPassword.onblur = function () {
+    document.getElementById("messagePassword").style.display = "none";
   };
   // When the user starts to type something inside the password field
-  myInput.onkeyup = function () {
+  myInputPassword.onkeyup = function () {
     // Validate lowercase letters
     var lowerCaseLetters = /[a-z]/g;
-    if (myInput.value.match(lowerCaseLetters)) {
+    if (myInputPassword.value.match(lowerCaseLetters)) {
       letter.classList.remove("invalid");
       letter.classList.add("valid");
     } else {
@@ -33,7 +36,7 @@ function password() {
 
     // Validate capital letters
     var upperCaseLetters = /[A-Z]/g;
-    if (myInput.value.match(upperCaseLetters)) {
+    if (myInputPassword.value.match(upperCaseLetters)) {
       capital.classList.remove("invalid");
       capital.classList.add("valid");
     } else {
@@ -43,7 +46,7 @@ function password() {
 
     // Validate numbers
     var numbers = /[0-9]/g;
-    if (myInput.value.match(numbers)) {
+    if (myInputPassword.value.match(numbers)) {
       number.classList.remove("invalid");
       number.classList.add("valid");
     } else {
@@ -52,7 +55,7 @@ function password() {
     }
 
     // Validate length
-    if (myInput.value.length >= 8) {
+    if (myInputPassword.value.length >= 8) {
       length.classList.remove("invalid");
       length.classList.add("valid");
     } else {
@@ -61,4 +64,6 @@ function password() {
     }
   };
 }
-export default password;
+
+miseEnAttenteErrorPassword();
+export default errorPassword;

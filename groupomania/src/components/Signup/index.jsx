@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ErrorPassword from "./errorPassword";
+import ErrorEmail from "./errorEmail";
 
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
@@ -62,21 +63,32 @@ function Signup() {
           <div className="form-group col-8 my-4 mx-auto relative">
             <label htmlFor="Email">Email</label>
             <input
-              pattern="(/[a-z]+@[\w-]+\.[a-z]{2,4}$/i))"
+              title="Merci d'indiquer un émail valide"
+              pattern="/[a-z]+@[\w-]+\.[a-z]{2,4}$/i)"
               name="Email"
               type="email"
-              required=""
+              required
               className="form-control"
               id="Email"
               aria-describedby="Tapper votre Email"
               onChange={handleChangeEmail}
             />
             <div className="valid-tooltip">Email validé</div>
+            <h3 className="form-group col-10 mx-auto text-center">
+              L`adresse Email doit contenir :
+            </h3>
+            <div className="col-12 d-flex text-center" id="messageEmail">
+              <div id="myInputEmail" className="col-12 invalid">
+                <p>
+                  L`adresse Email n`est pas valide il manque l`un des caractères
+                  indispensable suivant: @ ou .fr ou le .com
+                </p>
+              </div>
+            </div>
           </div>
           <div className="form-group col-8 my-4 mx-auto">
             <label htmlFor="Password">Mot de passe</label>
             <input
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               name="Password"
               type="password"
               required
@@ -90,7 +102,7 @@ function Signup() {
           <h3 className="form-group col-10 mx-auto text-center">
             Le mot de passe doit contenir les éléments suivants :
           </h3>
-          <div className="col-12 d-flex text-center" id="message">
+          <div className="col-12 d-flex text-center" id="messagePassword">
             <div id="letter" className="col-3 invalid">
               Une Lettre Minuscule
             </div>
@@ -121,9 +133,6 @@ function Signup() {
   );
 }
 export default Signup;
-function miseEnAttenteErrorPassword() {
-  //Traitement
-  setTimeout(ErrorPassword, 5000); //On attend 5 secondes avant d'exécuter la fonction
-}
-miseEnAttenteErrorPassword();
+
 ErrorPassword();
+ErrorEmail();
