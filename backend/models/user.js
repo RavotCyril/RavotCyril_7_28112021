@@ -31,7 +31,7 @@ const User = sequelize.define('user', {
 	user_id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
 	firstname: { type: Sequelize.STRING(255), required: true },
 	email: { type: Sequelize.STRING(255), required: true, unique: true },
-	password: { type: Sequelize.STRING(255), required: true, unique: true },
+	password: { type: Sequelize.STRING(255), required: true},
 	role_id: { type: Sequelize.INTEGER, required: true },
 }, { tableName: 'user', timestamps: false, underscored: true });
 
