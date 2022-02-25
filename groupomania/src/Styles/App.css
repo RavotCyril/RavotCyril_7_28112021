@@ -6,6 +6,7 @@
 body {
   font-family: "Roboto Regular", sans-serif;
 }
+
 .navbar-dark .navbar-brand {
   color: white;
 }
@@ -62,6 +63,21 @@ h1 {
   content: "✖";
   margin: 0px 15px;
 }
+input:onblur,
+textarea:onblur {
+  background-color: green;
+  color: green;
+  border: blue;
+}
+input:focus,
+textarea:focus {
+  background-color: red;
+}
+input:focus,
+textarea:focus {
+  background-color: red;
+}
+
 a {
   margin: 10px;
   text-decoration: none;

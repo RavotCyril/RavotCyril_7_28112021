@@ -2,8 +2,6 @@
 -> Si besoin styled-components  + react-router-dom  */
 import React, { useState } from "react";
 import axios from "axios";
-import ErrorPassword from "./errorPassword";
-import ErrorEmail from "./errorEmail";
 
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
@@ -20,6 +18,7 @@ function Signup() {
   }
   function handleChangeEmail(e) {
     setemailData(e.target.value);
+    console.log(setemailData);
   }
 
   function handleChangeFirstName(e) {
@@ -35,14 +34,128 @@ function Signup() {
         password,
         role_id,
       })
-      .then((res) => console.log(res))
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((res) => ({
+        message: (res.message = "Formulaire d'enregistrement validé !"),
+      }))
+      .catch((error) => ({ message: error.message }));
   }
+
+  async function ErrorPassword() {
+    var myInputPassword = document.getElementById("Password");
+    var messagePassword = document.getElementById("messagePassword");
+    var letter = document.getElementById("letter");
+    var capital = document.getElementById("capital");
+    var number = document.getElementById("number");
+    var length = document.getElementById("length");
+
+    // When the user clicks on the password field, show the message box
+    myInputPassword.onfocus = function () {
+      messagePassword.style.display = "block";
+    };
+
+    // When the user clicks outside of the password field, hide the message box
+    myInputPassword.onblur = function () {
+      messagePassword.style.display = "none";
+    };
+    // When the user starts to type something inside the password field
+    myInputPassword.onkeyup = function () {
+      // Validate lowercase letters
+      var lowerCaseLetters = /[a-z]/g;
+      if (myInputPassword.value.match(lowerCaseLetters)) {
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+      } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+      }
+
+      // Validate capital letters
+      var upperCaseLetters = /[A-Z]/g;
+      if (myInputPassword.value.match(upperCaseLetters)) {
+        capital.classList.remove("invalid");
+        capital.classList.add("valid");
+      } else {
+        capital.classList.remove("valid");
+        capital.classList.add("invalid");
+      }
+
+      // Validate numbers
+      var numbers = /[0-9]/g;
+      if (myInputPassword.value.match(numbers)) {
+        number.classList.remove("invalid");
+        number.classList.add("valid");
+      } else {
+        number.classList.remove("valid");
+        number.classList.add("invalid");
+      }
+
+      // Validate length
+      if (myInputPassword.value.length >= 8) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+      } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+      }
+    };
+  }
+
+  var inputEmailError = document.getElementById("inputEmailError");
+
+  let errorTag = (tag, message, valid, invalid) => {
+    const container = document.querySelector("." + tag);
+
+    if (invalid) {
+      container.classList.add("invalid");
+      container.classList.remove("valid");
+      container.textContent = message;
+    } else if (valid) {
+      container.classList.remove("invalid");
+      container.textContent = message;
+    }
+  };
+  // Variable validTag -> Fonction du code de validation avec message en cas de données exactes.
+
+  let validTag = (tag, message, valid, invalid) => {
+    const container = document.querySelector("." + tag);
+
+    if (valid) {
+      container.classList.add("valid");
+      container.classList.remove("invalid");
+      container.textContent = message;
+    } else if (invalid) {
+      container.classList.remove("valid");
+      container.classList.add("invalid");
+      container.textContent = message;
+    }
+  };
+  async function ValidateEmail() {
+    var mailRegex = "/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/";
+    if (setemailData.value.match(mailRegex)) {
+      console.log(setemailData);
+      console.log(mailRegex);
+      validTag("messageErrorValid", "Email validé", true, false);
+      setemailData.style.outline = "1px solid green";
+      setemailData.style.border = "1px solid green";
+      inputEmailError.style.content = "✖";
+      inputEmailError.style.color = "green";
+    } else {
+      errorTag(
+        "messageErrorValid",
+        "L`adresse Email n`est pas valide il manque l`un des caractères indispensable suivant: @ ou .fr ou le .com",
+        false,
+        true
+      );
+      setemailData.style.outline = "1px solid red";
+      setemailData.style.border = "1px solid red";
+      inputEmailError.style.content = "✔";
+      inputEmailError.style.color = "red";
+    }
+  }
+
   return (
     <main>
-      <form className="container-fluid" required="">
+      <form className="container-fluid" required>
         <h1 className="form-group H1Signup col-12 mx-auto">
           Veuillez remplir ce formulaire pour vous enregistrer sur le forum !
         </h1>
@@ -58,31 +171,27 @@ function Signup() {
               aria-describedby="Tapper votre Prénom"
               onChange={handleChangeFirstName}
             />
-            <div className="valid-tooltip">Prénom validé</div>
           </div>
           <div className="form-group col-8 my-4 mx-auto relative">
             <label htmlFor="Email">Email</label>
             <input
               title="Merci d'indiquer un émail valide"
-              pattern="/[a-z]+@[\w-]+\.[a-z]{2,4}$/i)"
               name="Email"
               type="email"
               required
-              className="form-control"
-              id="Email"
+              className="form-control Email"
               aria-describedby="Tapper votre Email"
               onChange={handleChangeEmail}
+              onClick={() => {
+                ValidateEmail();
+              }}
             />
-            <div className="valid-tooltip">Email validé</div>
             <h3 className="form-group col-10 mx-auto text-center">
               L`adresse Email doit contenir :
             </h3>
-            <div className="col-12 d-flex text-center" id="messageEmail">
-              <div id="myInputEmail" className="col-12 invalid">
-                <p>
-                  L`adresse Email n`est pas valide il manque l`un des caractères
-                  indispensable suivant: @ ou .fr ou le .com
-                </p>
+            <div className="col-12 d-flex text-center">
+              <div id="inputEmailError" className="messageErrorValid col-12">
+                <p></p>
               </div>
             </div>
           </div>
@@ -90,19 +199,22 @@ function Signup() {
             <label htmlFor="Password">Mot de passe</label>
             <input
               name="Password"
+              id="Password"
               type="password"
               required
-              className="form-control"
-              id="Password"
+              className="form-control password"
               aria-describedby="Tapper votre mot de passe"
               onChange={handleChangePassword}
+              onClick={() => {
+                ErrorPassword();
+              }}
             />
             <div className="valid-tooltip">Mot de passe validé</div>
           </div>
           <h3 className="form-group col-10 mx-auto text-center">
             Le mot de passe doit contenir les éléments suivants :
           </h3>
-          <div className="col-12 d-flex text-center" id="messagePassword">
+          <div className="col-12 text-center d-flex" id="messagePassword">
             <div id="letter" className="col-3 invalid">
               Une Lettre Minuscule
             </div>
@@ -118,7 +230,8 @@ function Signup() {
           </div>
           <div className="col-12">
             <input
-              type="button"
+              type="submit"
+              name="submit"
               onClick={() => {
                 login();
               }}
@@ -133,6 +246,3 @@ function Signup() {
   );
 }
 export default Signup;
-
-ErrorPassword();
-ErrorEmail();

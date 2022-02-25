@@ -24,11 +24,11 @@ ReactDOM.render(
       <Header />
       <Routes>
         <Route path="/Home" element={<Home />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Signup" element={<Password />} />
+        <Route path="/Login" element={<Login />} />
         <Route path="/MyForums" element={<MyForums />} />
         <Route path="/NewTopic" element={<NewTopic />} />
-        <Route path="/Signup" element={<Signup />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Signup" element={<Password />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>

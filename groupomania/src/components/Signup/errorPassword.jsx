@@ -2,12 +2,10 @@
 import "../../Styles/App.css";
 /* Importations des variables l'hors de la vérification 
 du mot de passe du formulaire d'enregistrement */
-function miseEnAttenteErrorPassword() {
-  //Traitement
-  setTimeout(errorPassword, 5000); //On attend 5 secondes avant d'exécuter la fonction
-}
+
 function errorPassword() {
   var myInputPassword = document.getElementById("Password");
+  var messagePassword = document.getElementById("messagePassword");
   var letter = document.getElementById("letter");
   var capital = document.getElementById("capital");
   var number = document.getElementById("number");
@@ -15,13 +13,9 @@ function errorPassword() {
 
   // When the user clicks on the password field, show the message box
   myInputPassword.onfocus = function () {
-    document.getElementById("messagePassword").style.display = "block";
+    messagePassword.classList.add("block");
   };
 
-  // When the user clicks outside of the password field, hide the message box
-  myInputPassword.onblur = function () {
-    document.getElementById("messagePassword").style.display = "none";
-  };
   // When the user starts to type something inside the password field
   myInputPassword.onkeyup = function () {
     // Validate lowercase letters
@@ -64,6 +58,4 @@ function errorPassword() {
     }
   };
 }
-
-miseEnAttenteErrorPassword();
 export default errorPassword;
