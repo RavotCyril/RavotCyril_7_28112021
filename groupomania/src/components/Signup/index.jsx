@@ -7,26 +7,24 @@ import axios from "axios";
 import "../../Styles/App.css";
 
 function Signup() {
-  /* Fonction useEffect permet de faire une seule requête de l'API. ( Et ne pas l'appeler à l'infinis)
-  Avec le callback , [] en fin de fonction */
   const [firstName, setfirstNameData] = useState("");
-  const [email, setemailData] = useState("");
-  const [password, setpasswordData] = useState("");
+  const [email, setEmailData] = useState("");
+  const [password, setPasswordData] = useState("");
 
   function handleChangePassword(e) {
-    setpasswordData(e.target.value);
+    setPasswordData(e.target.value);
   }
   function handleChangeEmail(e) {
-    setemailData(e.target.value);
-    console.log(setemailData);
+    setEmailData(e.target.value);
   }
 
   function handleChangeFirstName(e) {
     setfirstNameData(e.target.value);
   }
 
-  function login() {
+  function test() {
     let role_id = 1;
+
     axios
       .post("http://localhost:3000/api/auth/signup", {
         firstName,
@@ -131,12 +129,10 @@ function Signup() {
   };
   async function ValidateEmail() {
     var mailRegex = "/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/";
-    if (setemailData.value.match(mailRegex)) {
-      console.log(setemailData);
-      console.log(mailRegex);
+    if (setEmailData.value.match(mailRegex)) {
       validTag("messageErrorValid", "Email validé", true, false);
-      setemailData.style.outline = "1px solid green";
-      setemailData.style.border = "1px solid green";
+      setEmailData.style.outline = "1px solid green";
+      setEmailData.style.border = "1px solid green";
       inputEmailError.style.content = "✖";
       inputEmailError.style.color = "green";
     } else {
@@ -146,8 +142,8 @@ function Signup() {
         false,
         true
       );
-      setemailData.style.outline = "1px solid red";
-      setemailData.style.border = "1px solid red";
+      setEmailData.style.outline = "1px solid red";
+      setEmailData.style.border = "1px solid red";
       inputEmailError.style.content = "✔";
       inputEmailError.style.color = "red";
     }
@@ -233,7 +229,7 @@ function Signup() {
               type="submit"
               name="submit"
               onClick={() => {
-                login();
+                test();
               }}
               className="form-control btn btn-primary col-4 my-4 mx-auto"
               value="S`enregistrer"
