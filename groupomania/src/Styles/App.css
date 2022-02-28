@@ -40,44 +40,25 @@ h1 {
   box-shadow: 0px 0px 5px 10px #1f1e1e;
 }
 
-/* Add a green text color and a checkmark when the requirements are right */
-.valid {
-  color: green;
+.message {
+  margin-top: 20px;
+  font-size: 17px;
 }
 
-.valid:before {
+.valid {
+  color: green;
   position: relative;
   left: 0px;
   content: "✔";
   margin: 0px 15px;
 }
-
-/* Add a red text color and an "x" when the requirements are wrong */
 .invalid {
   color: red;
-}
-
-.invalid:before {
   position: relative;
   left: 0px;
   content: "✖";
   margin: 0px 15px;
 }
-input:onblur,
-textarea:onblur {
-  background-color: green;
-  color: green;
-  border: blue;
-}
-input:focus,
-textarea:focus {
-  background-color: red;
-}
-input:focus,
-textarea:focus {
-  background-color: red;
-}
-
 a {
   margin: 10px;
   text-decoration: none;

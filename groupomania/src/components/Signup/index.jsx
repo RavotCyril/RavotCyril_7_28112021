@@ -10,19 +10,25 @@ function Signup() {
   const [firstName, setfirstNameData] = useState("");
   const [email, setEmailData] = useState("");
   const [password, setPasswordData] = useState("");
+  const [isValid, setIsValid] = useState();
+  const [message, setMessage] = useState("");
 
+  /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
   function handleChangePassword(e) {
     setPasswordData(e.target.value);
   }
-  function handleChangeEmail(e) {
-    setEmailData(e.target.value);
-  }
+  /* Fonction pour vérifier ce que l'on écrit dans l'input Email  */
+
+  /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
 
   function handleChangeFirstName(e) {
     setfirstNameData(e.target.value);
   }
+  /* Fonction de l'input et du submit de tentative d'enregistrement 
+   + Appel Post Api et transmission des proprietés enregistrés 
+   -> firstName, email, password et le role_id ( Admin ou utilisateur )*/
 
-  function test() {
+  function testSignup() {
     let role_id = 1;
 
     axios
@@ -32,11 +38,10 @@ function Signup() {
         password,
         role_id,
       })
-      .then((res) => ({
-        message: (res.message = "Formulaire d'enregistrement validé !"),
-      }))
+      .then((res) => ({ res }))
       .catch((error) => ({ message: error.message }));
   }
+  /* Function d'erreur du mot de passe  */
 
   async function ErrorPassword() {
     var myInputPassword = document.getElementById("Password");
@@ -46,7 +51,8 @@ function Signup() {
     var number = document.getElementById("number");
     var length = document.getElementById("length");
 
-    // When the user clicks on the password field, show the message box
+    // Lorsque l'utilisateur clique en dehors du champ du mot de passe, masquez le message d'erreur
+
     myInputPassword.onfocus = function () {
       messagePassword.style.display = "block";
     };
@@ -55,9 +61,11 @@ function Signup() {
     myInputPassword.onblur = function () {
       messagePassword.style.display = "none";
     };
-    // When the user starts to type something inside the password field
+    // Lorsque l'utilisateur commence à taper quelque chose dans le champ du mot de passe
+
     myInputPassword.onkeyup = function () {
-      // Validate lowercase letters
+      // Validate qu'il y aurait au moins une majuscule dans le mot de passe.
+
       var lowerCaseLetters = /[a-z]/g;
       if (myInputPassword.value.match(lowerCaseLetters)) {
         letter.classList.remove("invalid");
@@ -67,7 +75,8 @@ function Signup() {
         letter.classList.add("invalid");
       }
 
-      // Validate capital letters
+      // Valide qu'il y aurat une lettre capital dans le mot de passe.
+
       var upperCaseLetters = /[A-Z]/g;
       if (myInputPassword.value.match(upperCaseLetters)) {
         capital.classList.remove("invalid");
@@ -77,7 +86,8 @@ function Signup() {
         capital.classList.add("invalid");
       }
 
-      // Validate numbers
+      // Validate le fait qu'il y ait au moins 2 nombres dans le mot de passe.
+
       var numbers = /[0-9]/g;
       if (myInputPassword.value.match(numbers)) {
         number.classList.remove("invalid");
@@ -87,7 +97,8 @@ function Signup() {
         number.classList.add("invalid");
       }
 
-      // Validate length
+      // valide  la longeur du mot de passe.
+
       if (myInputPassword.value.length >= 8) {
         length.classList.remove("invalid");
         length.classList.add("valid");
@@ -97,58 +108,20 @@ function Signup() {
       }
     };
   }
+  /* L'expression régulière pour valider le modèle d'email
+  // Permet de détecter si l'email est un émail valide */
 
-  var inputEmailError = document.getElementById("inputEmailError");
-
-  let errorTag = (tag, message, valid, invalid) => {
-    const container = document.querySelector("." + tag);
-
-    if (invalid) {
-      container.classList.add("invalid");
-      container.classList.remove("valid");
-      container.textContent = message;
-    } else if (valid) {
-      container.classList.remove("invalid");
-      container.textContent = message;
-    }
-  };
-  // Variable validTag -> Fonction du code de validation avec message en cas de données exactes.
-
-  let validTag = (tag, message, valid, invalid) => {
-    const container = document.querySelector("." + tag);
-
-    if (valid) {
-      container.classList.add("valid");
-      container.classList.remove("invalid");
-      container.textContent = message;
-    } else if (invalid) {
-      container.classList.remove("valid");
-      container.classList.add("invalid");
-      container.textContent = message;
-    }
-  };
-  async function ValidateEmail() {
-    var mailRegex = "/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/";
-    if (setEmailData.value.match(mailRegex)) {
-      validTag("messageErrorValid", "Email validé", true, false);
-      setEmailData.style.outline = "1px solid green";
-      setEmailData.style.border = "1px solid green";
-      inputEmailError.style.content = "✖";
-      inputEmailError.style.color = "green";
+  const emailRegex = /[a-z]+@[\w-]+\.[a-z]{2,4}$/i;
+  const handleChangeEmail = (event) => {
+    setEmailData(event.target.value);
+    if (emailRegex.test(setEmailData)) {
+      setIsValid(true);
+      setMessage("Votre émail est validé !");
     } else {
-      errorTag(
-        "messageErrorValid",
-        "L`adresse Email n`est pas valide il manque l`un des caractères indispensable suivant: @ ou .fr ou le .com",
-        false,
-        true
-      );
-      setEmailData.style.outline = "1px solid red";
-      setEmailData.style.border = "1px solid red";
-      inputEmailError.style.content = "✔";
-      inputEmailError.style.color = "red";
+      setIsValid(false);
+      setMessage("Veuillez saisir une adresse émail valide !");
     }
-  }
-
+  };
   return (
     <main>
       <form className="container-fluid" required>
@@ -178,64 +151,57 @@ function Signup() {
               className="form-control Email"
               aria-describedby="Tapper votre Email"
               onChange={handleChangeEmail}
-              onClick={() => {
-                ValidateEmail();
-              }}
             />
-            <h3 className="form-group col-10 mx-auto text-center">
-              L`adresse Email doit contenir :
-            </h3>
             <div className="col-12 d-flex text-center">
-              <div id="inputEmailError" className="messageErrorValid col-12">
-                <p></p>
+              <div className={`message ${isValid ? "valid" : "invalid"}`}>
+                {message}
               </div>
             </div>
           </div>
-          <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="Password">Mot de passe</label>
-            <input
-              name="Password"
-              id="Password"
-              type="password"
-              required
-              className="form-control password"
-              aria-describedby="Tapper votre mot de passe"
-              onChange={handleChangePassword}
-              onClick={() => {
-                ErrorPassword();
-              }}
-            />
-            <div className="valid-tooltip">Mot de passe validé</div>
+        </div>
+        <div className="form-group col-8 my-4 mx-auto">
+          <label htmlFor="Password">Mot de passe</label>
+          <input
+            name="Password"
+            id="Password"
+            type="password"
+            required
+            className="form-control password"
+            aria-describedby="Tapper votre mot de passe"
+            onChange={handleChangePassword}
+            onClick={() => {
+              ErrorPassword();
+            }}
+          />
+        </div>
+        <h3 className="form-group col-10 mx-auto text-center">
+          Le mot de passe doit contenir les éléments suivants :
+        </h3>
+        <div className="col-12 text-center d-flex" id="messagePassword">
+          <div id="letter" className="col-3 invalid">
+            Une Lettre Minuscule
           </div>
-          <h3 className="form-group col-10 mx-auto text-center">
-            Le mot de passe doit contenir les éléments suivants :
-          </h3>
-          <div className="col-12 text-center d-flex" id="messagePassword">
-            <div id="letter" className="col-3 invalid">
-              Une Lettre Minuscule
-            </div>
-            <div id="capital" className="col-3 invalid">
-              Une Lettre Majuscule
-            </div>
-            <div id="number" className="col-3 invalid">
-              Un Numéro
-            </div>
-            <div id="length" className="col-3 invalid">
-              Au Minimum 8 Caractéres
-            </div>
+          <div id="capital" className="col-3 invalid">
+            Une Lettre Majuscule
           </div>
-          <div className="col-12">
-            <input
-              type="submit"
-              name="submit"
-              onClick={() => {
-                test();
-              }}
-              className="form-control btn btn-primary col-4 my-4 mx-auto"
-              value="S`enregistrer"
-              aria-describedby="Bouton de validation pour s'enregistrer"
-            />
+          <div id="number" className="col-3 invalid">
+            Un Numéro
           </div>
+          <div id="length" className="col-3 invalid">
+            Au Minimum 8 Caractéres
+          </div>
+        </div>
+        <div className="col-12">
+          <input
+            type="submit"
+            name="submit"
+            onClick={() => {
+              testSignup();
+            }}
+            className="form-control btn btn-primary col-4 my-4 mx-auto"
+            value="S`enregistrer"
+            aria-describedby="Bouton de validation pour s'enregistrer"
+          />
         </div>
       </form>
     </main>
