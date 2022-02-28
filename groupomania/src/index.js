@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Error from "./components/Error";
-import Password from "./components/Signup";
 
 /* Importations Pages */
 
@@ -25,7 +24,6 @@ ReactDOM.render(
       <Routes>
         <Route path="/Home" element={<Home />} />
         <Route path="/Signup" element={<Signup />} />
-        <Route path="/Signup" element={<Password />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/MyForums" element={<MyForums />} />
         <Route path="/NewTopic" element={<NewTopic />} />

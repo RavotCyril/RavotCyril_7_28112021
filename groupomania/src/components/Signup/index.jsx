@@ -8,7 +8,7 @@ import "../../Styles/App.css";
 
 function Signup() {
   const [firstName, setfirstNameData] = useState("");
-  const [email, setEmailData] = useState("");
+  const [email] = useState("");
   const [password, setPasswordData] = useState("");
   const [isValid, setIsValid] = useState();
   const [message, setMessage] = useState("");
@@ -17,7 +17,6 @@ function Signup() {
   function handleChangePassword(e) {
     setPasswordData(e.target.value);
   }
-  /* Fonction pour vérifier ce que l'on écrit dans l'input Email  */
 
   /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
 
@@ -110,11 +109,11 @@ function Signup() {
   }
   /* L'expression régulière pour valider le modèle d'email
   // Permet de détecter si l'email est un émail valide */
-
   const emailRegex = /[a-z]+@[\w-]+\.[a-z]{2,4}$/i;
+
   const handleChangeEmail = (event) => {
-    setEmailData(event.target.value);
-    if (emailRegex.test(setEmailData)) {
+    const email = event.target.value;
+    if (emailRegex.test(email)) {
       setIsValid(true);
       setMessage("Votre émail est validé !");
     } else {
@@ -122,6 +121,7 @@ function Signup() {
       setMessage("Veuillez saisir une adresse émail valide !");
     }
   };
+
   return (
     <main>
       <form className="container-fluid" required>
@@ -154,6 +154,7 @@ function Signup() {
             />
             <div className="col-12 d-flex text-center">
               <div className={`message ${isValid ? "valid" : "invalid"}`}>
+                <br></br> <br></br>
                 {message}
               </div>
             </div>
