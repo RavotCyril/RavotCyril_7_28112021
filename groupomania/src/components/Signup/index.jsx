@@ -108,8 +108,10 @@ function Signup() {
     };
   }
   /* L'expression régulière pour valider le modèle d'email
-  // Permet de détecter si l'email est un émail valide */
-  const emailRegex = /[a-z]+@[\w-]+\.[a-z]{2,4}$/i;
+  // Permet de détecter si l'email est un émail valide 
+  Avec forcément un  @  et un . + 2 lettre après fr ou com ou autre ..  */
+
+  const emailRegex = /[a-z0-9]+@[\w-]+\.[a-z]{2,4}$/i;
 
   const handleChangeEmail = (event) => {
     const email = event.target.value;
