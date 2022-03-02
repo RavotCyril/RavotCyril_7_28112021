@@ -8,7 +8,7 @@ import "../../Styles/App.css";
 
 function Signup() {
   const [firstName, setfirstNameData] = useState("");
-  const [email] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPasswordData] = useState("");
   const [isValid, setIsValid] = useState();
   const [message, setMessage] = useState("");
@@ -29,8 +29,14 @@ function Signup() {
 
   function testSignup(event) {
     console.log("EventAxios");
-    event.preventDefault();
+    //event.preventDefault();
     let role_id = 1;
+    console.log(firstName);
+
+    console.log(email);
+
+    console.log(password);
+
     if (firstName && email && password) {
       const User = {
         firstName,
@@ -43,10 +49,16 @@ function Signup() {
         .post("http://localhost:3000/api/auth/signup", {
           User,
         })
-        .then((res) => console.log(res))
-        .then(() => {
+        .then((res) => {
+          // enregistrer le token.
           window.location.href = "http://localhost:3000/api/auth/login";
+        })
+        .catch((err) => {
+          if (err.code === 400) {
+          } else if (err.code === 500) {
+          }
         });
+
       console.log(
         "Formulaire d'inscription invalide ! Veuillez compléter correctement les champs."
       );
@@ -126,7 +138,7 @@ function Signup() {
   const emailRegex = /[a-z0-9]+@[\w-]+\.[a-z]{2,4}$/i;
 
   const handleChangeEmail = (event) => {
-    const email = event.target.value;
+    setEmail(event.target.value);
     if (emailRegex.test(email)) {
       setIsValid(true);
       setMessage("Votre émail est validé !");
@@ -208,7 +220,7 @@ function Signup() {
         </div>
         <div className="col-12">
           <input
-            type="submit"
+            type="button"
             name="submit"
             onClick={() => {
               testSignup();

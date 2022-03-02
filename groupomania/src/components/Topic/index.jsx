@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 /* Crud pour Créer, Modifier ou Supprimer un Article  */
 
-function articles(props) {
+function Articles(props) {
   /* Permet de déstructurer l'article ( article.Sujet article.Texte article.date ... ) 
    avec les {} autour d'article */
 
@@ -35,28 +35,14 @@ function articles(props) {
     if (texte.length < 140) {
       setError(true);
     } else {
-      axios
-        .post("http://localhost:3000/articles/", {
-          sujet,
-          texte,
-          date: Date.now(),
-          image,
-        })
-        .then(() => {
-          setError(false);
-          setSujet("");
-          setTexte("");
-          setImage(""), getData();
-        });
+      axios.post("http://localhost:3000/articles/", {
+        sujet,
+        texte,
+        date: Date.now(),
+        image,
+      });
     }
   };
-
-  useEffect(() => {
-    axios
-      .post("http://localhost:3000/api/articles/")
-      .then((res) => console.log(res));
-  }, []);
-  console.log(props);
   return (
     <main>
       <h1>Bienvenue sur le forum</h1>
@@ -112,16 +98,13 @@ function articles(props) {
                 </textarea>
               </p>
               <p>
-                {article.date}
-                <a>
-                  <date></date>
-                </a>
+                <date>{article.date}</date>
               </p>
               <p>
                 {article.image}
                 <img
                   src={article.image}
-                  alt="Image des articles"
+                  alt="Photos des articles"
                   onChange={(event) => setImage(event.target.value)}
                 />
               </p>
@@ -133,4 +116,4 @@ function articles(props) {
   );
 }
 
-export default articles;
+export default Articles();

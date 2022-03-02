@@ -15,7 +15,6 @@ import MyForums from "./pages/Forum/MyForums";
 import NewTopic from "./pages/Forum/NewTopic";
 import Home from "./pages/Home";
 
-// import Error from "./components/Error";
 import "./Styles/App.css";
 ReactDOM.render(
   <React.StrictMode>

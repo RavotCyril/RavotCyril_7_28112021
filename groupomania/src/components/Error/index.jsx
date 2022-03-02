@@ -16,7 +16,7 @@ function Error() {
         </h1>
         <br></br>
         <div className="col-6 mx-auto">
-          <img src={ImageError} alt="Image d'erreur" />;
+          <img src={ImageError} alt="Message d'erreur" />;
         </div>
       </div>
     </div>
