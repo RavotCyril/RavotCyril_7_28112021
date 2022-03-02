@@ -21,8 +21,8 @@ exports.signup = (req, res, next) => {
                 password: hash,
                 role_id: req.body.role_id
             }).then((User) => res.status(201).json({User, message: 'Utilisateur créé !' }))
-                .catch(error => {
-                    res.status(400).json({ message: error.message })});
+                .catch(error => 
+                    res.status(400).json({ message: error.message }));
         })
         .catch(error => res.status(500).json({ error }));
     console.log("Fin Inscription")

@@ -15,9 +15,6 @@ passwordSchema
     .has().not().spaces() // Il ne doit pas y avoir d'espace
     .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist les valeurs suivantes " Passw0ord Password123"
 
-// passwordSchema.not().uppercase(1, 'Il doit y avoir une majuscule');
-
-
 // Exporter le schéma 
 
 module.exports = passwordSchema;

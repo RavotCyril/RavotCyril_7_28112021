@@ -40,27 +40,28 @@ function Login() {
         })
         .then((response) => response.json())
         .then((value) => {
-          localStorage.setItem("orderConfirmation", value.User);
-          window.location.href = "confirmation-de-commande.html";
+          localStorage.setItem("loginConfirmation", value.User);
+          window.location.href = "http://localhost:3000/articles/";
         })
         .catch(function (error) {
           if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
+            /* La demande a été faite et le serveur a répondu avec une erreur code d'état */
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
           } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
+            // La demande a été faite mais aucune réponse n'a été reçue
+            /* `error.request` est une instance de XMLHttpRequest dans le navigateur et une instance de 
+            http.ClientRequest in node.js */
             console.log(error.request);
           } else {
-            // Something happened in setting up the request that triggered an Error
+            // Quelque chose s'est produit lors de la configuration de la requête qui a déclenché une erreur
             console.log("Error", error.message);
+            alert("Connexion refusé email ou mot de passe invalide !");
           }
           console.log(error.config);
         });
+      alert("Connexion réussi et validé !");
     }
   }
   return (
@@ -101,8 +102,9 @@ function Login() {
               required
               className="btn btn-primary col-4 my-4 mx-auto"
               value="Se connecter"
-              onClick={() => {
+              onClick={(event) => {
                 test();
+                event.preventDefault();
               }}
             />
           </div>

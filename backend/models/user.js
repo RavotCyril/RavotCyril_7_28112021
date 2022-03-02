@@ -30,10 +30,9 @@ exports.Role = Role;
 const User = sequelize.define('user', {
 	user_id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
 	firstname: { type: Sequelize.STRING(255), required: true },
-	email: { type: Sequelize.STRING(255), required: true, unique: true },
-	password: { type: Sequelize.STRING(255), required: true},
+	email: { type: Sequelize.STRING(255), required: true, validate: { isEmail: true }, },
+	password: { type: Sequelize.STRING(255), required: true,validate: {is: /^(?=.{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/i}},
 	role_id: { type: Sequelize.INTEGER, required: true },
 }, { tableName: 'user', timestamps: false, underscored: true });
-
 exports.User = User;
 User.belongsTo(Role); //l'utilisateur à un rôle.

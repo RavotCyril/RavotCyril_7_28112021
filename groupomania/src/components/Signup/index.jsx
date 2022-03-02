@@ -27,18 +27,31 @@ function Signup() {
    + Appel Post Api et transmission des proprietés enregistrés 
    -> firstName, email, password et le role_id ( Admin ou utilisateur )*/
 
-  function testSignup() {
+  function testSignup(event) {
+    console.log("EventAxios");
+    event.preventDefault();
     let role_id = 1;
-
-    axios
-      .post("http://localhost:3000/api/auth/signup", {
+    if (firstName && email && password) {
+      const User = {
         firstName,
         email,
         password,
         role_id,
-      })
-      .then((res) => ({ res }))
-      .catch((error) => ({ message: error.message }));
+      };
+      console.log("testDébutAxios");
+      axios
+        .post("http://localhost:3000/api/auth/signup", {
+          User,
+        })
+        .then((res) => console.log(res))
+        .then(() => {
+          window.location.href = "http://localhost:3000/api/auth/login";
+        });
+      console.log(
+        "Formulaire d'inscription invalide ! Veuillez compléter correctement les champs."
+      );
+    }
+    console.log("testFinAxios");
   }
   /* Function d'erreur du mot de passe  */
 
@@ -64,7 +77,6 @@ function Signup() {
 
     myInputPassword.onkeyup = function () {
       // Validate qu'il y aurait au moins une majuscule dans le mot de passe.
-
       var lowerCaseLetters = /[a-z]/g;
       if (myInputPassword.value.match(lowerCaseLetters)) {
         letter.classList.remove("invalid");
