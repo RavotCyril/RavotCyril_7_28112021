@@ -1,8 +1,8 @@
 /* Importations des bibliothèques react + Yarn 
 -> Si besoin styled-components  + react-router-dom  */
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 /* Crud pour Créer, Modifier ou Supprimer un Article  */
 
 function Articles() {
@@ -121,4 +121,4 @@ function Articles() {
     </main>
   );
 }
-export default Articles();
+export default Articles;
