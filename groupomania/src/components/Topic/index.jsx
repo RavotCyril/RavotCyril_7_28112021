@@ -1,46 +1,65 @@
 /* Importations des bibliothèques react + Yarn 
 -> Si besoin styled-components  + react-router-dom  */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 /* Crud pour Créer, Modifier ou Supprimer un Article  */
 
-function Articles(props) {
+function Articles() {
   /* Permet de déstructurer l'article ( article.Sujet article.Texte article.date ... ) 
    avec les {} autour d'article */
-
-  const { article } = props;
-  const [data, setData] = useState([]);
   const [sujet, setSujet] = useState("");
   const [texte, setTexte] = useState("");
   const [image, setImage] = useState("");
-  const [error, setError] = useState(false);
-  let article_id = "Formidable1";
+  // const [error, setError] = useState(false);
 
   /* Fonction useEffect permet de faire une seule requête de l'API. ( Et ne pas l'appeler à l'infinis)
   Avec le callback , [] en fin de fonction */
-  useEffect(() => {
-    getData();
-  }, []);
+  /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
+  function handleChangeSujet(e) {
+    setSujet(e.target.value);
+  }
 
-  const getData = () => {
-    axios
-      .get("http://localhost:3000/articles/")
-      .then((res) => setData(res.data));
-  };
+  /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  function handleChangeTexte(e) {
+    setTexte(e.target.value);
+  }
+  /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
 
-    if (texte.length < 140) {
-      setError(true);
-    } else {
-      axios.post("http://localhost:3000/articles/", {
+  function handleChangeImage(e) {
+    setImage(e.target.value);
+  }
+  const handleSubmit = (event) => {
+    if (sujet && texte && image) {
+      const article = {
         sujet,
         texte,
         date: Date.now(),
         image,
-      });
+      };
+      axios
+        .post("http://localhost:3000/articles/", {
+          article,
+        })
+        .then((res) => {
+          window.location.href = "http://localhost:3000/articles/";
+        })
+        .catch((err) => {
+          if (err.code === 400) {
+          } else if (err.code === 500) {
+          }
+        });
+      // enregistrer le token.
+      axios
+        .get("http://localhost:3000/articles/", {
+          article,
+        })
+        .catch((err) => {
+          if (err.code === 400) {
+          } else if (err.code === 500) {
+          }
+        });
     }
   };
   return (
@@ -56,57 +75,44 @@ function Articles(props) {
           </li>
         </ul>
       </nav>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form>
         <div className="row">
-          <h1>Nouveau sujet</h1>
+          <input
+            onClick={() => {
+              handleSubmit();
+              window.confirm("Confirmer pour modifier cette article?");
+            }}
+          >
+            Nouveau sujet
+          </input>
           <div className="sujet">
-            <ul>
-              {/* Date */}
-              {data
-                .sort((a, b) => b.date - a.date)
-                .map((article) => (
-                  <article key={article.id} article={article} />
-                ))}
-            </ul>
-            {data.map((article) => (
-              <props article={article} key={article_id} />
-            ))}
-            {setData}
+            <ul></ul>
             <div>
               <p>
-                {article.sujet}{" "}
                 <input
                   type="text"
                   placeholder="Sujet"
                   value={sujet}
-                  onChange={(e) => setSujet(e.target.value)}
+                  onChange={handleChangeSujet}
                 >
                   Sujet
                 </input>
               </p>
               <p>
-                {article.texte}
                 <textarea
-                  style={{
-                    border: error ? "1px solid red" : "1px solid #61dafb",
-                  }}
-                  onChange={(e) => setTexte(e.target.value)}
+                  // style={{
+                  //   border: error ? "1px solid red" : "1px solid #61dafb",
+                  // }}
+                  onChange={handleChangeTexte}
                   placeholder="texte"
                   value={texte}
                 >
-                  value
+                  Texte
                 </textarea>
               </p>
+              <p></p>
               <p>
-                <date>{article.date}</date>
-              </p>
-              <p>
-                {article.image}
-                <img
-                  src={article.image}
-                  alt="Photos des articles"
-                  onChange={(event) => setImage(event.target.value)}
-                />
+                <img alt="Photos des articles" onChange={handleChangeImage} />
               </p>
             </div>
           </div>
@@ -115,5 +121,4 @@ function Articles(props) {
     </main>
   );
 }
-
 export default Articles();

@@ -51,7 +51,7 @@ function Signup() {
         })
         .then((res) => {
           // enregistrer le token.
-          window.location.href = "http://localhost:3000/api/auth/login";
+          window.location.href = "http://localhost:3000/articles/";
         })
         .catch((err) => {
           if (err.code === 400) {

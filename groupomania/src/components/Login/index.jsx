@@ -6,7 +6,8 @@ import axios from "axios";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
-function Login() {
+function Login(event) {
+  // event.preventDefault();
   const [email, setemailData] = useState("");
   const [password, setpasswordData] = useState("");
   const [token] = useState("");
@@ -16,9 +17,12 @@ function Login() {
   }
   function handleChangeEmail(e) {
     setemailData(e.target.value);
-    console.log(setemailData);
   }
-  function test() {
+  function testLogin() {
+    console.log("DebutTestLogin");
+    console.log(email);
+    console.log(password);
+
     if (password && email) {
       let User = {
         email,
@@ -31,38 +35,30 @@ function Login() {
       let bodyParameters = {
         key: "value",
       };
-
+      console.log(email);
+      console.log(password);
       axios
         .post("http://localhost:3000/api/auth/login", {
-          body: JSON.stringify({ User }),
+          User,
           bodyParameters,
           config,
         })
-        .then((response) => response.json())
-        .then((value) => {
-          localStorage.setItem("loginConfirmation", value.User);
-          window.location.href = "http://localhost:3000/articles/";
+        .then((res) => {
+          // enregistrer le token.
+          // window.location.href = "http://localhost:3000/articles/";
         })
-        .catch(function (error) {
-          if (error.response) {
-            /* La demande a été faite et le serveur a répondu avec une erreur code d'état */
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // La demande a été faite mais aucune réponse n'a été reçue
-            /* `error.request` est une instance de XMLHttpRequest dans le navigateur et une instance de 
-            http.ClientRequest in node.js */
-            console.log(error.request);
-          } else {
-            // Quelque chose s'est produit lors de la configuration de la requête qui a déclenché une erreur
-            console.log("Error", error.message);
-            alert("Connexion refusé email ou mot de passe invalide !");
+        .catch((err) => {
+          if (err.code === 400) {
+          } else if (err.code === 500) {
           }
-          console.log(error.config);
         });
-      alert("Connexion réussi et validé !");
+
+      console.log(
+        "Formulaire de connexion invalide ! Veuillez compléter correctement les champs."
+      );
     }
+    console.log("testFinAxios");
+    console.log("FinTestLogin");
   }
   return (
     <main>
@@ -102,9 +98,8 @@ function Login() {
               required
               className="btn btn-primary col-4 my-4 mx-auto"
               value="Se connecter"
-              onClick={(event) => {
-                test();
-                event.preventDefault();
+              onClick={() => {
+                testLogin();
               }}
             />
           </div>
