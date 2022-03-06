@@ -20,8 +20,6 @@ function Login(event) {
   }
   function testLogin() {
     console.log("DebutTestLogin");
-    console.log(email);
-    console.log(password);
 
     if (password && email) {
       let User = {
@@ -43,21 +41,20 @@ function Login(event) {
           bodyParameters,
           config,
         })
-        .then((res) => {
+        .then((response) => {
+          console.log(response);
           // enregistrer le token.
-          // window.location.href = "http://localhost:3000/articles/";
+          window.location.href = "http://localhost:3000/articles/";
         })
         .catch((err) => {
           if (err.code === 400) {
           } else if (err.code === 500) {
           }
         });
-
       console.log(
         "Formulaire de connexion invalide ! Veuillez compléter correctement les champs."
       );
     }
-    console.log("testFinAxios");
     console.log("FinTestLogin");
   }
   return (

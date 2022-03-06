@@ -2,11 +2,20 @@
 -> Si besoin styled-components  + react-router-dom  */
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useForm } from "react-hook-form";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
+import { Form, Button } from "semantic-ui-css/semantic.min.css";
 
 function Signup() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  };
   const [firstName, setfirstNameData] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPasswordData] = useState("");
@@ -27,9 +36,8 @@ function Signup() {
    + Appel Post Api et transmission des proprietés enregistrés 
    -> firstName, email, password et le role_id ( Admin ou utilisateur )*/
 
-  function testSignup(event) {
+  function testSignup() {
     console.log("EventAxios");
-    //event.preventDefault();
     let role_id = 1;
     console.log(firstName);
 
@@ -49,21 +57,21 @@ function Signup() {
         .post("http://localhost:3000/api/auth/signup", {
           User,
         })
-        .then((res) => {
+        .then((response) => {
+          console.log(response);
           // enregistrer le token.
           window.location.href = "http://localhost:3000/articles/";
         })
         .catch((err) => {
           if (err.code === 400) {
+            console.log(
+              "Formulaire d'inscription invalide ! Veuillez compléter correctement les champs."
+            );
           } else if (err.code === 500) {
+            console.log("Veuillez lancer le serveur");
           }
         });
-
-      console.log(
-        "Formulaire d'inscription invalide ! Veuillez compléter correctement les champs."
-      );
     }
-    console.log("testFinAxios");
   }
   /* Function d'erreur du mot de passe  */
 
@@ -135,7 +143,7 @@ function Signup() {
   // Permet de détecter si l'email est un émail valide 
   Avec forcément un  @  et un . + 2 lettre après fr ou com ou autre ..  */
 
-  const emailRegex = /[a-z0-9]+@[\w-]+\.[a-z]{2,4}$/i;
+  const emailRegex = /[a-z]+[0-9]g@[\w-]+\.[a-z]{2,4}$/i;
 
   const handleChangeEmail = (event) => {
     setEmail(event.target.value);
@@ -150,57 +158,73 @@ function Signup() {
 
   return (
     <main>
-      <form className="container-fluid" required>
+      <form className="container-fluid" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="form-group H1Signup col-12 mx-auto">
           Veuillez remplir ce formulaire pour vous enregistrer sur le forum !
         </h1>
         <div className="row">
-          <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="firstName">Prénom</label>
-            <input
-              name="firstName"
-              type="text"
-              required
-              className="form-control"
-              id="firstName"
-              aria-describedby="Tapper votre Prénom"
-              onChange={handleChangeFirstName}
-            />
-          </div>
-          <div className="form-group col-8 my-4 mx-auto relative">
-            <label htmlFor="Email">Email</label>
-            <input
-              title="Merci d'indiquer un émail valide"
-              name="Email"
-              type="email"
-              required
-              className="form-control Email"
-              aria-describedby="Tapper votre Email"
-              onChange={handleChangeEmail}
-            />
-            <div className="col-12 d-flex text-center">
-              <div className={`message ${isValid ? "valid" : "invalid"}`}>
-                <br></br> <br></br>
-                {message}
+          <Form.Field>
+            <div className="form-group col-8 my-4 mx-auto">
+              <label htmlFor="FirstName">Prénom</label>
+              <input
+                {...register("firstName", {
+                  required: true,
+                  maxLength: 10,
+                  pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
+                })}
+                type="text"
+                className="form-control"
+                id="firstName"
+                aria-describedby="Tapper votre Prénom"
+                onChange={handleChangeFirstName}
+              />
+            </div>
+          </Form.Field>
+          {errors.FirstName && <p>Please check the First Name</p>}
+          <Form.Field>
+            <div className="form-group col-8 my-4 mx-auto relative">
+              <label htmlFor="Email">Email</label>
+              <input
+                title="Merci d'indiquer un émail valide"
+                {...register("email", {
+                  required: true,
+                  // pattern: /[a-z]+[0-9]g@[\w-]+\.[a-z]{2,4}$/i,
+                })}
+                type="email"
+                className="form-control Email"
+                aria-describedby="Tapper votre Email"
+                onChange={handleChangeEmail}
+              />
+              <div className="col-12 d-flex text-center">
+                <div className={`message ${isValid ? "valid" : "invalid"}`}>
+                  <br></br> <br></br>
+                  {message}
+                </div>
               </div>
             </div>
+          </Form.Field>
+        </div>
+        {errors.Email && <p>Please check the email</p>}
+        <Form.Field>
+          <div className="form-group col-8 my-4 mx-auto">
+            <label htmlFor="Password">Mot de passe</label>
+            <input
+              {...register("password", {
+                required: true,
+                // pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
+              })}
+              id="Password"
+              type="password"
+              className="form-control password"
+              aria-describedby="Tapper votre mot de passe"
+              onChange={handleChangePassword}
+              onClick={() => {
+                ErrorPassword();
+              }}
+            />
           </div>
-        </div>
-        <div className="form-group col-8 my-4 mx-auto">
-          <label htmlFor="Password">Mot de passe</label>
-          <input
-            name="Password"
-            id="Password"
-            type="password"
-            required
-            className="form-control password"
-            aria-describedby="Tapper votre mot de passe"
-            onChange={handleChangePassword}
-            onClick={() => {
-              ErrorPassword();
-            }}
-          />
-        </div>
+        </Form.Field>
+        {errors.Password && <p>Please check the pawword</p>}
         <h3 className="form-group col-10 mx-auto text-center">
           Le mot de passe doit contenir les éléments suivants :
         </h3>
@@ -219,16 +243,16 @@ function Signup() {
           </div>
         </div>
         <div className="col-12">
-          <input
-            type="button"
-            name="submit"
-            onClick={() => {
+          <Button>
+            type="submit" name="submit" onClick=
+            {(event) => {
               testSignup();
+              event.preventDefault();
             }}
             className="form-control btn btn-primary col-4 my-4 mx-auto"
-            value="S`enregistrer"
-            aria-describedby="Bouton de validation pour s'enregistrer"
-          />
+            value="S`enregistrer" aria-describedby="Bouton de validation pour
+            s'enregistrer"
+          </Button>
         </div>
       </form>
     </main>
