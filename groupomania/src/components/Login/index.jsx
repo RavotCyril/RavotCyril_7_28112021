@@ -29,7 +29,7 @@ function Login(event) {
       let config = {
         headers: { Authorization: "bearer " + token },
       };
-
+      console.log(token);
       let bodyParameters = {
         key: "value",
       };
@@ -41,8 +41,8 @@ function Login(event) {
           bodyParameters,
           config,
         })
-        .then((response) => {
-          console.log(response);
+        .then((User, Token) => {
+          console.log(User, Token);
           // enregistrer le token.
           window.location.href = "http://localhost:3000/articles/";
         })
@@ -70,6 +70,7 @@ function Login(event) {
             <input
               name="Email"
               type="email"
+              autoComplete="email"
               className="form-control"
               id="Email"
               aria-describedby="emailHelp"
@@ -80,6 +81,7 @@ function Login(event) {
           <div className="form-group col-8 my-4 mx-auto">
             <label htmlFor="Password">Mot de passe</label>
             <input
+              autoComplete="current-password"
               name="Password"
               type="password"
               className="form-control"
@@ -90,7 +92,7 @@ function Login(event) {
           </div>
           <div className="row">
             <input
-              type="submit"
+              type="button"
               name="submit"
               required
               className="btn btn-primary col-4 my-4 mx-auto"
