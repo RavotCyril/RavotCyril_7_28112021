@@ -1,6 +1,7 @@
 /* Importations des bibliothèques react + Yarn 
 -> Si besoin styled-components  + react-router-dom  */
 import React, { useState } from "react";
+import PasswordChecklist from "react-password-checklist";
 import axios from "axios";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
@@ -28,8 +29,6 @@ function Signup() {
 
   function testSignup(event) {
     let role_id = 1;
-    // Hachage du mot de passe
-
     // Vérifier le mot de passe
     if (firstName && email && password) {
       const User = {
@@ -55,6 +54,7 @@ function Signup() {
         })
         .catch((err) => {
           if (err.code === 400) {
+            message("Problème de syntaxe");
           } else if (err.code === 500) {
           }
         });
@@ -64,73 +64,7 @@ function Signup() {
     }
     console.log("testFinAxios");
   }
-  /* Function d'erreur du mot de passe  */
 
-  async function ErrorPassword() {
-    var myInputPassword = document.getElementById("Password");
-    var messagePassword = document.getElementById("messagePassword");
-    var letter = document.getElementById("letter");
-    var capital = document.getElementById("capital");
-    var number = document.getElementById("number");
-    var length = document.getElementById("length");
-
-    // Lorsque l'utilisateur clique en dehors du champ du mot de passe, masquez le message d'erreur
-
-    myInputPassword.onfocus = function () {
-      messagePassword.style.display = "block";
-    };
-
-    // Lorsque l'utilisateur clique en dehors du champ du mot de passe, masque la boîte de message
-
-    myInputPassword.onblur = function () {
-      messagePassword.style.display = "none";
-    };
-    // Lorsque l'utilisateur commence à taper quelque chose dans le champ du mot de passe
-
-    myInputPassword.onkeyup = function () {
-      // Valide qu'il y a au moins une majuscule dans le mot de passe.
-      var lowerCaseLetters = /[a-z]/g;
-      if (myInputPassword.value.match(lowerCaseLetters)) {
-        letter.classList.remove("invalid");
-        letter.classList.add("valid");
-      } else {
-        letter.classList.remove("valid");
-        letter.classList.add("invalid");
-      }
-
-      // Valide qu'il y ait une lettre capital dans le mot de passe.
-
-      var upperCaseLetters = /[A-Z]/g;
-      if (myInputPassword.value.match(upperCaseLetters)) {
-        capital.classList.remove("invalid");
-        capital.classList.add("valid");
-      } else {
-        capital.classList.remove("valid");
-        capital.classList.add("invalid");
-      }
-
-      // Valide le fait qu'il y ait au moins 2 chiffres dans le mot de passe.
-
-      var numbers = /[0-9]/g;
-      if (myInputPassword.value.match(numbers)) {
-        number.classList.remove("invalid");
-        number.classList.add("valid");
-      } else {
-        number.classList.remove("valid");
-        number.classList.add("invalid");
-      }
-
-      // valide  la longeur du mot de passe.
-
-      if (myInputPassword.value.length >= 8) {
-        length.classList.remove("invalid");
-        length.classList.add("valid");
-      } else {
-        length.classList.remove("valid");
-        length.classList.add("invalid");
-      }
-    };
-  }
   /* L'expression régulière pour valider le modèle d'email
   // Permet de détecter si l'email est un émail valide 
   Avec forcément un  @  et un . + 2 lettre après fr ou com ou autre ..  */
@@ -199,27 +133,20 @@ function Signup() {
             className="form-control password"
             aria-describedby="Tapper votre mot de passe"
             onChange={handleChangePassword}
-            onClick={() => {
-              ErrorPassword();
+          />
+          <PasswordChecklist
+            rules={["minLength", "maxLength", "capital", "lowercase", "number"]}
+            minLength={8}
+            value={password}
+            // valueAgain={passwordAgain}
+            messages={{
+              minLength: "Le mot de passe doit contenir au moins 8 caractères",
+              maxLength: "Le mot de passe peut contenir maximum 100 caractères",
+              capital: "Le mot de passe doit avoir au moins 1 lettre majuscule",
+              lowercase: "Le mot de passe contient une lettre minuscule",
+              number: "Le mot de passe doit avoir au moins 2 chiffres",
             }}
           />
-        </div>
-        <h3 className="form-group col-10 mx-auto text-center">
-          Le mot de passe doit contenir les éléments suivants :
-        </h3>
-        <div className="col-12 text-center d-flex" id="messagePassword">
-          <div id="letter" className="col-3 invalid">
-            Une Lettre Minuscule
-          </div>
-          <div id="capital" className="col-3 invalid">
-            Une Lettre Majuscule
-          </div>
-          <div id="number" className="col-3 invalid">
-            Un Numéro
-          </div>
-          <div id="length" className="col-3 invalid">
-            Au Minimum 8 Caractéres
-          </div>
         </div>
         <div className="col-12">
           <input

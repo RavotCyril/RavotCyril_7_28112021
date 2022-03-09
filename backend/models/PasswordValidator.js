@@ -1,5 +1,5 @@
 /* Importe le package password-validator de npm */
-const passwordValidator = require('password-validator');
+const passwordValidator = require('Password-Validator');
 
 // Créer le schéma du password-validator
 const passwordSchema = new passwordValidator();

@@ -6,8 +6,10 @@ module.exports = (req, res, next) => {
 
     if (!passwordSchema.validate(req.body.password)) {
         res.status(400).json({
-            message: "Le mot de passe doit contenir au moins 8 caractères.Une majuscule, Une miniscule, 2 chiffres et pas d'espace"
+            message: "Le mot de passe doit contenir au moins 8 caractères.Une majuscule, Une miniscule, 2 chiffres et pas d'espace",
         });
+        console.log(passwordSchema.validate('joke', { details: true }));
+
     } else {
         next(); /*  Si ok, passe au prochain middleware */
     }

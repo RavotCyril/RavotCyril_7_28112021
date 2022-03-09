@@ -30,15 +30,11 @@ function Login(event) {
         headers: { Authorization: "bearer " + token },
       };
       console.log(token);
-      let bodyParameters = {
-        key: "value",
-      };
       console.log(email);
       console.log(password);
       axios
         .post("http://localhost:3000/api/auth/login", {
           User,
-          bodyParameters,
           config,
         })
         .then((User, Token) => {
