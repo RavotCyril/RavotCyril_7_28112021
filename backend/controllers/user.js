@@ -21,9 +21,9 @@ exports.signup = (req, res, next) => {
                 role_id: req.body.role_id
             }).then((User) => res.status(201).json({User, message: 'Utilisateur créé !' }))
                 .catch(error => 
-                    res.status(400).json({ error, message: "Cette utilisateur existe déjà le mail est déjà utilisé" }));
+                    res.status(400).json({error, message: "Cette utilisateur existe déjà le mail est déjà utilisé" }));
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({error,message: "Serveur non connecté" }));
     console.log("Fin Inscription")
 
 };
@@ -43,7 +43,7 @@ exports.login = (req, res, next) => {
                         res.status(403).json({ error: 'Mot de passe incorrect !' });
                     }
                     res.status(200).json({
-                        message: 'Utlisateur trouvé et mot de passe validé connexion réussi et Token D\'authentification généré par la base de donnée!', 
+                        message: 'Utilisateur trouvé et mot de passe validé connexion réussi et Token D\'authentification généré par la base de donnée!', 
                         /*  Id généré par la base de données */
                         token: jwt.sign({ userId: User.user_id, }, /* Token d'authentification */
                             process.env.DB_TOKEN, { expiresIn: '7 days' }, /* Temps de validité du Token */

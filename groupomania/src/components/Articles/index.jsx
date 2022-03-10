@@ -1,8 +1,10 @@
-/* Importations des bibliothèques react + Yarn 
--> Si besoin styled-components  + react-router-dom  */
+/* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+// /* Importations des pages de styles + images */
+import "../../Styles/App.css";
+
 /* Crud pour Créer, Modifier ou Supprimer un Article  */
 
 function Articles() {

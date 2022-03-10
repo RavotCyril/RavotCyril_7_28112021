@@ -1,5 +1,9 @@
+/* Importations des bibliothèques react + axios +  */
 import React from "react";
 import axios from "axios";
+
+// /* Importations des pages de styles + images */
+import "../../../Styles/App.css";
 
 const DeleteUpdateArticle = () => {
   const handleDelete = () => {

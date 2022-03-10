@@ -1,12 +1,12 @@
-/* Importations des bibliothèques react + Yarn 
--> Si besoin styled-components  + react-router-dom  */
+/* Importations des bibliothèques react
+-> React, useState + axios (Api post-get..) */
 import React, { useState } from "react";
 import axios from "axios";
 
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
-function Login(event) {
+function Login() {
   // event.preventDefault();
   const [email, setemailData] = useState("");
   const [password, setpasswordData] = useState("");
@@ -22,25 +22,20 @@ function Login(event) {
     console.log("DebutTestLogin");
 
     if (password && email) {
-      let User = {
-        email,
-        password,
-      };
       let config = {
         headers: { Authorization: "bearer " + token },
       };
-      console.log(token);
-      console.log(email);
-      console.log(password);
       axios
         .post("http://localhost:3000/api/auth/login", {
-          User,
+          password,
+          email,
           config,
         })
-        .then((User, Token) => {
-          console.log(User, Token);
-          // enregistrer le token.
-          window.location.href = "http://localhost:3000/articles/";
+        .then((User) => {
+          console.log(User);
+
+          /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
+          window.location.href = "http://localhost:3001/MyForums";
         })
         .catch((err) => {
           if (err.code === 400) {

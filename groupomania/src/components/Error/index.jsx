@@ -1,5 +1,4 @@
-/* Importations Bibliothèques React - Yarn  - Image Page Error ... 
--> Si besoin  Styled-Components  */
+/* Importations Bibliothèques React - Image Page Error ...   */
 import React from "react";
 import ImageError from "../../assets/404.svg";
 

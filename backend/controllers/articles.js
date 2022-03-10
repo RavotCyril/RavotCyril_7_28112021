@@ -69,7 +69,7 @@ exports.deleteModelsArticle = (req, res, next) => {
             const filename = Models.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
                 Models.destroy({ article_id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'article supprimée !' }))
+                    .then(() => res.status(200).json({ message: 'article supprimé !' }))
                     .catch(error => res.status(400).json({ error }));
             });
         })

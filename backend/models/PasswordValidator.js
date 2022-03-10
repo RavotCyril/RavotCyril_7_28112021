@@ -14,7 +14,7 @@ passwordSchema
     .has().digits(2) // Il doit y avoir au moins 2 chiffres
     .has().not().spaces() // Il ne doit pas y avoir d'espace
     .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist les valeurs suivantes " Passw0ord Password123"
-
+    console.log("TestpasswordSchema")
 // Exporter le schéma 
 
 module.exports = passwordSchema;

@@ -1,5 +1,4 @@
-/* Importations Bibliothèques React-router - Yarn - ...  
--> Styled-Components  */
+/* Importations Bibliothèques React-router-dom  */
 
 import React from "react";
 import { NavLink } from "react-router-dom";

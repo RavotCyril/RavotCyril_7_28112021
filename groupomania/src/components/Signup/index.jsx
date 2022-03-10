@@ -1,5 +1,6 @@
 /* Importations des bibliothèques react + Yarn 
--> Si besoin styled-components  + react-router-dom  */
+-> React, useState , PasswordChecklist + axios (Api post-get..) */
+
 import React, { useState } from "react";
 import PasswordChecklist from "react-password-checklist";
 import axios from "axios";
@@ -25,36 +26,28 @@ function Signup() {
   }
   /* Fonction de l'input et du submit de tentative d'enregistrement 
    + Appel Post Api et transmission des proprietés enregistrés 
-   -> firstName, email, password et le role_id ( Admin ou utilisateur )*/
+   -> firstName, email, password et le role_id (2: utilisateur )
+   le role_id ( 1: administrateur ) est prit par moi même */
 
-  function testSignup(event) {
-    let role_id = 1;
-    // Vérifier le mot de passe
+  function testSignup() {
+    /* Vérifier le mot de passe et si les valeurs firstName, email, password sont complétés et donc valide.
+     La sécurité + la vérification des inputs du mot de passe et de l'émail sur le front
+    permet d'être sur que les données sont valides au préalable  */
     if (firstName && email && password) {
-      const User = {
-        firstName,
-        email,
-        password,
-        role_id,
-      };
-      console.log("testDébutAxios");
-      console.log(firstName);
-      console.log(email);
-      console.log(password);
-      console.log(role_id);
-
       axios
         .post("http://localhost:3000/api/auth/signup", {
-          User,
+          firstName,
+          email,
+          password,
+          role_id: 2,
         })
+        // enregistrer le hash et permet de sécuriser le mot de passe et de le remplacer ( Crypté ).
         .then((User) => {
           console.log(User);
-          // enregistrer le token.
-          window.location.href = "http://localhost:3000/api/auth/login";
+          window.location.href = "http://localhost:3001/login";
         })
         .catch((err) => {
           if (err.code === 400) {
-            message("Problème de syntaxe");
           } else if (err.code === 500) {
           }
         });
