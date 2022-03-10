@@ -10,7 +10,7 @@ const DeleteUpdateArticle = () => {
     axios.delete("http://localhost:3000/articles/:id");
   };
   const handleUpdate = () => {
-    axios.delete("http://localhost:3000/articles/:id");
+    axios.put("http://localhost:3000/articles/:id");
   };
   return (
     <div>

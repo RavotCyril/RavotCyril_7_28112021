@@ -8,15 +8,11 @@ import "../../Styles/App.css";
 /* Crud pour Créer, Modifier ou Supprimer un Article  */
 
 function Articles() {
-  /* Permet de déstructurer l'article ( article.Sujet article.Texte article.date ... ) 
-   avec les {} autour d'article */
   const [sujet, setSujet] = useState("");
   const [texte, setTexte] = useState("");
   const [image, setImage] = useState("");
   // const [error, setError] = useState(false);
 
-  /* Fonction useEffect permet de faire une seule requête de l'API. ( Et ne pas l'appeler à l'infinis)
-  Avec le callback , [] en fin de fonction */
   /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
   function handleChangeSujet(e) {
     setSujet(e.target.value);
@@ -34,28 +30,16 @@ function Articles() {
   }
   const handleSubmit = (event) => {
     if (sujet && texte && image) {
-      const article = {
-        sujet,
-        texte,
-        date: Date.now(),
-        image,
-      };
       axios
         .post("http://localhost:3000/articles/", {
-          article,
+          sujet,
+          texte,
+          date: Date.now(),
+          image,
         })
         .then((res) => {
-          window.location.href = "http://localhost:3000/articles/";
-        })
-        .catch((err) => {
-          if (err.code === 400) {
-          } else if (err.code === 500) {
-          }
-        });
-      // enregistrer le token.
-      axios
-        .get("http://localhost:3000/articles/", {
-          article,
+          console.log(res);
+          window.location.href = "http://localhost:3000/NewTopic";
         })
         .catch((err) => {
           if (err.code === 400) {
@@ -63,6 +47,23 @@ function Articles() {
           }
         });
     }
+    // enregistrer le token.
+    axios
+      .get("http://localhost:3000/articles/", {
+        sujet,
+        texte,
+        date: Date.now(),
+        image,
+      })
+      .then((res) => {
+        console.log(res);
+        window.location.href = "http://localhost:3000/Myforums";
+      })
+      .catch((err) => {
+        if (err.code === 400) {
+        } else if (err.code === 500) {
+        }
+      });
   };
   return (
     <main>
