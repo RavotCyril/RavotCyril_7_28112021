@@ -26,4 +26,4 @@ const Commentaire = sequelize.define('commentaire', {
 }, { tableName: 'commentaire', timestamps: false, underscored: true });
 
 exports.Commentaire = Commentaire;
-sequelize.sync({force:true});
+// sequelize.sync({force:true});

@@ -36,4 +36,4 @@ const User = sequelize.define('user', {
 exports.User = User;
 User.hasOne(Role,{foreignKey: 'roleId', foreignKeyConstraint:true});
 //l'utilisateur à un rôle.
-sequelize.sync({force:true});
+// sequelize.sync({force:true});

@@ -47,4 +47,4 @@ const Vote = sequelize.define('vote', {
 
 exports.Vote = Vote;
 // Article.belongsTo(Vote); //l'utilisateur à un rôle.
-sequelize.sync({force:true});
+// sequelize.sync({force:true});
