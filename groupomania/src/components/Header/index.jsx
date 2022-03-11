@@ -2,8 +2,6 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
-import { Offline, Online } from "react-detect-offline";
 
 // /* Importations des pages de styles + logo + images */
 
@@ -11,10 +9,6 @@ import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
-  let firstName;
-  axios.get("http://localhost:3000/api/auth/login", {
-    firstName,
-  });
   return (
     <header>
       <div className="container-fluid Menu m-0">
@@ -56,12 +50,10 @@ function Header() {
                 </li>
                 <li className="nav-item">
                   <NavLink to="/Login" className="navbar-brand">
-                    <Online>Connexion</Online>
-                    <div>
-                      <Offline>
-                        <p>Bienvenue {firstName}</p>
-                      </Offline>
-                    </div>
+                    Connexion
+                  </NavLink>
+                  <NavLink to="/Login" className="navbar-brand">
+                    Se deconnecter
                   </NavLink>
                 </li>
               </ul>

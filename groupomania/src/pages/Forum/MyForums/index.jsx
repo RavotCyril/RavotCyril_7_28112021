@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import Article from "../../../components/Articles";
 
 function MyForums() {
+  // let authentification = JSON.parse(localStorage.getItem("authentification"));
   return (
     <main>
       <h1>Bienvenue sur le forum</h1>

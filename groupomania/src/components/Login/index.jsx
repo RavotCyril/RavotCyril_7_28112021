@@ -20,7 +20,6 @@ function Login() {
   }
   function testLogin() {
     console.log("DebutTestLogin");
-
     if (password && email) {
       let config = {
         headers: { Authorization: "bearer " + token },
@@ -33,9 +32,10 @@ function Login() {
         })
         .then((User) => {
           console.log(User);
-
           /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
           window.location.href = "http://localhost:3001/MyForums";
+          /* Permet de stocker l'identification ( User + Token ) */
+          localStorage.setItem("authentification", JSON.stringify(User));
         })
         .catch((err) => {
           if (err.code === 400) {

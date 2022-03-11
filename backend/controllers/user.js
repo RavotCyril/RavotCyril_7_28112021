@@ -18,10 +18,10 @@ exports.signup = (req, res, next) => {
                 firstname: req.body.firstName,
                 email: req.body.email,
                 password: hash,
-                role_id: req.body.role_id
+                roleid: req.body.role_id
             }).then((User) => res.status(201).json({User, message: 'Utilisateur créé !' }))
                 .catch(error => 
-                    res.status(400).json({error, message: "Cette utilisateur existe déjà le mail est déjà utilisé" }));
+                    res.status(400).json({message: "Cette utilisateur existe déjà le mail est déjà utilisé" }));
         })
         .catch(error => res.status(500).json({error,message: "Serveur non connecté" }));
     console.log("Fin Inscription")
