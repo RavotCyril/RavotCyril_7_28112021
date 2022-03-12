@@ -44,7 +44,7 @@ function Signup() {
         // enregistrer le hash et permet de sécuriser le mot de passe et de le remplacer ( Crypté ).
         .then((User) => {
           console.log(User);
-          window.location.href = "http://localhost:3001/login";
+          // window.location.href = "http://localhost:3001/login";
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -57,11 +57,11 @@ function Signup() {
     console.log("testFinAxios");
   }
 
-  /* L'expression régulière pour valider le modèle d'email
-  // Permet de détecter si l'email est un émail valide 
+  /* L'expression régulière pour valider l'email
+  // Permet de détecter si l'email est un émail valide au focus, onblur, onChange
   Avec forcément un  @  et un . + 2 lettre après fr ou com ou autre ..  */
-
   const emailRegex = /[\w-]+@[\w-]+\.[a-z]{1,4}$/i;
+
   const handleChangeEmail = (event) => {
     setEmail(event.target.value);
     if (emailRegex.test(email)) {
@@ -105,6 +105,8 @@ function Signup() {
               className="form-control Email"
               aria-describedby="Tapper votre Email"
               onChange={handleChangeEmail}
+              onBlur={handleChangeEmail}
+              onFocus={handleChangeEmail}
             />
             <div className="col-12 d-flex text-center">
               <div className={`message ${isValid ? "valid" : "invalid"}`}>
