@@ -38,13 +38,12 @@ function Login() {
           localStorage.setItem("authentification", JSON.stringify(User));
         })
         .catch((err) => {
-          if (err.code === 400) {
-          } else if (err.code === 500) {
+          if (err.response.status === 400) {
+            console.log("Mauvaise Adresse Email");
+          } else if (err.response.status === 500) {
+            console.log("Erreur serveur");
           }
         });
-      console.log(
-        "Formulaire de connexion invalide ! Veuillez compléter correctement les champs."
-      );
     }
     console.log("FinTestLogin");
   }

@@ -39,18 +39,18 @@ function Signup() {
           firstName,
           email,
           password,
-          role_id: 2,
+          roleId: 2,
         })
         // enregistrer le hash et permet de sécuriser le mot de passe et de le remplacer ( Crypté ).
         .then((User) => {
           console.log(User);
-          // window.location.href = "http://localhost:3001/login";
+          window.location.href = "http://localhost:3001/login";
         })
         .catch((err) => {
           if (err.response.status === 400) {
             console.log("l'utilisateur existe déjà");
           } else if (err.response.status === 500) {
-            console.log("erreur srv");
+            console.log("erreur serveur");
           }
         });
     }
