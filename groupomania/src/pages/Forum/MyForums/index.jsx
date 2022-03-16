@@ -12,13 +12,11 @@ function MyForums() {
   //     <p>Bonjour, {props.sujet}</p>
   //   </div>;
   // }
+  //  <div>
+  //    <Articles message="Succes Alert" />;
+  //  </div>;
   return (
-    <main>
-      {/*
-      <div>
-        <Articles message="Succes Alert" />;
-      </div>
-      */}
+    <main className="pageMyForums">
       <h1>Bienvenue sur le forum</h1>
       <div className="d-flex">
         <div className="article-list">

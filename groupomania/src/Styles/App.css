@@ -88,7 +88,16 @@ a {
   background: #132944;
   box-shadow: inset 0px 0px 10px 10px #112442;
 }
-
+.pageMyForums {
+  background: #132944;
+  box-shadow: inset 0px 0px 10px 10px #112442;
+}
+.pageMyForums a {
+  color: white;
+}
+.pageMyForums a:hover {
+  color: rgb(0, 84, 180);
+}
 @media screen and (min-width: 769px) and (max-width: 1089px) /* styles pour tablettes*/ {
   .navbar-brand {
     width: 50%;
