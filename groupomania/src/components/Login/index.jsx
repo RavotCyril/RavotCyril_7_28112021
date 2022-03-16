@@ -35,7 +35,7 @@ function Login() {
           /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
           window.location.href = "http://localhost:3001/MyForums";
           /* Permet de stocker l'identification ( User + Token ) */
-          localStorage.setItem("authentification", JSON.stringify(User));
+          localStorage.setItem("Identification", JSON.stringify(User));
         })
         .catch((err) => {
           if (err.response.status === 400) {

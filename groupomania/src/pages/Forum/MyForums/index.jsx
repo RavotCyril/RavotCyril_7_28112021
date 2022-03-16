@@ -4,14 +4,21 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 function MyForums() {
-  function Alert(props) {
-    return <h1>Bonjour, {props.message}</h1>;
-  }
+  // function Articles(user) {
+  //   return;
+  //   <div>
+  //     <p>Bonjour, {props.sujet}</p>
+  //     <p>Bonjour, {props.sujet}</p>
+  //     <p>Bonjour, {props.sujet}</p>
+  //   </div>;
+  // }
   return (
     <main>
+      {/*
       <div>
-        <Alert message="Succes Alert" />;
+        <Articles message="Succes Alert" />;
       </div>
+      */}
       <h1>Bienvenue sur le forum</h1>
       <div className="d-flex">
         <div className="article-list">

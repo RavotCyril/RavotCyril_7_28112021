@@ -4,31 +4,22 @@
 import React, { useState } from "react";
 
 function Services() {
+  const [authentification, setAuthentification] = useState("");
+
   /* Permet de stocker l'identification ( User + Token ) */
-  const user = JSON.parse(localStorage.getItem("authentification"));
-  const connexion = JSON.parse(localStorage.getItem("authentification"));
+  const user = JSON.parse(localStorage.getItem("Inscription"));
+  const connexion = JSON.parse(localStorage.getItem("Identification"));
 
   /* Route Administrateur */
-
-  if (user && connexion) {
-    axios.post("http://localhost:3000/api/auth/signup", {
-      firstName,
-      email,
-      password,
-      roleId: 2,
-    });
+  function Authentification() {
+    if (authentification === (user && connexion)) {
+      alert("Identification Réussi");
+      window.location.href = "http://localhost:3001/Articles";
+    } else if (setAuthentification === false) {
+      window.location.href = "http://localhost:3001/Home";
+      alert("Identification Refusé");
+    }
   }
-  /* Route Utilisateur */
-
-  if (user && connexion) {
-    axios.post("http://localhost:3000/api/auth/signup", {
-      firstName,
-      email,
-      password,
-      roleId: 1,
-    });
-  }
-
-  return <div></div>;
+  return <div>{Authentification()}</div>;
 }
 export default Services;

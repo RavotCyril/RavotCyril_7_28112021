@@ -12,9 +12,10 @@ import Articles from "./components/Articles";
 
 /* Importations Pages */
 
+import Services from "./Services";
+import Home from "./pages/Home";
 import MyForums from "./pages/Forum/MyForums";
 import NewTopic from "./pages/Forum/NewTopic";
-import Home from "./pages/Home";
 
 import "./Styles/App.css";
 ReactDOM.render(
@@ -23,6 +24,7 @@ ReactDOM.render(
       <Header />
       <Routes>
         <Route path="/Home" element={<Home />} />
+        <Route path="/Services" element={<Services />} />
         <Route path="/Articles" element={<Articles />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
