@@ -11,7 +11,6 @@ function Articles() {
   const [sujet, setSujet] = useState("");
   const [texte, setTexte] = useState("");
   const [image, setImage] = useState("");
-  // const [error, setError] = useState(false);
 
   /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
   function handleChangeSujet(e) {
@@ -103,12 +102,12 @@ function Articles() {
               </p>
               <p>
                 <textarea
-                  // style={{
-                  //   border: error ? "1px solid red" : "1px solid #61dafb",
-                  // }}
-                  onChange={handleChangeTexte}
+                  type="text"
                   placeholder="texte"
                   value={texte}
+                  onChange={handleChangeTexte}
+                  rows={5}
+                  cols={5}
                 >
                   Texte
                 </textarea>

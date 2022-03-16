@@ -44,7 +44,9 @@ function Signup() {
         // enregistrer le hash et permet de sécuriser le mot de passe et de le remplacer ( Crypté ).
         .then((User) => {
           console.log(User);
-          // window.location.href = "http://localhost:3001/login";
+          window.location.href = "http://localhost:3001/login";
+          /* Permet de stocker l'identification ( User ) */
+          localStorage.setItem("authentification", JSON.stringify(User));
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -66,10 +68,10 @@ function Signup() {
     setEmail(event.target.value);
     if (emailRegex.test(email)) {
       setIsValid(true);
-      setMessage("Votre émail est validé !");
+      setMessage("✔  Votre émail est validé !");
     } else {
       setIsValid(false);
-      setMessage("Veuillez saisir une adresse émail valide !");
+      setMessage("✖  Veuillez saisir une adresse émail valide !");
     }
   };
 
@@ -132,7 +134,6 @@ function Signup() {
             rules={["minLength", "maxLength", "capital", "lowercase", "number"]}
             minLength={8}
             value={password}
-            // valueAgain={passwordAgain}
             messages={{
               minLength: "Le mot de passe doit contenir au moins 8 caractères",
               maxLength: "Le mot de passe peut contenir maximum 100 caractères",

@@ -1,9 +1,9 @@
-/* Importations des bibliothèques react + Yarn 
--> styled-components  + react-router-dom  */
+/* Importations des bibliothèques react  */
 import React from "react";
-import "../../Styles/App.css";
 
-// /* Importations des pages de styles + images */
+/* Importations des pages de styles + CSS */
+
+import "../../Styles/App.css";
 
 function Home() {
   return (

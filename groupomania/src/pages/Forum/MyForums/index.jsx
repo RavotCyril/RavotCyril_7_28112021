@@ -1,18 +1,22 @@
-/* Importations des bibliothèques react + Yarn 
--> Si besoin styled-components  + react-router-dom  */
+/* Importations des bibliothèques react + NavLink + Component Articles  */
+
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Article from "../../../components/Articles";
 
 function MyForums() {
-  // let authentification = JSON.parse(localStorage.getItem("authentification"));
+  function Alert(props) {
+    return <h1>Bonjour, {props.message}</h1>;
+  }
   return (
     <main>
+      <div>
+        <Alert message="Succes Alert" />;
+      </div>
       <h1>Bienvenue sur le forum</h1>
       <div className="d-flex">
         <div className="article-list">
           <div>
-            <p>{Article}</p>
+            <p></p>
           </div>
         </div>
         <ul className="navbar-nav p-3">
@@ -27,5 +31,4 @@ function MyForums() {
     </main>
   );
 }
-
 export default MyForums;

@@ -39,10 +39,30 @@ h1 {
   background: #838383;
   box-shadow: 0px 0px 5px 10px #1f1e1e;
 }
-
+#dialog {
+  color: red;
+}
 .message {
   margin-top: 20px;
   font-size: 17px;
+}
+.successAlert {
+  color: rgb(255, 255, 255);
+  padding: 5px 10px;
+  margin: 0px 5px;
+  background-color: rgb(16, 124, 46);
+}
+.errorAlert {
+  color: rgb(255, 255, 255);
+  padding: 5px 10px;
+  margin: 0px 5px;
+  background-color: rgb(255, 59, 32);
+}
+.warningAlert {
+  color: rgb(255, 255, 255);
+  padding: 5px 10px;
+  margin: 0px 5px;
+  background-color: rgb(255, 153, 0);
 }
 
 .valid {
