@@ -1,4 +1,4 @@
-/* Importations des bibliothèques react + Yarn 
+/* Importations des bibliothèques react + Yarn
 -> React, useState , PasswordChecklist + axios (Api post-get..) */
 
 import React, { useState } from "react";

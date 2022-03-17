@@ -1,7 +1,6 @@
 /* Vérifier le mot de passe et s'y il est bien conforme au schémaPassword */
 
 const passwordSchema = require("../models/PasswordValidator");
-console.log("testdebutpasswordValidation")
 module.exports = (req, res, next) => {
 
     if (!passwordSchema.validate(req.body.password)) {
@@ -12,7 +11,5 @@ module.exports = (req, res, next) => {
 
     } else {
         next(); /*  Si ok, passe au prochain middleware */
-        console.log("PasswordValide")
     }
-    console.log("testFinpasswordValidation")
 }

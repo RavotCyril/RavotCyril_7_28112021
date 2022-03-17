@@ -7,11 +7,9 @@ import "../../Styles/App.css";
 
 function Home() {
   return (
-    <Articles>
-      <main>
-        <h1>Forum social Groupomania</h1>;
-      </main>
-    </Articles>
+    <main>
+      <h1>Forum social Groupomania</h1>;
+    </main>
   );
 }
 export default Home;

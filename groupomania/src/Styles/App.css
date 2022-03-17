@@ -6,7 +6,9 @@
 body {
   font-family: "Roboto Regular", sans-serif;
 }
-
+.article {
+  color: blue;
+}
 .navbar-dark .navbar-brand {
   color: white;
 }

@@ -4,9 +4,10 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
+import sport from "../../../src/assets/Sport.png";
 /* Crud pour Créer, Modifier ou Supprimer un Article  */
 function Articles() {
-  const [services, setServices] = useState();
+  const [services, setServices] = useState("");
   const [message, setMessage] = useState("");
 
   function Services() {
@@ -75,64 +76,70 @@ function Articles() {
       });
   };
   return (
-    <main className={`message ${Services ? "valid" : "invalid"}`}>
-      <Services>
-        {message}
-        <h1>Bienvenue sur le forum</h1>
-        <nav>
-          <ul className="list-group d-flex">
-            <li className="list-group-item">
-              <NavLink to="/Get-Article-Topic">Mes Forums</NavLink>
-            </li>
-            <li className="list-group-item">
-              <NavLink to="/Post-Article-Topic">Nouveau sujet </NavLink>
-            </li>
-          </ul>
-        </nav>
-        <form>
-          <div className="row">
-            <input
-              onClick={() => {
-                handleSubmit();
-                window.confirm("Confirmer pour modifier cette article?");
-              }}
-            >
-              Nouveau sujet
-            </input>
-            <div className="sujet">
-              <ul></ul>
-              <div>
-                <p>
-                  <input
-                    type="text"
-                    placeholder="Sujet"
-                    value={sujet}
-                    onChange={handleChangeSujet}
-                  >
-                    Sujet
-                  </input>
-                </p>
-                <p>
-                  <textarea
-                    type="text"
-                    placeholder="texte"
-                    value={texte}
-                    onChange={handleChangeTexte}
-                    rows={5}
-                    cols={5}
-                  >
-                    Texte
-                  </textarea>
-                </p>
-                <p></p>
-                <p>
-                  <img alt="Photos des articles" onChange={handleChangeImage} />
-                </p>
-              </div>
+    <main
+      className="container-fluid"
+      {...`message ${Services ? "valid" : "invalid"}`}
+    >
+      {message}
+      <h1>Bienvenue sur le forum</h1>
+      <nav>
+        <ul className="list-group d-flex">
+          <li className="list-group-item">
+            <NavLink to="/Get-Article-Topic">Mes Forums</NavLink>
+          </li>
+          <li className="list-group-item">
+            <NavLink to="/Post-Article-Topic">Nouveau sujet </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <form>
+        <div className="row">
+          <h2 className="col-12 mx-auto text-center">Nouveau sujet</h2>
+          <div className="col-12 mx-auto text-center sujet">
+            <p>
+              <h2>Sujet&nbsp;&nbsp;</h2>
+              <input
+                className="col-3 mx-auto text-center sujet"
+                type="text"
+                value={sujet}
+                onChange={handleChangeSujet}
+              />
+            </p>
+            <p>
+              <h2>Texte&nbsp;&nbsp;</h2>
+              <textarea
+                className="col-6 mx-auto"
+                type="text"
+                value={texte}
+                onChange={handleChangeTexte}
+                rows={5}
+                cols={5}
+                wrap="hard"
+              ></textarea>
+            </p>
+            <p></p>
+            <p>
+              <img
+                src={sport}
+                alt="Photos des articles"
+                onChange={handleChangeImage}
+              />
+            </p>
+            <div className="col-12">
+              <input
+                type="button"
+                name="submit"
+                onClick={() => {
+                  handleSubmit();
+                }}
+                className="form-control btn btn-primary col-4 my-4 mx-auto"
+                value="Poster le nouveau sujet"
+                aria-describedby="Bouton de validation pour s'enregistrer"
+              />
             </div>
           </div>
-        </form>
-      </Services>
+        </div>
+      </form>
     </main>
   );
 }
