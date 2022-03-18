@@ -6,8 +6,11 @@
 body {
   font-family: "Roboto Regular", sans-serif;
 }
-.article {
-  color: blue;
+.Commentaires {
+  color: white;
+}
+.Articles img {
+  color: white;
 }
 .navbar-dark .navbar-brand {
   color: white;
@@ -68,7 +71,15 @@ a {
 
 .Menu {
   background: #132944;
-  box-shadow: inset 0px 0px 10px 10px #112442;
+  box-shadow: inset 0px 0px 10px 10px #000;
+}
+.pageNewTopic h2,
+.pageMyForums h2 {
+  color: white;
+}
+.pageNewTopic input,
+.pageMyForums input {
+  color: white;
 }
 .pageMyForums,
 .pageNewTopic {

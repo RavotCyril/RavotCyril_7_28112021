@@ -5,12 +5,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 /* Importations Components */
 import Articles from "./components/Articles";
+// import Commentaires from "./components/Commentaires";
 import DeleteUpdateArticle from "./components/Articles/DeleteUpdateArticle";
 import Error from "./components/Error";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Vote from "./components/Vote";
+import Votes from "./components/Votes";
 
 /* Importations Pages */
 
@@ -27,17 +28,18 @@ import "./Styles/App.css";
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Header />
+      <Header isConnected={false} />
       <Routes>
         <Route path="/Home" element={<Home />} />
         <Route path="/Services" element={<Services />} />
         <Route path="/Articles" element={<Articles />} />
+        {/* <Route path="/Commentaires" element={<Commentaires />} /> */}
         <Route path="/DeleteUpdateArticle" element={<DeleteUpdateArticle />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/MyForums" element={<MyForums />} />
         <Route path="/NewTopic" element={<NewTopic />} />
-        <Route path="/Vote" element={<Vote />} />
+        <Route path="/Votes" element={<Votes />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>

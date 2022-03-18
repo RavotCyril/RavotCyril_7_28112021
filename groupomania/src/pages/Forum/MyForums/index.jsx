@@ -2,7 +2,8 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom";
-// import Articles from "../../../components/Articles";
+import DeleteUpdateArticle from "../../../components/Articles/DeleteUpdateArticle";
+import Commentaires from "../../../components/Commentaires";
 
 function MyForums() {
   // function Articles(user) {
@@ -26,14 +27,18 @@ function MyForums() {
           </div>
         </div>
         <ul className="navbar-nav p-3">
-          <li className="nav-item">
-            <NavLink to="/MyForums">Mes Forums</NavLink>
+          <li className="nav-item my-2">
+            <NavLink to="/MyForums" className="navbar-brand">
+              Mes Forums
+            </NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/NewTopic">Nouveau sujet </NavLink>
           </li>
         </ul>
       </div>
+      <Commentaires />
+      <DeleteUpdateArticle />
     </main>
   );
 }

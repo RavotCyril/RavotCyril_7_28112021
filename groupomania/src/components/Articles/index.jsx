@@ -1,17 +1,16 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
-import DeleteUpdateArticle from "./DeleteUpdateArticle";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 // import dataAuthentification from "../../Services";
-/* Crud pour Créer, Modifier ou Supprimer un Article  */
+
+/* Crud pour Créer, Afficher un Article  */
 function Articles() {
   const handleSubmit = (event) => {
     if (sujet && texte && image) {
       axios
-        .post("http://localhost:3000/articles/", {
+        .post("http://localhost:3000/api/articles", {
           sujet,
           texte,
           date: Date.now(),
@@ -30,7 +29,7 @@ function Articles() {
         });
     }
     axios
-      .get("http://localhost:3000/articles/", {
+      .get("http://localhost:3000/api/articles/", {
         sujet,
         texte,
         date: Date.now(),
@@ -41,8 +40,10 @@ function Articles() {
         window.location.href = "http://localhost:3001/Myforums";
       })
       .catch((err) => {
-        if (err.code === 400) {
-        } else if (err.code === 500) {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis'");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
         }
       });
   };
@@ -67,18 +68,7 @@ function Articles() {
   }
 
   return (
-    <main className="container-fluid">
-      <h1>Bienvenue sur le forum</h1>
-      <nav>
-        <ul className="list-group d-flex">
-          <li className="list-group-item">
-            <NavLink to="/Get-Article-Topic">Mes Forums</NavLink>
-          </li>
-          <li className="list-group-item">
-            <NavLink to="/Post-Article-Topic">Nouveau sujet </NavLink>
-          </li>
-        </ul>
-      </nav>
+    <main className="Articles container-fluid">
       <form>
         <div className="row">
           <div className="col-12 mx-auto text-center sujet">
@@ -102,8 +92,12 @@ function Articles() {
               cols={5}
               wrap="hard"
             ></textarea>
-            <div className="file-uploader">
-              <input type="file" onChange={HandleChangeFile} />
+            <div className="col-4 mx-auto">
+              <input
+                className="col-4 mx-auto"
+                type="file"
+                onChange={HandleChangeFile}
+              />
               <img src={image} value="" alt="Photos des articles" />
             </div>
             <div className="col-2 mx-auto">
@@ -118,7 +112,6 @@ function Articles() {
                 }}
               />
             </div>
-            <DeleteUpdateArticle />
           </div>
         </div>
       </form>

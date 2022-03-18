@@ -7,7 +7,7 @@ const multer = require('../middleware/multer-config');
 
 //* Routes Articles + Like  */
 
-router.get('/', auth, articlesCtrl.getAllModelsArticle);
+router.get('/', articlesCtrl.getAllModelsArticle);
 router.get('/:id', auth, articlesCtrl.getOneModelsArticle);
 router.post('/', auth, multer, articlesCtrl.createModelsArticle);
 router.put('/:id', auth, multer, articlesCtrl.modifyModelsArticle);

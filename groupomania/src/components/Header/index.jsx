@@ -1,7 +1,7 @@
 /* Importations Bibliothèques React-router-dom  */
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-// import Connexion from "../../Services";
+import Connexion from "../../Services";
 
 // /* Importations des pages de styles + logo + images */
 
@@ -9,20 +9,20 @@ import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
-  // const [isConnexion, setIsValidConnexion] = useState(Connexion ? true : false);
-  // const [display, setDisplay] = useState("");
-  // function validationConnexion() {
-  //   if (Connexion != null) {
-  //     setIsValidConnexion(true);
-  //     setDisplay("none");
-  //     console.log("testtrue");
-  //   } else if (Connexion === null) {
-  //     setIsValidConnexion(false);
-  //     setDisplay("initial");
-  //     console.log("testfalse");
-  //   }
-  // }
-  // validationConnexion();
+  const [isConnexion, setIsValidConnexion] = useState(Connexion ? true : false);
+  const [display, setDisplay] = useState("");
+  function validationConnexion() {
+    if (Connexion != null) {
+      setIsValidConnexion(true);
+      setDisplay("none");
+      console.log("testtrue");
+    } else if (Connexion === null) {
+      setIsValidConnexion(false);
+      setDisplay("initial");
+      console.log("testfalse");
+    }
+  }
+  validationConnexion();
   return (
     <header>
       <div className="container-fluid Menu m-0">
@@ -66,9 +66,9 @@ function Header() {
                   <NavLink
                     to="/Login"
                     className="navbar-brand"
-                    // style={{ display: isConnexion ? "none" : "initial" }}
+                    style={{ display: isConnexion ? "none" : "initial" }}
                   >
-                    {/* {display} */}
+                    {display}
                     Connexion
                   </NavLink>
                 </li>
@@ -76,9 +76,9 @@ function Header() {
                   <NavLink
                     to="/Login"
                     className="navbar-brand"
-                    // style={{ display: isConnexion ? "none" : "initial" }}
+                    style={{ display: isConnexion ? "none" : "initial" }}
                   >
-                    {/* {display} */}
+                    {display}
                     Se deconnecter
                   </NavLink>
                 </li>
