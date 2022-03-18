@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
         // console.log(decodedToken)
         const userId = decodedToken.userId; /* userId du token décodé précedemment */
 
-        if (Models.User.userId !== userId) {
+        if (Models.User.userId && Models.User.userId !== userId) {
             /* Si on a un userId dans la requete et qu'il est différent de l'userId encodé 
             dans le token cela envoie " invalid user id " */
             throw 'Invalid user ID';

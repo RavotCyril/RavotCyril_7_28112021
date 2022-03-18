@@ -45,8 +45,6 @@ function Signup() {
         .then((User) => {
           console.log(User);
           window.location.href = "http://localhost:3001/login";
-          /* Permet de stocker l'identification ( User ) */
-          localStorage.setItem("Inscription", JSON.stringify(User));
         })
         .catch((err) => {
           if (err.response.status === 400) {

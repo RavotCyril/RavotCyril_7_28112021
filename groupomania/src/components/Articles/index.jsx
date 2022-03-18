@@ -2,42 +2,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import DeleteUpdateArticle from "./DeleteUpdateArticle";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
-import sport from "../../../src/assets/Sport.png";
+// import dataAuthentification from "../../Services";
 /* Crud pour Créer, Modifier ou Supprimer un Article  */
 function Articles() {
-  const [services, setServices] = useState("");
-  const [message, setMessage] = useState("");
-
-  function Services() {
-    if (services === undefined) {
-      setServices(false);
-      setMessage("Refuse l'affichage des données");
-    } else {
-      setServices(true);
-      setMessage("Affiche moi les données");
-    }
-  }
-  const [sujet, setSujet] = useState("");
-  const [texte, setTexte] = useState("");
-  const [image, setImage] = useState("");
-
-  /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
-  function handleChangeSujet(e) {
-    setSujet(e.target.value);
-  }
-
-  /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
-
-  function handleChangeTexte(e) {
-    setTexte(e.target.value);
-  }
-  /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
-
-  function handleChangeImage(e) {
-    setImage(e.target.value);
-  }
   const handleSubmit = (event) => {
     if (sujet && texte && image) {
       axios
@@ -49,15 +19,16 @@ function Articles() {
         })
         .then((res) => {
           console.log(res);
-          window.location.href = "http://localhost:3000/NewTopic";
+          window.location.href = "http://localhost:3001/NewTopic";
         })
         .catch((err) => {
-          if (err.code === 400) {
-          } else if (err.code === 500) {
+          if (err.response.status === 400) {
+            console.log("Tout les champs n'ont pas été correctement remplis'");
+          } else if (err.response.status === 500) {
+            console.log("erreur serveur");
           }
         });
     }
-    // enregistrer le token.
     axios
       .get("http://localhost:3000/articles/", {
         sujet,
@@ -67,7 +38,7 @@ function Articles() {
       })
       .then((res) => {
         console.log(res);
-        window.location.href = "http://localhost:3000/Myforums";
+        window.location.href = "http://localhost:3001/Myforums";
       })
       .catch((err) => {
         if (err.code === 400) {
@@ -75,12 +46,28 @@ function Articles() {
         }
       });
   };
+  const [sujet, setSujet] = useState("");
+  const [texte, setTexte] = useState("");
+  const [image, setImage] = useState("");
+
+  /* Fonction pour vérifier ce que l'on écrit dans l'input Sujet  */
+  function handleChangeTopic(e) {
+    setSujet(e.target.value);
+  }
+
+  /* Fonction pour vérifier ce que l'on écrit dans l'input Texte  */
+
+  function handleChangeTexte(event) {
+    setTexte(event.target.value);
+  }
+  /* Fonction pour vérifier ce que l'on sélectionne dans l'input File  */
+
+  function HandleChangeFile(event) {
+    setImage(event.target.files[0]);
+  }
+
   return (
-    <main
-      className="container-fluid"
-      {...`message ${Services ? "valid" : "invalid"}`}
-    >
-      {message}
+    <main className="container-fluid">
       <h1>Bienvenue sur le forum</h1>
       <nav>
         <ul className="list-group d-flex">
@@ -94,49 +81,44 @@ function Articles() {
       </nav>
       <form>
         <div className="row">
-          <h2 className="col-12 mx-auto text-center">Nouveau sujet</h2>
           <div className="col-12 mx-auto text-center sujet">
-            <p>
-              <h2>Sujet&nbsp;&nbsp;</h2>
-              <input
-                className="col-3 mx-auto text-center sujet"
-                type="text"
-                value={sujet}
-                onChange={handleChangeSujet}
-              />
-            </p>
-            <p>
-              <h2>Texte&nbsp;&nbsp;</h2>
-              <textarea
-                className="col-6 mx-auto"
-                type="text"
-                value={texte}
-                onChange={handleChangeTexte}
-                rows={5}
-                cols={5}
-                wrap="hard"
-              ></textarea>
-            </p>
-            <p></p>
-            <p>
-              <img
-                src={sport}
-                alt="Photos des articles"
-                onChange={handleChangeImage}
-              />
-            </p>
-            <div className="col-12">
+            <br />
+            <h2>Sujet&nbsp;&nbsp;</h2>
+            <input
+              className="col-3 mx-auto text-center sujet"
+              type="text"
+              value={sujet}
+              onChange={handleChangeTopic}
+            />
+            <br />
+            <br />
+            <h2>Texte&nbsp;&nbsp;</h2>
+            <textarea
+              className="col-6 mx-auto"
+              type="text"
+              value={texte}
+              onChange={handleChangeTexte}
+              rows={5}
+              cols={5}
+              wrap="hard"
+            ></textarea>
+            <div className="file-uploader">
+              <input type="file" onChange={HandleChangeFile} />
+              <img src={image} value="" alt="Photos des articles" />
+            </div>
+            <div className="col-2 mx-auto">
               <input
                 type="button"
                 name="submit"
-                onClick={() => {
-                  handleSubmit();
-                }}
                 className="form-control btn btn-primary col-4 my-4 mx-auto"
                 value="Poster le nouveau sujet"
                 aria-describedby="Bouton de validation pour s'enregistrer"
+                onClick={() => {
+                  handleSubmit();
+                }}
               />
             </div>
+            <DeleteUpdateArticle />
           </div>
         </div>
       </form>

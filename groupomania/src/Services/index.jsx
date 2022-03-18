@@ -1,22 +1,17 @@
 /* Importations des bibliothèques react + Yarn
 -> React, useState , PasswordChecklist + axios (Api post-get..) */
 
-import React, { useState } from "react";
+import React from "react";
 
 function Services() {
-  const [authentification, setAuthentification] = useState("");
-
-  /* Permet de stocker l'identification ( User + Token ) */
-  const user = JSON.parse(localStorage.getItem("Inscription"));
+  /* Permet de stocker l'identification ( Token ) dans la constante connexion  */
   const connexion = JSON.parse(localStorage.getItem("Identification"));
-
   /* Route Administrateur */
   function Authentification() {
-    if (authentification === (user && connexion)) {
+    if (connexion != null) {
       alert("Identification Réussi");
       window.location.href = "http://localhost:3001/Articles";
-    } else if (setAuthentification === false) {
-      window.location.href = "http://localhost:3001/Home";
+    } else if (connexion === null) {
       alert("Identification Refusé");
     }
   }

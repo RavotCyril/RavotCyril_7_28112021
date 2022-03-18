@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 /* Importations Components */
 import Articles from "./components/Articles";
+import DeleteUpdateArticle from "./components/Articles/DeleteUpdateArticle";
 import Error from "./components/Error";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -31,6 +32,7 @@ ReactDOM.render(
         <Route path="/Home" element={<Home />} />
         <Route path="/Services" element={<Services />} />
         <Route path="/Articles" element={<Articles />} />
+        <Route path="/DeleteUpdateArticle" element={<DeleteUpdateArticle />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/MyForums" element={<MyForums />} />

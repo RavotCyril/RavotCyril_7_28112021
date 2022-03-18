@@ -2,7 +2,7 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Articles from "../../../components/Articles";
+// import Articles from "../../../components/Articles";
 
 function MyForums() {
   // function Articles(user) {
@@ -17,26 +17,24 @@ function MyForums() {
   //    <Articles message="Succes Alert" />;
   //  </div>;
   return (
-    <Articles>
-      <main className="pageMyForums">
-        <h1>Bienvenue sur le forum</h1>
-        <div className="d-flex">
-          <div className="article-list">
-            <div>
-              <p></p>
-            </div>
+    <main className="pageMyForums">
+      <h1>Bienvenue sur le forum</h1>
+      <div className="d-flex">
+        <div className="article-list">
+          <div>
+            <p></p>
           </div>
-          <ul className="navbar-nav p-3">
-            <li className="nav-item">
-              <NavLink to="/MyForums">Mes Forums</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/NewTopic">Nouveau sujet </NavLink>
-            </li>
-          </ul>
         </div>
-      </main>
-    </Articles>
+        <ul className="navbar-nav p-3">
+          <li className="nav-item">
+            <NavLink to="/MyForums">Mes Forums</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/NewTopic">Nouveau sujet </NavLink>
+          </li>
+        </ul>
+      </div>
+    </main>
   );
 }
 export default MyForums;

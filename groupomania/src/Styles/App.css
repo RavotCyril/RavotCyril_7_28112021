@@ -41,30 +41,10 @@ h1 {
   background: #838383;
   box-shadow: 0px 0px 5px 10px #1f1e1e;
 }
-#dialog {
-  color: red;
-}
+
 .message {
   margin-top: 20px;
   font-size: 17px;
-}
-.successAlert {
-  color: rgb(255, 255, 255);
-  padding: 5px 10px;
-  margin: 0px 5px;
-  background-color: rgb(16, 124, 46);
-}
-.errorAlert {
-  color: rgb(255, 255, 255);
-  padding: 5px 10px;
-  margin: 0px 5px;
-  background-color: rgb(255, 59, 32);
-}
-.warningAlert {
-  color: rgb(255, 255, 255);
-  padding: 5px 10px;
-  margin: 0px 5px;
-  background-color: rgb(255, 153, 0);
 }
 
 .valid {
@@ -90,14 +70,17 @@ a {
   background: #132944;
   box-shadow: inset 0px 0px 10px 10px #112442;
 }
-.pageMyForums {
+.pageMyForums,
+.pageNewTopic {
   background: #132944;
   box-shadow: inset 0px 0px 10px 10px #112442;
 }
-.pageMyForums a {
+.pageMyForums a,
+.pageNewTopic a {
   color: white;
 }
-.pageMyForums a:hover {
+.pageMyForums a:hover,
+.pageNewTopic a:hover {
   color: rgb(0, 84, 180);
 }
 @media screen and (min-width: 769px) and (max-width: 1089px) /* styles pour tablettes*/ {
