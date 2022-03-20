@@ -42,9 +42,11 @@ function Signup() {
           roleId: 2,
         })
         // enregistrer le hash et permet de sécuriser le mot de passe et de le remplacer ( Crypté ).
-        .then((User) => {
-          console.log(User);
+        .then((res) => {
+          console.log(res);
           window.location.href = "http://localhost:3001/login";
+          /* Permet de stocker l'inscription l'utilisateur ( User ) */
+          localStorage.setItem("Inscription", JSON.stringify(res.data.User));
         })
         .catch((err) => {
           if (err.response.status === 400) {

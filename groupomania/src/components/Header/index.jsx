@@ -1,28 +1,21 @@
 /* Importations Bibliothèques React-router-dom  */
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import Connexion from "../../Services";
-
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { NavDropdown } from "react-bootstrap";
 // /* Importations des pages de styles + logo + images */
 
 import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
-  const [isConnexion, setIsValidConnexion] = useState(Connexion ? true : false);
-  const [display, setDisplay] = useState("");
-  function validationConnexion() {
-    if (Connexion != null) {
-      setIsValidConnexion(true);
-      setDisplay("none");
-      console.log("testtrue");
-    } else if (Connexion === null) {
-      setIsValidConnexion(false);
-      setDisplay("initial");
-      console.log("testfalse");
-    }
+  /* Permet de stocker l'identification ( Token ) */
+
+  let User = JSON.parse(localStorage.getItem("Inscription"));
+  const history = useNavigate();
+  function logOut() {
+    localStorage.clear();
+    history.push("/signup");
   }
-  validationConnexion();
   return (
     <header>
       <div className="container-fluid Menu m-0">
@@ -47,41 +40,50 @@ function Header() {
               className="collapse navbar-collapse justify-content-end"
             >
               <ul className="navbar-nav p-3">
-                <li className="nav-item">
-                  <NavLink to="/MyForums" className="navbar-brand">
-                    Forum
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to="/Home" className="navbar-brand">
-                    Accueil
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to="/Signup" className="navbar-brand">
-                    Inscription
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    to="/Login"
-                    className="navbar-brand"
-                    style={{ display: isConnexion ? "none" : "initial" }}
-                  >
-                    {display}
-                    Connexion
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    to="/Login"
-                    className="navbar-brand"
-                    style={{ display: isConnexion ? "none" : "initial" }}
-                  >
-                    {display}
-                    Se deconnecter
-                  </NavLink>
-                </li>
+                {localStorage.getItem("Identification") === null ? (
+                  <>
+                    <li className="nav-item">
+                      <NavLink to="/Home" className="navbar-brand">
+                        Accueil
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink to="/Signup" className="navbar-brand">
+                        Inscription
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink to="/Login" className="navbar-brand">
+                        Connexion
+                      </NavLink>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <NavLink to="/Home" className="navbar-brand">
+                        Accueil
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink to="/MyForums" className="navbar-brand">
+                        Forum
+                      </NavLink>
+                    </li>
+                  </>
+                )}
+                {localStorage.getItem("Identification") != null ? (
+                  <li className="nav-item">
+                    <NavDropdown title={User && User.firstname}>
+                      <NavDropdown.Item
+                        className="navbar-brand"
+                        onClick={logOut}
+                      >
+                        Se deconnecter
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </li>
+                ) : null}
               </ul>
             </div>
           </nav>

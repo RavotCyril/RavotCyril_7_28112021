@@ -30,12 +30,15 @@ function Login() {
           email,
           config,
         })
-        .then((User) => {
-          console.log(User);
+        .then((res) => {
+          console.log(res);
           /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
           window.location.href = "http://localhost:3001/MyForums";
           /* Permet de stocker l'identification ( Token ) */
-          localStorage.setItem("Identification", JSON.stringify(User));
+          localStorage.setItem(
+            "Identification",
+            JSON.stringify(res.data.token)
+          );
         })
         .catch((err) => {
           if (err.response.status === 400) {
