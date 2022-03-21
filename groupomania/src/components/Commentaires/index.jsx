@@ -51,10 +51,10 @@ function Commentaires() {
     <main className="Commentaires container-fluid">
       <form>
         <div className="row">
-          <div className="col-12 mx-auto text-center sujet">
+          <div className="col-12 col-sm-12  mx-auto text-center sujet">
             <h2>Poster un commentaire&nbsp;&nbsp;</h2>
             <textarea
-              className="col-3 mx-auto"
+              className="col-8 col-sm-6  mx-auto"
               type="text"
               value={texte}
               onChange={handleChangeTexte}
@@ -62,7 +62,7 @@ function Commentaires() {
               cols={3}
               wrap="hard"
             ></textarea>
-            <div className="col-2 mx-auto">
+            <div className="col-12 col-sm-8 mx-auto">
               <input
                 type="button"
                 name="submit"

@@ -44,7 +44,7 @@ const DeleteUpdateArticle = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col-2 mx-auto">
+            <div className="col-sm-4 mx-auto">
               <button
                 className="btn btn-danger mx-3"
                 onClick={() => {

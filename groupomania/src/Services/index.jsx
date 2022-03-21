@@ -9,10 +9,11 @@ function Services() {
   /* Route Administrateur */
   function Authentification() {
     if (connexion != null) {
-      alert("Identification Réussi");
       window.location.href = "http://localhost:3001/Articles";
     } else if (connexion === null) {
-      alert("Identification Refusé");
+      console.log("Veuillez remplir les champs du formulaire d'inscription");
+    } else {
+      window.location.href = "http://localhost:3001/";
     }
   }
 

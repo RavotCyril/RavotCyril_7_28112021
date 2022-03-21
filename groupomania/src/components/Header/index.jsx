@@ -1,14 +1,27 @@
 /* Importations Bibliothèques React-router-dom  */
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 // /* Importations des pages de styles + logo + images */
 
 import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
+import jwt_decode from "jwt-decode";
 
 function Header() {
-  /* Permet de stocker l'identification ( Token ) */
+  const token = JSON.parse(localStorage.getItem("Identification")); //convert to object
+  console.log(token);
+  useEffect(() => {
+    //JWT check if token expired
+    if (token != null) {
+      const decodedToken = jwt_decode(token);
+      if (decodedToken.exp * 300 < new Date().getTime()) logOut();
+    } else {
+      console.log("Pensez à vous enregistrer");
+    }
+  });
+
+  /* Permet de récupérer l'inscription des Utilisateurs avec la clef Inscription du localStorage ) */
 
   let User = JSON.parse(localStorage.getItem("Inscription"));
   const history = useNavigate();
@@ -39,7 +52,8 @@ function Header() {
               id="Visibilite"
               className="collapse navbar-collapse justify-content-end"
             >
-              <ul className="navbar-nav p-3">
+              <ul className="navbar-nav p-5">
+                {/* Permet de récupérer le Token avec la clef identification du localStorage */}
                 {localStorage.getItem("Identification") === null ? (
                   <>
                     <li className="nav-item">
@@ -61,12 +75,12 @@ function Header() {
                 ) : (
                   <>
                     <li className="nav-item">
-                      <NavLink to="/Home" className="navbar-brand">
+                      <NavLink to="/Home" className="navbar-brand d-flex">
                         Accueil
                       </NavLink>
                     </li>
                     <li className="nav-item">
-                      <NavLink to="/MyForums" className="navbar-brand">
+                      <NavLink to="/MyForums" className="navbar-brand d-flex">
                         Forum
                       </NavLink>
                     </li>
@@ -75,10 +89,7 @@ function Header() {
                 {localStorage.getItem("Identification") != null ? (
                   <li className="nav-item">
                     <NavDropdown title={User && User.firstname}>
-                      <NavDropdown.Item
-                        className="navbar-brand"
-                        onClick={logOut}
-                      >
+                      <NavDropdown.Item className="p-2" onClick={logOut}>
                         Se deconnecter
                       </NavDropdown.Item>
                     </NavDropdown>

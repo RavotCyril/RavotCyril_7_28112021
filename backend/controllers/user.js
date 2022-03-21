@@ -43,10 +43,9 @@ exports.login = (req, res, next) => {
                         res.status(403).json({ error: 'Mot de passe incorrect !' });
                     }
                     res.status(200).json({
-                        message: 'Utilisateur trouvé et mot de passe validé connexion réussi et Token D\'authentification généré par la base de donnée!', 
                         /*  Id généré par la base de données */
                         token: jwt.sign({ userId: User.user_id, }, /* Token d'authentification */
-                            process.env.DB_TOKEN, { expiresIn: '7 days' }, /* Temps de validité du Token */
+                            process.env.DB_TOKEN, { expiresIn: '300s' }, /* Temps de validité du Token */
                         )
                     });
                 })

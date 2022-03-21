@@ -92,7 +92,7 @@ function Articles() {
               cols={5}
               wrap="hard"
             ></textarea>
-            <div className="col-4 mx-auto">
+            <div className="col-12 col-sm-6  mx-auto">
               <input
                 className="col-4 mx-auto"
                 type="file"
@@ -100,7 +100,7 @@ function Articles() {
               />
               <img src={image} value="" alt="Photos des articles" />
             </div>
-            <div className="col-2 mx-auto">
+            <div className="col-12 col-sm-6  mx-auto">
               <input
                 type="button"
                 name="submit"
