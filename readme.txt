@@ -20,6 +20,6 @@ Allé dans le dossier Backend.
 A la racine du projet faire cd backend
 
 ->Vérifier qu'express est bien installé dans package.json ou l'installer avec : npm install express
-->Vérifier que nodemon est bien installé ou l'installer nodemon avec : yarn add nodemon -D
+->Vérifier que nodemon est bien installé ou l'installer nodemon avec : npm install -g nodemon
 
 -> nodemon server
