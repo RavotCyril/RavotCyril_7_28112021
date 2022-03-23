@@ -7,7 +7,11 @@ import "../../Styles/App.css";
 
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
+<<<<<<< HEAD
   const handleSubmit = () => {
+=======
+  const handleSubmit = (event) => {
+>>>>>>> 044ae545b88ff1edf1d739117558247241675f02
     if (sujet && texte && image) {
       axios
         .post("http://localhost:3000/api/articles", {
@@ -92,7 +96,11 @@ function Articles() {
               cols={5}
               wrap="hard"
             ></textarea>
+<<<<<<< HEAD
             <div className="col-4 mx-auto">
+=======
+            <div className="col-12 col-sm-6  mx-auto">
+>>>>>>> 044ae545b88ff1edf1d739117558247241675f02
               <input
                 className="col-4 mx-auto"
                 type="file"
@@ -100,7 +108,11 @@ function Articles() {
               />
               <img src={image} value="" alt="Photos des articles" />
             </div>
+<<<<<<< HEAD
             <div className="col-2 mx-auto">
+=======
+            <div className="col-12 col-sm-6  mx-auto">
+>>>>>>> 044ae545b88ff1edf1d739117558247241675f02
               <input
                 type="button"
                 name="submit"

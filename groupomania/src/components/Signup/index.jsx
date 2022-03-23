@@ -47,6 +47,10 @@ function Signup() {
           window.location.href = "http://localhost:3001/login";
           /* Permet de stocker l'inscription l'utilisateur ( User ) */
           localStorage.setItem("Inscription", JSON.stringify(res.data.User));
+<<<<<<< HEAD
+=======
+          console.log("l'utilisateur est validé et enregistré");
+>>>>>>> 044ae545b88ff1edf1d739117558247241675f02
         })
         .catch((err) => {
           if (err.response.status === 400) {

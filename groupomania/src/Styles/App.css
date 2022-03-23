@@ -6,6 +6,15 @@
 body {
   font-family: "Roboto Regular", sans-serif;
 }
+<<<<<<< HEAD
+=======
+.dropdown-item:focus,
+.dropdown-item:hover {
+  width: 92%;
+  box-shadow: 1px 1px #151517c4;
+}
+
+>>>>>>> 044ae545b88ff1edf1d739117558247241675f02
 .Commentaires {
   color: white;
 }

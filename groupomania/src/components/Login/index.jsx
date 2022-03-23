@@ -37,7 +37,12 @@ function Login() {
           /* Permet de stocker l'identification ( Token ) */
           localStorage.setItem(
             "Identification",
+<<<<<<< HEAD
             JSON.stringify(res.data.token)
+=======
+            JSON.stringify(res.data.token),
+            console.log("L'utilisateur est connecté")
+>>>>>>> 044ae545b88ff1edf1d739117558247241675f02
           );
         })
         .catch((err) => {

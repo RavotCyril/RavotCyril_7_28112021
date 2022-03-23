@@ -1,7 +1,10 @@
 /* Vérifier le mot de passe et s'y il est bien conforme au schémaPassword */
 
 const passwordSchema = require("../models/PasswordValidator");
+<<<<<<< HEAD
 console.log("testdebutpasswordValidation")
+=======
+>>>>>>> 044ae545b88ff1edf1d739117558247241675f02
 module.exports = (req, res, next) => {
 
     if (!passwordSchema.validate(req.body.password)) {
