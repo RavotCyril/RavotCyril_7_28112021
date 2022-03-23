@@ -1,52 +1,45 @@
-/* Importations des bibliothèques react + Yarn + Axios (API) + useState + useEffect ... 
--> Si besoin styled-components  + react-router-dom  */
-import React, { useState, useEffect } from "react";
+/* Importations des bibliothèques react + NavLink + Component Articles  */
+
+import React from "react";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
-import Topic from "../../../components/Topic";
+import DeleteUpdateArticle from "../../../components/Articles/DeleteUpdateArticle";
+import Commentaires from "../../../components/Commentaires";
 
-/* Fonction pour voir les sujets proposés du Forum 
-Avec :
-Data = Les données lus ( 1ere donnée lu)
-SetData = les données modifiés  ( 2me donnée lu suite à une modification )
-useState = Renvoie une valeur avec état et une fonction pour la mettre à jour.
-*/
 function MyForums() {
-  const [data, setData] = useState([]);
-  const article_id = "Super";
-  /* Fonction useEffect permet de faire une seule requête de l'API. ( Et ne pas l'appeler à l'infinis)
-  Avec le callback , [] en fin de fonction */
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/articles/")
-      .then((res) => console.log(res));
-  }, []);
-
+  // function Articles(user) {
+  //   return;
+  //   <div>
+  //     <p>Bonjour, {props.sujet}</p>
+  //     <p>Bonjour, {props.sujet}</p>
+  //     <p>Bonjour, {props.sujet}</p>
+  //   </div>;
+  // }
+  //  <div>
+  //    <Articles message="Succes Alert" />;
+  //  </div>;
   return (
-    <main>
+    <main className="pageMyForums">
       <h1>Bienvenue sur le forum</h1>
       <div className="d-flex">
         <div className="article-list">
-          {data.map((article) => (
-            <div key={article_id}>
-              <p>
-                <Topic article={article} key={article_id} />
-              </p>
-            </div>
-          ))}
-          {setData}
+          <div>
+            <p></p>
+          </div>
         </div>
         <ul className="navbar-nav p-3">
-          <li className="nav-item">
-            <NavLink to="/MyForums">Mes Forums</NavLink>
+          <li className="nav-item my-2">
+            <NavLink to="/MyForums" className="navbar-brand">
+              Mes Forums
+            </NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/NewTopic">Nouveau sujet </NavLink>
           </li>
         </ul>
       </div>
+      <Commentaires />
+      <DeleteUpdateArticle />
     </main>
   );
 }
-
 export default MyForums;

@@ -7,8 +7,6 @@ exports.createLikeModelsArticle = (req, res, next) => {
 	//console.log("Debut Like");
 	console.log(req.body)
 	const userId = req.body.vote.user_id;
-	//console.log(userId);
-	// console.log(Models.User.user_id)
 	/* Like présent dans le body */
 	const like = req.body.vote.like;
 	/* l'id de l'article / post */

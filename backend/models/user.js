@@ -28,12 +28,13 @@ exports.Role = Role;
 /* Model USER */
 
 const User = sequelize.define('user', {
-	user_id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
+	user_id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true, unique:true },
 	firstname: { type: Sequelize.STRING(255), required: true },
-	email: { type: Sequelize.STRING(255), required: true, unique: true },
-	password: { type: Sequelize.STRING(255), required: true},
-	role_id: { type: Sequelize.INTEGER, required: true },
-}, { tableName: 'user', timestamps: false, underscored: true });
-
+	email: { type: Sequelize.STRING(255), required: true, unique:true},
+	password: { type: Sequelize.STRING(255), required: true},	
+}, { tableName: 'user', timestamps: false, underscored: false });
 exports.User = User;
-User.belongsTo(Role); //l'utilisateur à un rôle.
+//l'utilisateur à un rôle.
+User.belongsTo(Role);//l'utilisateur à un rôle.
+// User.hasOne(Role,{foreignKey: 'roleId', foreignKeyConstraint:true});
+// sequelize.sync({force:true});

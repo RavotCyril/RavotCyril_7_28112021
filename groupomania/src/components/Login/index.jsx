@@ -1,21 +1,55 @@
-/* Importations des bibliothèques react + Yarn 
--> Si besoin styled-components  + react-router-dom  */
-import React, { useEffect } from "react";
+/* Importations des bibliothèques react
+-> React, useState + axios (Api post-get..) */
+import React, { useState } from "react";
 import axios from "axios";
-
+import Connexion from "../../Services";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
 function Login() {
-  /* Fonction useEffect permet de faire une seule requête de l'API. ( Et ne pas l'appeler à l'infinis)
-  Avec le callback , [] en fin de fonction */
-  // const [data, setData] = useState([]);
+  // event.preventDefault();
+  const [email, setemailData] = useState("");
+  const [password, setpasswordData] = useState("");
+  const [token] = useState("");
 
-  useEffect(() => {
-    axios
-      .post("http://localhost:3000/api/login")
-      .then((res) => console.log(res));
-  }, []);
+  function handleChangePassword(e) {
+    setpasswordData(e.target.value);
+  }
+  function handleChangeEmail(e) {
+    setemailData(e.target.value);
+  }
+  function testLogin() {
+    console.log("DebutTestLogin");
+    if (password && email) {
+      let config = {
+        headers: { Authorization: "bearer " + token },
+      };
+      axios
+        .post("http://localhost:3000/api/auth/login", {
+          password,
+          email,
+          config,
+        })
+        .then((res) => {
+          console.log(res);
+          /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
+          window.location.href = "http://localhost:3001/MyForums";
+          /* Permet de stocker l'identification ( Token ) */
+          localStorage.setItem(
+            "Identification",
+            JSON.stringify(res.data.token)
+          );
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            console.log("Mauvaise Adresse Email");
+          } else if (err.response.status === 500) {
+            console.log("Erreur serveur");
+          }
+        });
+    }
+    console.log("FinTestLogin");
+  }
   return (
     <main>
       <form className="container-fluid">
@@ -29,32 +63,41 @@ function Login() {
             <input
               name="Email"
               type="email"
+              autoComplete="email"
               className="form-control"
               id="Email"
               aria-describedby="emailHelp"
               placeholder="Entrer votre émail"
+              onChange={handleChangeEmail}
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
             <label htmlFor="Password">Mot de passe</label>
             <input
+              autoComplete="current-password"
               name="Password"
               type="password"
               className="form-control"
               id="Password"
               placeholder="Mot de passe"
+              onChange={handleChangePassword}
             />
           </div>
           <div className="row">
             <input
-              type="submit"
-              setAttribute="required"
+              type="button"
+              name="submit"
+              required
               className="btn btn-primary col-4 my-4 mx-auto"
               value="Se connecter"
+              onClick={() => {
+                testLogin();
+              }}
             />
           </div>
         </div>
       </form>
+      <Connexion />
     </main>
   );
 }

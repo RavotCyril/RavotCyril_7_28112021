@@ -6,6 +6,12 @@
 body {
   font-family: "Roboto Regular", sans-serif;
 }
+.Commentaires {
+  color: white;
+}
+.Articles img {
+  color: white;
+}
 .navbar-dark .navbar-brand {
   color: white;
 }
@@ -39,24 +45,20 @@ h1 {
   box-shadow: 0px 0px 5px 10px #1f1e1e;
 }
 
-/* Add a green text color and a checkmark when the requirements are right */
-.valid {
-  color: green;
+.message {
+  margin-top: 20px;
+  font-size: 17px;
 }
 
-.valid:before {
+.valid {
+  color: green;
   position: relative;
   left: 0px;
   content: "✔";
   margin: 0px 15px;
 }
-
-/* Add a red text color and an "x" when the requirements are wrong */
 .invalid {
   color: red;
-}
-
-.invalid:before {
   position: relative;
   left: 0px;
   content: "✖";
@@ -69,9 +71,29 @@ a {
 
 .Menu {
   background: #132944;
+  box-shadow: inset 0px 0px 10px 10px #000;
+}
+.pageNewTopic h2,
+.pageMyForums h2 {
+  color: white;
+}
+.pageNewTopic input,
+.pageMyForums input {
+  color: white;
+}
+.pageMyForums,
+.pageNewTopic {
+  background: #132944;
   box-shadow: inset 0px 0px 10px 10px #112442;
 }
-
+.pageMyForums a,
+.pageNewTopic a {
+  color: white;
+}
+.pageMyForums a:hover,
+.pageNewTopic a:hover {
+  color: rgb(0, 84, 180);
+}
 @media screen and (min-width: 769px) and (max-width: 1089px) /* styles pour tablettes*/ {
   .navbar-brand {
     width: 50%;

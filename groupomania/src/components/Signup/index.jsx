@@ -1,138 +1,162 @@
 /* Importations des bibliothèques react + Yarn 
--> Si besoin styled-components  + react-router-dom  */
-import React, { useState } from "react";
-import axios from "axios";
-import ErrorPassword from "./errorPassword";
-import ErrorEmail from "./errorEmail";
+-> React, useState , PasswordChecklist + axios (Api post-get..) */
 
+import React, { useState } from "react";
+import PasswordChecklist from "react-password-checklist";
+import axios from "axios";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
 function Signup() {
-  /* Fonction useEffect permet de faire une seule requête de l'API. ( Et ne pas l'appeler à l'infinis)
-  Avec le callback , [] en fin de fonction */
   const [firstName, setfirstNameData] = useState("");
-  const [email, setemailData] = useState("");
-  const [password, setpasswordData] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPasswordData] = useState("");
+  const [isValid, setIsValid] = useState();
+  const [message, setMessage] = useState("");
 
+  /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
   function handleChangePassword(e) {
-    setpasswordData(e.target.value);
+    setPasswordData(e.target.value);
   }
-  function handleChangeEmail(e) {
-    setemailData(e.target.value);
-  }
+
+  /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
 
   function handleChangeFirstName(e) {
     setfirstNameData(e.target.value);
   }
+  /* Fonction de l'input et du submit de tentative d'enregistrement 
+   + Appel Post Api et transmission des proprietés enregistrés 
+   -> firstName, email, password et le role_id (2: utilisateur )
+   le role_id ( 1: administrateur ) est prit par moi même */
 
-  function login() {
-    let role_id = 1;
-    axios
-      .post("http://localhost:3000/api/auth/signup", {
-        firstName,
-        email,
-        password,
-        role_id,
-      })
-      .then((res) => console.log(res))
-      .catch((error) => {
-        console.log(error);
-      });
+  function testSignup() {
+    /* Vérifier le mot de passe et si les valeurs firstName, email, password sont complétés et donc valide.
+     La sécurité + la vérification des inputs du mot de passe et de l'émail sur le front
+    permet d'être sur que les données sont valides au préalable  */
+    if (firstName && email && password) {
+      axios
+        .post("http://localhost:3000/api/auth/signup", {
+          firstName,
+          email,
+          password,
+          roleId: 2,
+        })
+        // enregistrer le hash et permet de sécuriser le mot de passe et de le remplacer ( Crypté ).
+        .then((res) => {
+          console.log(res);
+          window.location.href = "http://localhost:3001/login";
+          /* Permet de stocker l'inscription l'utilisateur ( User ) */
+          localStorage.setItem("Inscription", JSON.stringify(res.data.User));
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            console.log("l'utilisateur existe déjà");
+          } else if (err.response.status === 500) {
+            console.log("erreur serveur");
+          }
+        });
+    }
+    console.log("testFinAxios");
   }
+
+  /* L'expression régulière pour valider l'email
+  // Permet de détecter si l'email est un émail valide au focus, onblur, onChange
+  Avec forcément un  @  et un . + 2 lettre après fr ou com ou autre ..  */
+  const emailRegex = /[\w-]+@[\w-]+\.[a-z]{1,4}$/i;
+
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+    if (emailRegex.test(email)) {
+      setIsValid(true);
+      setMessage("✔  Votre émail est validé !");
+    } else {
+      setIsValid(false);
+      setMessage("✖  Veuillez saisir une adresse émail valide !");
+    }
+  };
+
   return (
     <main>
-      <form className="container-fluid" required="">
+      <form className="container-fluid">
         <h1 className="form-group H1Signup col-12 mx-auto">
           Veuillez remplir ce formulaire pour vous enregistrer sur le forum !
         </h1>
         <div className="row">
           <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="firstName">Prénom</label>
+            <label htmlFor="FirstName">Prénom</label>
             <input
+              required={true}
+              autoComplete="given-name"
+              maxLength="20"
               name="firstName"
               type="text"
-              required
               className="form-control"
               id="firstName"
               aria-describedby="Tapper votre Prénom"
               onChange={handleChangeFirstName}
             />
-            <div className="valid-tooltip">Prénom validé</div>
           </div>
           <div className="form-group col-8 my-4 mx-auto relative">
             <label htmlFor="Email">Email</label>
             <input
               title="Merci d'indiquer un émail valide"
-              pattern="/[a-z]+@[\w-]+\.[a-z]{2,4}$/i)"
-              name="Email"
+              required={true}
+              autoComplete="email"
               type="email"
-              required
-              className="form-control"
-              id="Email"
+              name="email"
+              className="form-control Email"
               aria-describedby="Tapper votre Email"
               onChange={handleChangeEmail}
+              onBlur={handleChangeEmail}
+              onFocus={handleChangeEmail}
             />
-            <div className="valid-tooltip">Email validé</div>
-            <h3 className="form-group col-10 mx-auto text-center">
-              L`adresse Email doit contenir :
-            </h3>
-            <div className="col-12 d-flex text-center" id="messageEmail">
-              <div id="myInputEmail" className="col-12 invalid">
-                <p>
-                  L`adresse Email n`est pas valide il manque l`un des caractères
-                  indispensable suivant: @ ou .fr ou le .com
-                </p>
+            <div className="col-12 d-flex text-center">
+              <div className={`message ${isValid ? "valid" : "invalid"}`}>
+                <br></br> <br></br>
+                {message}
               </div>
             </div>
           </div>
-          <div className="form-group col-8 my-4 mx-auto">
-            <label htmlFor="Password">Mot de passe</label>
-            <input
-              name="Password"
-              type="password"
-              required
-              className="form-control"
-              id="Password"
-              aria-describedby="Tapper votre mot de passe"
-              onChange={handleChangePassword}
-            />
-            <div className="valid-tooltip">Mot de passe validé</div>
-          </div>
-          <h3 className="form-group col-10 mx-auto text-center">
-            Le mot de passe doit contenir les éléments suivants :
-          </h3>
-          <div className="col-12 d-flex text-center" id="messagePassword">
-            <div id="letter" className="col-3 invalid">
-              Une Lettre Minuscule
-            </div>
-            <div id="capital" className="col-3 invalid">
-              Une Lettre Majuscule
-            </div>
-            <div id="number" className="col-3 invalid">
-              Un Numéro
-            </div>
-            <div id="length" className="col-3 invalid">
-              Au Minimum 8 Caractéres
-            </div>
-          </div>
-          <div className="col-12">
-            <input
-              type="button"
-              onClick={() => {
-                login();
-              }}
-              className="form-control btn btn-primary col-4 my-4 mx-auto"
-              value="S`enregistrer"
-              aria-describedby="Bouton de validation pour s'enregistrer"
-            />
-          </div>
+        </div>
+        <div className="form-group col-8 my-4 mx-auto">
+          <label htmlFor="Password">Mot de passe</label>
+          <input
+            required={true}
+            autoComplete="current-password"
+            id="Password"
+            name="password"
+            type="password"
+            className="form-control password"
+            aria-describedby="Tapper votre mot de passe"
+            onChange={handleChangePassword}
+          />
+          <PasswordChecklist
+            rules={["minLength", "maxLength", "capital", "lowercase", "number"]}
+            minLength={8}
+            value={password}
+            messages={{
+              minLength: "Le mot de passe doit contenir au moins 8 caractères",
+              maxLength: "Le mot de passe peut contenir maximum 100 caractères",
+              capital: "Le mot de passe doit avoir au moins 1 lettre majuscule",
+              lowercase: "Le mot de passe contient une lettre minuscule",
+              number: "Le mot de passe doit avoir au moins 2 chiffres",
+            }}
+          />
+        </div>
+        <div className="col-12">
+          <input
+            type="button"
+            name="submit"
+            onClick={() => {
+              testSignup();
+            }}
+            className="form-control btn btn-primary col-4 my-4 mx-auto"
+            value="S`enregistrer"
+            aria-describedby="Bouton de validation pour s'enregistrer"
+          />
         </div>
       </form>
     </main>
   );
 }
 export default Signup;
-
-ErrorPassword();
-ErrorEmail();
