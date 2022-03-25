@@ -11,7 +11,9 @@ function Services() {
     if (connexion != null) {
       window.location.href = "http://localhost:3001/Articles";
     } else if (connexion === null) {
-      console.log("Veuillez remplir les champs du formulaire d'inscription");
+      console.log(
+        "Veuillez remplir les champs du formulaire de connexion avec les mêmes données que le formulaire d'inscription"
+      );
     }
   }
 

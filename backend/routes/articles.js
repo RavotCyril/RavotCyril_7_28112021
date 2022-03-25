@@ -8,10 +8,10 @@ const multer = require('../middleware/multer-config');
 //* Routes Articles + Like  */
 
 router.get('/', articlesCtrl.getAllModelsArticle);
-router.get('/:id', auth, articlesCtrl.getOneModelsArticle);
-router.post('/', auth, multer, articlesCtrl.createModelsArticle);
-router.put('/:id', auth, multer, articlesCtrl.modifyModelsArticle);
-router.delete('/:id', auth, articlesCtrl.deleteModelsArticle);
+router.get('/:id', articlesCtrl.getOneModelsArticle);
+router.post('/', multer, articlesCtrl.createModelsArticle);
+router.put('/:id', multer, articlesCtrl.modifyModelsArticle);
+router.delete('/:id', articlesCtrl.deleteModelsArticle);
 
 
 /* Exporte le routeur Express */

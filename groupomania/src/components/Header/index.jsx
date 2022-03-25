@@ -1,6 +1,5 @@
 /* Importations Bibliothèques React-router-dom  */
 import React from "react";
-import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 // /* Importations des pages de styles + logo + images */
@@ -9,7 +8,9 @@ import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
-  /* Permet de stocker l'identification ( Token ) */
+  /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email ... ) 
+  avec la clef inscription du local Storage */
+
   let User = JSON.parse(localStorage.getItem("Inscription"));
 
   /* Permet de vider le localStorage( Token ) et de se deconnecter de l'application.

@@ -4,14 +4,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 module.exports = (req, res, next) => {
     try {
-        console.log("Début Authentification")
         const token = req.headers.authorization.split(' ')[1]; /* Récupération du token après séparation du bearer (espace) */
-        // console.log(token)
         const decodedToken = jwt.verify(token, process.env.DB_TOKEN); /* Décode le token */
-        // console.log(decodedToken)
         const userId = decodedToken.userId; /* userId du token décodé précedemment */
-
-        if (Models.User.userId && Models.User.userId !== userId) {
+        if (req.body.userId && req.body.userId !== userId) {
             /* Si on a un userId dans la requete et qu'il est différent de l'userId encodé 
             dans le token cela envoie " invalid user id " */
             throw 'Invalid user ID';
