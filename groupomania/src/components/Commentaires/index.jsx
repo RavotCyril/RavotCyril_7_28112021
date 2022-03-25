@@ -14,7 +14,7 @@ function Commentaires() {
   function handleChangeTexte(event) {
     setTexte(event.target.value);
   }
-  const handleSubmit = (event) => {
+  const handleSubmit = () => {
     if (texte != null) {
       axios
         .post("http://localhost:3000/api/commentaires/", {
@@ -46,7 +46,6 @@ function Commentaires() {
         }
       });
   };
-
   return (
     <main className="Commentaires container-fluid">
       <form>
