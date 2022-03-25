@@ -28,10 +28,6 @@ function Articles() {
           if (err.response.status === 400) {
             console.log("Tout les champs n'ont pas été correctement remplis'");
           } else if (err.response.status === 500) {
-            console.log(sujet);
-            console.log(texte);
-            console.log(date);
-            console.log(image);
           }
         });
     }
@@ -111,13 +107,13 @@ function Articles() {
               <div className="col-10 mx-auto">
                 <input
                   accept="image/*"
-                  className="col-8 mx-auto"
+                  className="ArticleImage col-8 mx-auto"
                   type="file"
                   onChange={HandleChangeFile}
                 />
                 {image && selectedImage && (
                   <div>
-                    <img src={image} alt="Image selectionnée" />
+                    <img src={image} alt="Fichier selectionné" />
                   </div>
                 )}
               </div>

@@ -39,8 +39,8 @@ function MyForums() {
           </li>
         </ul>
       </div>
-      <Commentaires />
       <DeleteUpdateArticle />
+      <Commentaires />
     </main>
   );
 }

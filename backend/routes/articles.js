@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const articlesCtrl = require('../controllers/articles');
-const auth = require('../middleware/auth');
+// const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
 //* Routes Articles + Like  */

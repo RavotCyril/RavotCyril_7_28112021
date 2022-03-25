@@ -48,34 +48,36 @@ function Commentaires() {
   };
   return (
     <main className="Commentaires container-fluid">
-      <form>
-        <div className="row">
-          <div className="col-12 col-sm-12  mx-auto text-center sujet">
-            <h2>Poster un commentaire&nbsp;&nbsp;</h2>
-            <textarea
-              className="col-8 col-sm-6  mx-auto"
-              type="text"
-              value={texte}
-              onChange={handleChangeTexte}
-              rows={3}
-              cols={3}
-              wrap="hard"
-            ></textarea>
-            <div className="col-12 col-sm-8 mx-auto">
-              <input
-                type="button"
-                name="submit"
-                className="form-control btn btn-primary col-4 my-4 mx-auto"
-                value="Poster le nouveau commentaire"
-                aria-describedby="Bouton de validation pour créer le commentaire"
-                onClick={() => {
-                  handleSubmit();
-                }}
-              />
+      {localStorage.getItem("Identification") != null ? (
+        <form>
+          <div className="row">
+            <div className="col-12 col-sm-12  mx-auto text-center sujet">
+              <h2>Poster un commentaire&nbsp;&nbsp;</h2>
+              <textarea
+                className="col-8 col-sm-6  mx-auto"
+                type="text"
+                value={texte}
+                onChange={handleChangeTexte}
+                rows={3}
+                cols={3}
+                wrap="hard"
+              ></textarea>
+              <div className="col-12 col-sm-8 mx-auto">
+                <input
+                  type="button"
+                  name="submit"
+                  className="form-control btn btn-primary col-4 my-4 mx-auto"
+                  value="Poster le nouveau commentaire"
+                  aria-describedby="Bouton de validation pour créer le commentaire"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      ) : null}
     </main>
   );
 }
