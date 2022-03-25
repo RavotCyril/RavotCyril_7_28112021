@@ -8,7 +8,7 @@ import "../../Styles/App.css";
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
   const handleSubmit = () => {
-    if (sujet && texte && image) {
+    if (sujet != null && texte != null && image != null) {
       axios
         .post("http://localhost:3000/api/articles", {
           sujet,
@@ -18,7 +18,7 @@ function Articles() {
         })
         .then((res) => {
           console.log(res);
-          window.location.href = "http://localhost:3001/NewTopic";
+          // window.location.href = "http://localhost:3001/NewTopic";
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -100,7 +100,7 @@ function Articles() {
               />
               <img src={image} value="" alt="Photos des articles" />
             </div>
-            <div className="col-2 mx-auto">
+            <div className="col-10 mx-auto">
               <input
                 type="button"
                 name="submit"

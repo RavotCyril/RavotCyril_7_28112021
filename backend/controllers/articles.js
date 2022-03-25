@@ -3,13 +3,11 @@ const fs = require('fs');
 
 // Créer un article / post
 exports.createModelsArticle = (req, res, next) => {
-    console.log("Test Article crée Debut")
     // Appel du body de l'article ou du post crée.
-    // console.log(req.body)
+    console.log("Debut-Post-Article")
     let article = req.body.article;
     article.date = Date.now().toString();
-    Models.Article.create(
-        {
+    Models.Article.create({
             ...article,
             image: `${req.protocol}://${req.get('host')}/images/${req.file}`,
             image: 'backend/images/Sport.jpg',
@@ -17,13 +15,11 @@ exports.createModelsArticle = (req, res, next) => {
             dislike: 0,
         }).then(() => res.status(201).json({ message: 'article créé !' }))
         .catch(error => res.status(400).json({ message: error.message }));
-    console.log(article.article_id)
-    console.log("Test Article crée fin")
+    console.log("Fin-Post-Article")
 };
 // Afficher un seule article / GET
 
 exports.getOneModelsArticle = (req, res, next) => {
-    console.log("Test 1 Article Affiché Debut")
 
     Models.Article.findOne({ where: { article_id: req.params.id } })
         .then(
@@ -37,15 +33,11 @@ exports.getOneModelsArticle = (req, res, next) => {
                 });
             }
         );
-    console.log("Test 1 Article affiché fin")
 };
 // Modifier un article / PUT  
 
 exports.modifyModelsArticle = (req, res, next) => {
-    console.log("Test Article modifié Debut")
-    // if (req.file) {
-    console.log("Avant FindOne")
-    // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
+
     Models.Article.findOne({ where: { article_id: req.params.id } }).then(Article => {
         const filename = Article.image.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
@@ -54,7 +46,7 @@ exports.modifyModelsArticle = (req, res, next) => {
                 ...req.body.article,
                 image: req.file == undefined ? "" : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
             }
-            Models.Article.update({ ...article }, { where: { article_id: article.article_id } })
+            Models.Article.update({...article }, { where: { article_id: article.article_id } })
                 .then(() => res.status(200).json({ message: 'article modifié !' }))
                 .catch(error => res.status(400).json({ error }));
         })
@@ -63,7 +55,6 @@ exports.modifyModelsArticle = (req, res, next) => {
 // Supprimer un article / DELETE 
 
 exports.deleteModelsArticle = (req, res, next) => {
-    console.log("Test Article supprimé Debut")
     Models.Article.findOne({ where: { article_id: req.params.id } })
         .then(Models => {
             const filename = Models.image.split('/images/')[1];
@@ -74,12 +65,10 @@ exports.deleteModelsArticle = (req, res, next) => {
             });
         })
         .catch(error => res.status(500).json({ error }));
-    console.log("Test Article supprimé fin")
 };
 // Afficher tous les articles / GET
 
 exports.getAllModelsArticle = (req, res, next) => {
-    console.log("Test Tous les Articles affiché Debut")
     Models.Article.findAll()
         .then(
             (Models) => {
@@ -92,5 +81,4 @@ exports.getAllModelsArticle = (req, res, next) => {
                 });
             }
         );
-    console.log("Test Tous les Articles affiché fin")
 };

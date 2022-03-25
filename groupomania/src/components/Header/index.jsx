@@ -1,5 +1,6 @@
 /* Importations Bibliothèques React-router-dom  */
 import React from "react";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 // /* Importations des pages de styles + logo + images */
@@ -9,15 +10,18 @@ import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
   /* Permet de stocker l'identification ( Token ) */
-
   let User = JSON.parse(localStorage.getItem("Inscription"));
-  const history = useNavigate();
+
+  /* Permet de vider le localStorage( Token ) et de se deconnecter de l'application.
+    Permet aussi de se rediriger sur la page Inscription ( Signup) */
+
+  const navigate = useNavigate();
   function logOut() {
     localStorage.clear();
-    history.push("/signup");
+    navigate("/signup", { replace: true });
   }
   return (
-    <header>
+    <header id="deconnexion">
       <div className="container-fluid Menu m-0">
         <div className="row">
           <nav className="navbar navbar-expand-sm navbar-dark">
@@ -73,12 +77,9 @@ function Header() {
                   </>
                 )}
                 {localStorage.getItem("Identification") != null ? (
-                  <li className="nav-item">
+                  <li>
                     <NavDropdown title={User && User.firstname}>
-                      <NavDropdown.Item
-                        className="navbar-brand"
-                        onClick={logOut}
-                      >
+                      <NavDropdown.Item onClick={logOut}>
                         Se deconnecter
                       </NavDropdown.Item>
                     </NavDropdown>

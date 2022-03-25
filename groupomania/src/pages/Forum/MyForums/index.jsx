@@ -18,7 +18,7 @@ function MyForums() {
   //    <Articles message="Succes Alert" />;
   //  </div>;
   return (
-    <main className="pageMyForums">
+    <main id="MyForum" className="pageMyForums">
       <h1>Bienvenue sur le forum</h1>
       <div className="d-flex">
         <div className="article-list">
@@ -33,7 +33,9 @@ function MyForums() {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/NewTopic">Nouveau sujet </NavLink>
+            <NavLink to="/NewTopic" className="navbar-brand">
+              Nouveau sujet
+            </NavLink>
           </li>
         </ul>
       </div>

@@ -24,14 +24,12 @@ exports.signup = (req, res, next) => {
                     res.status(400).json({ message: "Cette utilisateur existe déjà le mail est déjà utilisé" }));
         })
         .catch(error => res.status(500).json({ message: "Serveur non connecté" }));
-    console.log("Fin Inscription")
 
 };
 
 /* Exporte la fonction connexion utilisateur */
 
 exports.login = (req, res, next) => {
-    console.log("Début connexion")
     Models.User.findOne({ where: { email: req.body.email } })
         .then(User => {
             if (!User) {
@@ -56,5 +54,4 @@ exports.login = (req, res, next) => {
                 });
         })
         .catch(error => res.status(500).json({ error }));
-    console.log("Fin Connexion")
 };

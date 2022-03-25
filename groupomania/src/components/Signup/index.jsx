@@ -56,7 +56,6 @@ function Signup() {
           }
         });
     }
-    console.log("testFinAxios");
   }
 
   /* L'expression régulière pour valider l'email
