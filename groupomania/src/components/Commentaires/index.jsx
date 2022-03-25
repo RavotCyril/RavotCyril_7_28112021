@@ -10,15 +10,20 @@ import "../../Styles/App.css";
 function Commentaires() {
   /* Fonction pour vérifier ce que l'on écrit dans l'input du commentaire  */
   const [texte, setTexte] = useState("");
+  const [token] = useState("");
 
   function handleChangeTexte(event) {
     setTexte(event.target.value);
   }
   const handleSubmit = () => {
     if (texte != null) {
+      var config = {
+        headers: { authorization: "bearer " + token },
+      };
       axios
         .post("http://localhost:3000/api/commentaires/", {
           texte,
+          config,
         })
         .then((res) => {
           console.log(res);
@@ -34,6 +39,7 @@ function Commentaires() {
     axios
       .get("http://localhost:3000/api/commentaires/", {
         texte,
+        config,
       })
       .then((res) => {
         console.log(res);

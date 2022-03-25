@@ -7,19 +7,32 @@ import "../../Styles/App.css";
 
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
+  const [token] = useState("");
   var date = new Date();
+
+  var config = {
+    headers: {
+      Authorization:
+        "bearer " + JSON.parse(localStorage.getItem("Identification")),
+    },
+  };
+
+  console.log(config);
   const handleSubmit = () => {
     if (sujet && texte && image && date) {
-      console.log(image);
       axios
-        .post("http://localhost:3000/api/articles/", {
-          article: {
-            sujet,
-            texte,
-            date,
-            image,
+        .post(
+          "http://localhost:3000/api/articles/",
+          {
+            article: {
+              sujet,
+              texte,
+              date,
+              image,
+            },
           },
-        })
+          config
+        )
         .then((res) => {
           console.log(res);
           // window.location.href = "http://localhost:3001/NewTopic";
@@ -31,13 +44,9 @@ function Articles() {
           }
         });
     }
+    console.log(config);
     axios
-      .get("http://localhost:3000/api/articles/", {
-        sujet,
-        texte,
-        date,
-        image,
-      })
+      .get("http://localhost:3000/api/articles/", config)
       .then((res) => {
         console.log(res);
         // window.location.href = "http://localhost:3001/Myforums";

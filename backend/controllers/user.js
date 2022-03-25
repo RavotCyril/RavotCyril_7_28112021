@@ -44,7 +44,7 @@ exports.login = (req, res, next) => {
                         message: 'Utilisateur trouvé et mot de passe validé connexion réussi et Token D\'authentification généré par la base de donnée!',
                         /*  Id généré par la base de données */
                         token: jwt.sign({ userId: User.user_id, }, /* Token d'authentification */
-                            process.env.DB_TOKEN, { expiresIn: '300s' }, /* Temps de validité du Token */
+                            process.env.DB_TOKEN, { expiresIn: '2 days' }, /* Temps de validité du Token */
                         )
                     });
                 })
