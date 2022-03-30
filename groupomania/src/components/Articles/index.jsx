@@ -7,17 +7,19 @@ import "../../Styles/App.css";
 
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
-  const [token] = useState("");
   var date = new Date();
-
+  /* Fonction pour  récupérer le token enregistré dans le clef Identification  */
   var config = {
     headers: {
       Authorization:
         "bearer " + JSON.parse(localStorage.getItem("Identification")),
     },
   };
+  /* Permet de récupérer la valeur de l'user_id dans le localStorage dans la constante user_id */
 
-  console.log(config);
+  const user = JSON.parse(localStorage.getItem("Inscription"));
+  const user_id = user.user_id;
+
   const handleSubmit = () => {
     if (sujet && texte && image && date) {
       axios
@@ -29,12 +31,15 @@ function Articles() {
               texte,
               date,
               image,
+              user_id,
             },
           },
           config
         )
         .then((res) => {
           console.log(res);
+          /* Permet de stocker les données de l'article ..( l'id_article et l'id_user )*/
+          localStorage.setItem("Article", JSON.stringify(res.data.Article));
           // window.location.href = "http://localhost:3001/NewTopic";
         })
         .catch((err) => {
@@ -44,7 +49,6 @@ function Articles() {
           }
         });
     }
-    console.log(config);
     axios
       .get("http://localhost:3000/api/articles/", config)
       .then((res) => {
@@ -56,6 +60,35 @@ function Articles() {
           console.log("Tout les champs n'ont pas été correctement remplis'");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
+        }
+      });
+  };
+  /* Crud pour Supprimer, Modifier un Article  */
+  const handleDelete = () => {
+    axios
+      .delete("http://localhost:3000/api/articles/:id", config)
+      .then((res) => {
+        console.log(res);
+        // window.location.href = "http://localhost:3001/NewTopic";
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis'");
+        } else if (err.response.status === 500) {
+        }
+      });
+  };
+  const handleUpdate = () => {
+    axios
+      .put("http://localhost:3000/api/articles/:id", config)
+      .then((res) => {
+        console.log(res);
+        // window.location.href = "http://localhost:3001/NewTopic";
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis'");
+        } else if (err.response.status === 500) {
         }
       });
   };
@@ -137,6 +170,35 @@ function Articles() {
                     handleSubmit();
                   }}
                 />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-2 mx-auto">
+                <button
+                  className="btn btn-danger mx-3"
+                  onClick={() => {
+                    if (
+                      window.confirm("Confirmer pour supprimer cette article?")
+                    )
+                      handleDelete();
+                    alert("Article supprimé avec succès");
+                  }}
+                >
+                  Supprimer
+                  <div className="btn-container mx-auto"></div>
+                </button>
+                <button
+                  className="btn btn-dark"
+                  onClick={() => {
+                    if (
+                      window.confirm("Confirmer pour modifier cette article?")
+                    )
+                      handleUpdate();
+                    alert("Article modifié avec succès");
+                  }}
+                >
+                  modifier
+                </button>
               </div>
             </div>
           </div>

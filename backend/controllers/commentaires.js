@@ -10,7 +10,7 @@ exports.createModelsCommentaire = (req, res, next) => {
 
     Models.Commentaire.create({
             ...commentaire,
-        }).then(() => res.status(201).json(commentaire))
+        }).then(() => res.status(201).json(({ message: 'commentaire créé !' })))
         .catch(error => res.status(400).json({ message: error.message }));
 };
 

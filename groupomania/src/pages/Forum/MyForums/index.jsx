@@ -2,7 +2,6 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom";
-import DeleteUpdateArticle from "../../../components/Articles/DeleteUpdateArticle";
 import Commentaires from "../../../components/Commentaires";
 
 function MyForums() {
@@ -39,7 +38,6 @@ function MyForums() {
           </li>
         </ul>
       </div>
-      <DeleteUpdateArticle />
       <Commentaires />
     </main>
   );

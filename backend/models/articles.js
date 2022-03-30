@@ -1,4 +1,3 @@
-
 /* Importation du module Sequelize  */
 
 const { Sequelize } = require('sequelize');

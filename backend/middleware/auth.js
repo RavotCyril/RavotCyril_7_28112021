@@ -1,17 +1,12 @@
-const Models = require('../models/user');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 dotenv.config();
 module.exports = (req, res, next) => {
     try {
-        //console.log(req.headers)
-
         const token = req.headers.authorization.split(' ')[1]; /* Récupération du token après séparation du bearer (espace) */
-
         const decodedToken = jwt.verify(token, process.env.DB_TOKEN); /* Décode le token */
-        console.log("decode token" + decodedToken)
         const userId = decodedToken.userId; /* userId du token décodé précedemment */
-        if (Models.userId && Models.userId !== userId) {
+        if (req.body.userId && req.body.userId !== userId) {
             /* Si on a un userId dans la requete et qu'il est différent de l'userId encodé 
             dans le token cela envoie " invalid user id " */
             throw 'Invalid user ID';
@@ -24,5 +19,4 @@ module.exports = (req, res, next) => {
             message: 'Authorisation Token invalide!'
         });
     }
-    console.log("Fin Authentification")
 };

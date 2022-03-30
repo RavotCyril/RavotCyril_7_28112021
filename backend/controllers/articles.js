@@ -1,23 +1,17 @@
 const Models = require('../models/articles');
 const fs = require('fs');
-const { cp } = require('fs/promises');
 
 // Créer un article / post
 exports.createModelsArticle = (req, res, next) => {
     // Appel du body de l'article ou du post crée.
-    console.log("Debut-Post-Article")
     let article = req.body.article;
-    const date = new Date();
+    const date = "Date";
     Models.Article.create({
             ...article,
             image: `${req.protocol}://${req.get('host')}/images/${req.file}`,
             date: date,
-            like: 0,
-            dislike: 0,
-        }).then(() => res.status(201).json({ message: 'article créé !' }))
+        }).then((Article) => res.status(201).json({ Article, message: 'article créé !' }))
         .catch(error => res.status(400).json({ message: error.message }));
-    console.log(article);
-    console.log("Fin-Post-Article")
 };
 // Afficher un seule article / GET
 

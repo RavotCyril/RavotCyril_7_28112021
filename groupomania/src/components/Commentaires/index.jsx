@@ -5,26 +5,48 @@ import axios from "axios";
 import "../../Styles/App.css";
 // import dataAuthentification from "../../Services";
 
+/* Permet de récupérer l'id_article et l'id_user des articles pour mettre 
+les commentaires définit par rapport à des articles ciblés */
+
+const Article = JSON.parse(localStorage.getItem("Article"));
+const id_article = Article.article_id;
+const id_user = Article.user_id;
+console.log(Article);
+console.log(id_article);
+console.log(id_user);
+
 /* Crud pour Créer, Afficher un Commentaire  */
 
 function Commentaires() {
+  /* Fonction pour  récupérer le token enregistré dans le clef Identification  */
+
+  var config = {
+    headers: {
+      Authorization:
+        "bearer " + JSON.parse(localStorage.getItem("Identification")),
+    },
+  };
   /* Fonction pour vérifier ce que l'on écrit dans l'input du commentaire  */
   const [texte, setTexte] = useState("");
-  const [token] = useState("");
 
   function handleChangeTexte(event) {
     setTexte(event.target.value);
   }
+
   const handleSubmit = () => {
     if (texte != null) {
-      var config = {
-        headers: { authorization: "bearer " + token },
-      };
       axios
-        .post("http://localhost:3000/api/commentaires/", {
-          texte,
-          config,
-        })
+        .post(
+          "http://localhost:3000/api/commentaires/",
+          {
+            commentaire: {
+              texte,
+              id_article,
+              id_user,
+            },
+          },
+          config
+        )
         .then((res) => {
           console.log(res);
         })
@@ -37,10 +59,17 @@ function Commentaires() {
         });
     }
     axios
-      .get("http://localhost:3000/api/commentaires/", {
-        texte,
-        config,
-      })
+      .get(
+        "http://localhost:3000/api/commentaires/",
+        {
+          commentaire: {
+            texte,
+            id_article,
+            id_user,
+          },
+        },
+        config
+      )
       .then((res) => {
         console.log(res);
       })
