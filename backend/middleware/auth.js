@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 module.exports = (req, res, next) => {
     try {
+
         const token = req.headers.authorization.split(' ')[1]; /* Récupération du token après séparation du bearer (espace) */
         const decodedToken = jwt.verify(token, process.env.DB_TOKEN); /* Décode le token */
         const userId = decodedToken.userId; /* userId du token décodé précedemment */

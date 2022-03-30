@@ -8,52 +8,81 @@ import "../../Styles/App.css";
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
   var date = new Date();
-  /* Fonction pour  récupérer le token enregistré dans le clef Identification  */
-  var config = {
+  /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email  et l'user_id ... ) 
+  avec la clef inscription du local Storage*/
+
+  let User = JSON.parse(localStorage.getItem("Inscription"));
+  const user_id = User.user_id;
+  /* Fonction pour  récupérer le token enregistré dans le clef Identification */
+
+  var configData = {
     headers: {
       Authorization:
         "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      "Content-Type": "multipart/form-data",
     },
   };
-  /* Permet de récupérer la valeur de l'user_id dans le localStorage dans la constante user_id */
-
-  const user = JSON.parse(localStorage.getItem("Inscription"));
-  const user_id = user.user_id;
+  console.log(configData);
 
   const handleSubmit = () => {
     if (sujet && texte && image && date) {
-      axios
-        .post(
-          "http://localhost:3000/api/articles/",
-          {
-            article: {
-              sujet,
-              texte,
-              date,
-              image,
-              user_id,
-            },
-          },
-          config
-        )
+      console.log(image);
+      var mydata = new FormData();
+      mydata.append("texte", texte);
+      mydata.append("image", image);
+
+      axios({
+        method: "post",
+        url: "http://localhost:3000/api/articles/",
+        data: mydata,
+        headers: {
+          Authorization:
+            "bearer " + JSON.parse(localStorage.getItem("Identification")),
+          "Content-Type": "multipart/form-data",
+        },
+        article: {
+          sujet,
+          texte,
+          date,
+          image,
+          user_id,
+        },
+      })
         .then((res) => {
           console.log(res);
           /* Permet de stocker les données de l'article ..( l'id_article et l'id_user )*/
           localStorage.setItem("Article", JSON.stringify(res.data.Article));
-          // window.location.href = "http://localhost:3001/NewTopic";
+          window.location.href = "http://localhost:3001/MyForums";
         })
         .catch((err) => {
           if (err.response.status === 400) {
             console.log("Tout les champs n'ont pas été correctement remplis'");
           } else if (err.response.status === 500) {
+            console.log("erreur serveur");
+          }
+        });
+      axios
+        .get("http://localhost:3000/api/articles/", configData)
+        .then((res) => {
+          console.log(res);
+          //window.location.href = "http://localhost:3001/MyForums";
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            console.log("Tout les champs n'ont pas été correctement remplis'");
+          } else if (err.response.status === 500) {
+            console.log("erreur serveur");
           }
         });
     }
+  };
+  /* Crud pour Supprimer, Modifier un Article  */
+  const handleDelete = () => {
     axios
-      .get("http://localhost:3000/api/articles/", config)
+      .delete("http://localhost:3000/api/articles/:id", configData)
       .then((res) => {
         console.log(res);
-        // window.location.href = "http://localhost:3001/Myforums";
+        // window.location.href = "http://localhost:3001/NewTopic";
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -63,24 +92,9 @@ function Articles() {
         }
       });
   };
-  /* Crud pour Supprimer, Modifier un Article  */
-  const handleDelete = () => {
-    axios
-      .delete("http://localhost:3000/api/articles/:id", config)
-      .then((res) => {
-        console.log(res);
-        // window.location.href = "http://localhost:3001/NewTopic";
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis'");
-        } else if (err.response.status === 500) {
-        }
-      });
-  };
   const handleUpdate = () => {
     axios
-      .put("http://localhost:3000/api/articles/:id", config)
+      .put("http://localhost:3000/api/articles/:id", configData)
       .then((res) => {
         console.log(res);
         // window.location.href = "http://localhost:3001/NewTopic";
@@ -89,6 +103,7 @@ function Articles() {
         if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis'");
         } else if (err.response.status === 500) {
+          console.log("erreur serveur");
         }
       });
   };
@@ -136,70 +151,72 @@ function Articles() {
               />
               <br />
               <br />
-              <h2>Texte&nbsp;&nbsp;</h2>
-              <textarea
-                className="col-6 mx-auto"
-                type="text"
-                value={texte}
-                onChange={handleChangeTexte}
-                rows={5}
-                cols={5}
-                wrap="hard"
-              ></textarea>
-              <div className="col-10 mx-auto">
-                <input
-                  accept="image/*"
-                  className="ArticleImage col-8 mx-auto"
-                  type="file"
-                  onChange={HandleChangeFile}
-                />
-                {image && selectedImage && (
-                  <div>
-                    <img src={image} alt="Fichier selectionné" />
-                  </div>
-                )}
-              </div>
-              <div className="col-10 mx-auto">
-                <input
-                  type="button"
-                  name="submit"
-                  className="form-control btn btn-primary col-4 my-4 mx-auto"
-                  value="Poster le nouveau sujet"
-                  aria-describedby="Bouton de validation pour s'enregistrer"
-                  onClick={() => {
-                    handleSubmit();
-                  }}
-                />
-              </div>
             </div>
-            <div className="row">
-              <div className="col-2 mx-auto">
-                <button
-                  className="btn btn-danger mx-3"
-                  onClick={() => {
-                    if (
-                      window.confirm("Confirmer pour supprimer cette article?")
-                    )
-                      handleDelete();
-                    alert("Article supprimé avec succès");
-                  }}
-                >
-                  Supprimer
-                  <div className="btn-container mx-auto"></div>
-                </button>
-                <button
-                  className="btn btn-dark"
-                  onClick={() => {
-                    if (
-                      window.confirm("Confirmer pour modifier cette article?")
-                    )
-                      handleUpdate();
-                    alert("Article modifié avec succès");
-                  }}
-                >
-                  modifier
-                </button>
+          </div>
+          <div className="row">
+            <h2>Texte&nbsp;&nbsp;</h2>
+            <textarea
+              className="col-6 mx-auto"
+              type="text"
+              value={texte}
+              onChange={handleChangeTexte}
+              rows={5}
+              cols={5}
+              wrap="hard"
+            ></textarea>
+          </div>
+          <div className="row">
+            <input
+              accept="image/*"
+              className="InputImage col-8 mx-auto"
+              type="file"
+              onChange={HandleChangeFile}
+            />
+          </div>
+          <div className="Row">
+            {image && selectedImage && (
+              <div className="Article-Image col-12 col-sm-12 mx-auto text-center">
+                <img src={image} alt="Fichier selectionné" />
               </div>
+            )}
+          </div>
+          <div className="row">
+            <div className="col-10 mx-auto">
+              <input
+                type="button"
+                name="submit"
+                className="form-control btn btn-primary col-4 my-4 mx-auto"
+                value="Poster le nouveau sujet"
+                aria-describedby="Bouton de validation pour s'enregistrer"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-2 mx-auto">
+              <button
+                className="btn btn-danger mx-3"
+                onClick={() => {
+                  if (window.confirm("Confirmer pour supprimer cette article?"))
+                    handleDelete();
+                  alert("Article supprimé avec succès");
+                }}
+              >
+                Supprimer
+                <div className="btn-container mx-auto"></div>
+              </button>
+              <button
+                className="btn btn-dark"
+                onClick={() => {
+                  if (window.confirm("Confirmer pour modifier cette article?"))
+                    handleUpdate();
+                  alert("Article modifié avec succès");
+                }}
+              >
+                modifier
+              </button>
             </div>
           </div>
         </form>

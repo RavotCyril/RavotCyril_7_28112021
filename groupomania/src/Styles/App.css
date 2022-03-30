@@ -9,11 +9,19 @@ body {
     font-family: "Roboto Regular", sans-serif;
 }
 
-.Commentaires {
-    color: white;
+#Article {
+    box-shadow: 1px 1px 3px 3px black;
+    width: 80%;
+    margin: 0px auto;
+    background: white;
 }
 
-.ArticleImage {
+.Article-Image img {
+    width: 60%;
+    height: auto;
+}
+
+.InputImage {
     color: white;
 }
 
@@ -39,6 +47,11 @@ body {
 #MyForum .navbar-nav .nav-item a {
     color: white;
     text-decoration: none;
+}
+
+#MyForum p,
+#MyForum img {
+    color: black;
 }
 
 #MyForum .navbar-nav .nav-item hover {
@@ -112,6 +125,7 @@ a {
 .pageNewTopic h2,
 .pageMyForums h2 {
     color: white;
+    text-align: center;
 }
 
 .pageMyForums,
@@ -137,6 +151,10 @@ a {
         object-fit: cover;
         object-position: center;
     }
+    .Article-Image img {
+        width: 50%;
+        height: auto;
+    }
 }
 
 @media screen and (min-width: 415px) and (max-width: 768px)
@@ -153,6 +171,10 @@ a {
         object-fit: cover;
         object-position: center;
     }
+    .Article-Image img {
+        width: 60%;
+        height: auto;
+    }
 }
 
 @media screen and (max-width: 414px)
@@ -168,5 +190,13 @@ a {
         height: auto;
         object-fit: cover;
         object-position: center;
+    }
+    .Article-Image img {
+        width: 60%;
+        height: auto;
+    }
+    .Article-Image img {
+        width: 100%;
+        height: auto;
     }
 }

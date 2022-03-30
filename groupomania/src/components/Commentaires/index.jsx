@@ -8,16 +8,17 @@ import "../../Styles/App.css";
 /* Permet de récupérer l'id_article et l'id_user des articles pour mettre 
 les commentaires définit par rapport à des articles ciblés */
 
-const Article = JSON.parse(localStorage.getItem("Article"));
-const id_article = Article.article_id;
-const id_user = Article.user_id;
-console.log(Article);
-console.log(id_article);
-console.log(id_user);
-
 /* Crud pour Créer, Afficher un Commentaire  */
 
 function Commentaires() {
+  const Article = JSON.parse(localStorage.getItem("Article"));
+  if (Article != null) {
+    var id_article = Article.article_id;
+    var id_user = Article.user_id;
+  } else {
+    console.log("L'article doit être complété");
+  }
+
   /* Fonction pour  récupérer le token enregistré dans le clef Identification  */
 
   var config = {
@@ -82,7 +83,7 @@ function Commentaires() {
       });
   };
   return (
-    <main className="Commentaires container-fluid">
+    <div>
       {localStorage.getItem("Identification") != null ? (
         <form>
           <div className="row">
@@ -113,7 +114,7 @@ function Commentaires() {
           </div>
         </form>
       ) : null}
-    </main>
+    </div>
   );
 }
 export default Commentaires;
