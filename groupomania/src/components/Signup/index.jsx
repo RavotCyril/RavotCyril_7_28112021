@@ -18,7 +18,6 @@ function Signup() {
   function handleChangePassword(e) {
     setPasswordData(e.target.value);
   }
-
   /* Fonction pour vérifier ce que l'on écrit dans l'input FirstName  */
 
   function handleChangeFirstName(e) {
@@ -45,8 +44,6 @@ function Signup() {
         .then((res) => {
           console.log(res);
           window.location.href = "http://localhost:3001/login";
-          /* Permet de stocker l'inscription l'utilisateur ( User ) */
-          localStorage.setItem("Inscription", JSON.stringify(res.data.User));
         })
         .catch((err) => {
           if (err.status === 400) {

@@ -45,7 +45,8 @@ exports.login = (req, res, next) => {
                         /*  Id généré par la base de données */
                         token: jwt.sign({ userId: User.user_id, }, /* Token d'authentification */
                             process.env.DB_TOKEN, { expiresIn: '2 days' }, /* Temps de validité du Token */
-                        )
+                        ),
+                        User: User,
                     });
                 })
                 .catch(error => {

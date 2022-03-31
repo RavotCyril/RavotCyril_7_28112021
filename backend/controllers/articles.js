@@ -12,7 +12,7 @@ exports.createModelsArticle = (req, res, next) => {
             date: req.body.date,
             image: `${req.protocol}://${req.get('host')}/images/${req.file}`,
             user_id: req.body.user_id
-        }).then((Article) => res.status(201).json({ Article, message: 'article créé !' }))
+        }).then(() => res.status(201).json({ message: 'article créé !' }))
         .catch(error => res.status(400).json({ message: error.message }));
 };
 // Afficher un seule article / GET

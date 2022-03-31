@@ -28,11 +28,13 @@ function Login() {
         .then((res) => {
           console.log(res);
           /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
-          window.location.href = "http://localhost:3001/MyForums";
+          // window.location.href = "http://localhost:3001/MyForums";
           /* Permet de stocker l'identification ( Token ) */
           localStorage.setItem(
             "Identification",
-            JSON.stringify(res.data.token)
+            JSON.stringify(res.data.token),
+            /* Permet de stocker l'inscription l'utilisateur ( User ) */
+            localStorage.setItem("Inscription", JSON.stringify(res.data.User))
           );
         })
         .catch((err) => {

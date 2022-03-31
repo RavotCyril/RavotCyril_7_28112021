@@ -8,12 +8,6 @@ import "../../Styles/App.css";
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
   var date = new Date();
-  /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email  et l'user_id ... ) 
-  avec la clef inscription du local Storage*/
-
-  let User = JSON.parse(localStorage.getItem("Inscription"));
-  const user_id = User.user_id;
-  /* Fonction pour  récupérer le token enregistré dans le clef Identification */
 
   var configData = {
     headers: {
@@ -24,6 +18,13 @@ function Articles() {
   };
   const handleSubmit = () => {
     if (sujet && texte && image && date) {
+      /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant 
+      son inscription ( Prénom - Email  et l'user_id ... ) avec la clef inscription du local Storage*/
+
+      let User = JSON.parse(localStorage.getItem("Inscription"));
+      var user_id = User.user_id;
+
+      /* Fonction pour  récupérer le token enregistré dans le clef Identification */
       console.log(image);
       const mydata = new FormData();
 
@@ -48,7 +49,6 @@ function Articles() {
       })
         .then((res) => {
           console.log(res);
-          /* Permet de stocker les données de l'article ..( l'id_article et l'id_user )*/
           window.location.href = "http://localhost:3001/MyForums";
         })
         .catch((err) => {
