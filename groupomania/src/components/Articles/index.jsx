@@ -1,11 +1,11 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
 /* Crud pour Créer, Afficher un Article  */
-
 function Articles() {
   var date = new Date();
   /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email  et l'user_id ... ) 
@@ -22,55 +22,19 @@ function Articles() {
       "Content-Type": "multipart/form-data",
     },
   };
-  const [sujet, setSujet] = useState("");
-  const [texte, setTexte] = useState("");
-  const [image, setImage] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  /* Fonction pour capturer ce que l'on écrit dans l'input Sujet  */
-  function handleChangeTopic(e) {
-    setSujet(e.target.value);
-  }
-
-  /* Fonction pour capturer ce que l'on écrit dans l'input Texte  */
-
-  function handleChangeTexte(event) {
-    setTexte(event.target.value);
-  }
-  /* Fonction pour capturer ce que l'on sélectionne dans l'input File  */
-
-  function HandleChangeFile(event) {
-    setSelectedImage(event.target.files[0]);
-  }
-  /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
-  et de la transmettre à la constante image */
-
-  useEffect(() => {
-    if (selectedImage) {
-      setImage(URL.createObjectURL(selectedImage));
-    }
-  }, [selectedImage]);
   const handleSubmit = () => {
     if (sujet && texte && image && date) {
       console.log(image);
-      /*   La bibliothèque `form-data` nous donne une API similaire dans Node.js 
-    à l'interface `FormData` dans le navigateur */
+      const mydata = new FormData();
 
-      const FormData = require("form-data");
+      mydata.append("sujet", sujet);
+      mydata.append("texte", texte);
+      mydata.append("file", image);
 
-      // Créer une nouvelle instance de formulaire
-
-      const form = new FormData();
-
-      /* Ajoute des champs de texte au formulaire */
-
-      form.append("sujet", sujet);
-      form.append("texte", texte);
-      form.append("file", selectedImage, image);
       axios({
         method: "post",
         url: "http://localhost:3000/api/articles/",
-        data: form,
+        data: mydata,
         headers: {
           Authorization:
             "bearer " + JSON.parse(localStorage.getItem("Identification")),
@@ -127,6 +91,34 @@ function Articles() {
         }
       });
   };
+  const [sujet, setSujet] = useState("");
+  const [texte, setTexte] = useState("");
+  const [image, setImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  /* Fonction pour capturer ce que l'on écrit dans l'input Sujet  */
+  function handleChangeTopic(e) {
+    setSujet(e.target.value);
+  }
+
+  /* Fonction pour capturer ce que l'on écrit dans l'input Texte  */
+
+  function handleChangeTexte(event) {
+    setTexte(event.target.value);
+  }
+  /* Fonction pour capturer ce que l'on sélectionne dans l'input File  */
+
+  function HandleChangeFile(event) {
+    setSelectedImage(event.target.files[0]);
+  }
+  /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
+  et de la transmettre à la constante image */
+
+  useEffect(() => {
+    if (selectedImage) {
+      setImage(URL.createObjectURL(selectedImage));
+    }
+  }, [selectedImage]);
   return (
     <main className="Articles container-fluid">
       {localStorage.getItem("Identification") != null ? (

@@ -65,7 +65,11 @@ app.use(helmet());
 // Routes Images-article - Authentication 
 
 /* Gestion des fichiers images */
+// Journalisation du champ rejeté à partir d'une erreur de multer
 
+app.use((error, req, res, next) => {
+    console.log('Ceci est le champ rejeté ->', error.field);
+});
 app.use('/images', express.static(path.join(__dirname, 'images')));
 /* Enregistre les routes des articles et auth de l'application */
 app.use('/api/auth', userRoutes);
