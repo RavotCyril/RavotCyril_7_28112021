@@ -1,49 +1,57 @@
 /* Importations des bibliothèques react + NavLink + Component Articles  */
 
 import React from "react";
+import axios from "axios";
 import { NavLink } from "react-router-dom";
 import Commentaires from "../../../components/Commentaires";
 
 function MyForums() {
-  const Article = JSON.parse(localStorage.getItem("Article"));
-  const Data = [Article];
-  async function DisplayArticle() {
-    if (Data != null) {
-      console.log("testArticle");
-      console.log(Data);
-      Data.forEach((element) => {
-        document.getElementById("Article").innerHTML +=
-          "<article class='col-10 mx-auto'>" +
-          "<img src={" +
-          element.image +
-          "} alt='Fichier selectionné' />" +
-          "<h2>" +
-          element.sujet +
-          "</h2>" +
-          "<p>" +
-          element.texte +
-          "</p>" +
-          "<p>" +
-          element.date +
-          "</p>" +
-          "</article>";
-      });
-      console.log("testFinArticle");
-    } else {
-      console.log("Créer un article");
-    }
-  }
+  var configData = {
+    headers: {
+      Authorization:
+        "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      "Content-Type": "multipart/form-data",
+    },
+  };
+  console.log(configData);
+  axios
+    .get("http://localhost:3000/api/articles/", configData)
+    .then((res) => {
+      console.log(res);
+      //window.location.href = "http://localhost:3001/MyForums";
+      // console.log("testArticle");
+      // res.forEach((element) => {
+      //   document.getElementById("Article").innerHTML +=
+      //     "<article class='col-10 mx-auto'>" +
+      //     "<img src={" +
+      //     element.image +
+      //     "} alt='Fichier selectionné' />" +
+      //     "<h2>" +
+      //     element.sujet +
+      //     "</h2>" +
+      //     "<p>" +
+      //     element.texte +
+      //     "</p>" +
+      //     "<p>" +
+      //     element.date +
+      //     "</p>" +
+      //     "</article>";
+      // });
+    })
+    .catch((err) => {
+      if (err.response.status === 400) {
+        console.log("Tout les champs n'ont pas été correctement remplis");
+      } else if (err.response.status === 500) {
+        console.log("erreur serveur");
+      }
+    });
   return (
     <main id="MyForum" className="pageMyForums container-fluid">
       <h1>Bienvenue sur le forum</h1>
       <div>
         <ul className="navbar-nav p-3">
           <li className="nav-item my-2">
-            <NavLink
-              onClick={DisplayArticle}
-              to="/MyForums"
-              className="navbar-brand"
-            >
+            <NavLink to="/MyForums" className="navbar-brand">
               Mes Forums
             </NavLink>
           </li>

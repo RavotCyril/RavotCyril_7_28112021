@@ -49,9 +49,9 @@ function Signup() {
           localStorage.setItem("Inscription", JSON.stringify(res.data.User));
         })
         .catch((err) => {
-          if (err.response.status === 400) {
+          if (err.status === 400) {
             console.log("l'utilisateur existe déjà");
-          } else if (err.response.status === 500) {
+          } else if (err.status === 500) {
             console.log("erreur serveur");
           }
         });

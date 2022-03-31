@@ -10,7 +10,6 @@ function Login() {
   // event.preventDefault();
   const [email, setemailData] = useState("");
   const [password, setpasswordData] = useState("");
-  const [token] = useState("");
 
   function handleChangePassword(e) {
     setpasswordData(e.target.value);
@@ -21,14 +20,10 @@ function Login() {
   function testLogin() {
     console.log("DebutTestLogin");
     if (password && email) {
-      let config = {
-        headers: { Authorization: "bearer " + token },
-      };
       axios
         .post("http://localhost:3000/api/auth/login", {
           password,
           email,
-          config,
         })
         .then((res) => {
           console.log(res);
@@ -42,13 +37,12 @@ function Login() {
         })
         .catch((err) => {
           if (err.response.status === 400) {
-            console.log("Mauvaise Adresse Email");
+            // console.log("Mauvaise Adresse Email");
           } else if (err.response.status === 500) {
             console.log("Erreur serveur");
           }
         });
     }
-    console.log("FinTestLogin");
   }
   return (
     <main>

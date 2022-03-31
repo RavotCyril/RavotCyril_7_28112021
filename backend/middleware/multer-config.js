@@ -5,7 +5,6 @@ Multer est un middleware node.js pour la gestion des données multipart/form-dat
 qui est principalement utilisé pour le téléchargement de fichiers.*/
 const multer = require('multer');
 
-
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',

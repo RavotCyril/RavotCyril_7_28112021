@@ -9,7 +9,7 @@ d'un fichier .env dans process.env.
 Le stockage de la configuration dans l'environnement séparé du code est basé sur
 la méthodologie de l'application Twelve-Factor. */
 require('dotenv').config()
-/* Définit des en têtes http supplémentaires securisés  */
+    /* Définit des en têtes http supplémentaires securisés  */
 const helmet = require('helmet');
 /* Donne accès au chemin de nos fichiers. */
 const path = require('path');

@@ -1,11 +1,11 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
 /* Crud pour Créer, Afficher un Article  */
+
 function Articles() {
   var date = new Date();
   /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email  et l'user_id ... ) 
@@ -21,91 +21,6 @@ function Articles() {
         "bearer " + JSON.parse(localStorage.getItem("Identification")),
       "Content-Type": "multipart/form-data",
     },
-  };
-  console.log(configData);
-
-  const handleSubmit = () => {
-    if (sujet && texte && image && date) {
-      console.log(image);
-      var mydata = new FormData();
-      mydata.append("texte", texte);
-      mydata.append("image", image);
-
-      axios({
-        method: "post",
-        url: "http://localhost:3000/api/articles/",
-        data: mydata,
-        headers: {
-          Authorization:
-            "bearer " + JSON.parse(localStorage.getItem("Identification")),
-          "Content-Type": "multipart/form-data",
-        },
-        article: {
-          sujet,
-          texte,
-          date,
-          image,
-          user_id,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          /* Permet de stocker les données de l'article ..( l'id_article et l'id_user )*/
-          localStorage.setItem("Article", JSON.stringify(res.data.Article));
-          window.location.href = "http://localhost:3001/MyForums";
-        })
-        .catch((err) => {
-          if (err.response.status === 400) {
-            console.log("Tout les champs n'ont pas été correctement remplis'");
-          } else if (err.response.status === 500) {
-            console.log("erreur serveur");
-          }
-        });
-      axios
-        .get("http://localhost:3000/api/articles/", configData)
-        .then((res) => {
-          console.log(res);
-          //window.location.href = "http://localhost:3001/MyForums";
-        })
-        .catch((err) => {
-          if (err.response.status === 400) {
-            console.log("Tout les champs n'ont pas été correctement remplis'");
-          } else if (err.response.status === 500) {
-            console.log("erreur serveur");
-          }
-        });
-    }
-  };
-  /* Crud pour Supprimer, Modifier un Article  */
-  const handleDelete = () => {
-    axios
-      .delete("http://localhost:3000/api/articles/:id", configData)
-      .then((res) => {
-        console.log(res);
-        // window.location.href = "http://localhost:3001/NewTopic";
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis'");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
-  };
-  const handleUpdate = () => {
-    axios
-      .put("http://localhost:3000/api/articles/:id", configData)
-      .then((res) => {
-        console.log(res);
-        // window.location.href = "http://localhost:3001/NewTopic";
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis'");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
   };
   const [sujet, setSujet] = useState("");
   const [texte, setTexte] = useState("");
@@ -135,6 +50,83 @@ function Articles() {
       setImage(URL.createObjectURL(selectedImage));
     }
   }, [selectedImage]);
+  const handleSubmit = () => {
+    if (sujet && texte && image && date) {
+      console.log(image);
+      /*   La bibliothèque `form-data` nous donne une API similaire dans Node.js 
+    à l'interface `FormData` dans le navigateur */
+
+      const FormData = require("form-data");
+
+      // Créer une nouvelle instance de formulaire
+
+      const form = new FormData();
+
+      /* Ajoute des champs de texte au formulaire */
+
+      form.append("sujet", sujet);
+      form.append("texte", texte);
+      form.append("file", selectedImage, image);
+      axios({
+        method: "post",
+        url: "http://localhost:3000/api/articles/",
+        data: form,
+        headers: {
+          Authorization:
+            "bearer " + JSON.parse(localStorage.getItem("Identification")),
+          "Content-Type": "multipart/form-data",
+        },
+        sujet,
+        texte,
+        date,
+        image,
+        user_id,
+      })
+        .then((res) => {
+          console.log(res);
+          /* Permet de stocker les données de l'article ..( l'id_article et l'id_user )*/
+          window.location.href = "http://localhost:3001/MyForums";
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            console.log("Tout les champs n'ont pas été correctement remplis");
+          } else if (err.response.status === 500) {
+            console.log("erreur serveur");
+          }
+        });
+    }
+  };
+  /* Crud pour Supprimer, Modifier un Article  */
+  const handleDelete = () => {
+    axios
+      .delete("http://localhost:3000/api/articles/:id", configData)
+      .then((res) => {
+        console.log(res);
+        // window.location.href = "http://localhost:3001/NewTopic";
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  };
+  const handleUpdate = () => {
+    axios
+      .put("http://localhost:3000/api/articles/:id", configData)
+      .then((res) => {
+        console.log(res);
+        // window.location.href = "http://localhost:3001/NewTopic";
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  };
   return (
     <main className="Articles container-fluid">
       {localStorage.getItem("Identification") != null ? (
@@ -146,6 +138,7 @@ function Articles() {
               <input
                 className="col-3 mx-auto text-center sujet"
                 type="text"
+                name="sujet"
                 value={sujet}
                 onChange={handleChangeTopic}
               />
@@ -158,6 +151,7 @@ function Articles() {
             <textarea
               className="col-6 mx-auto"
               type="text"
+              name="texte"
               value={texte}
               onChange={handleChangeTexte}
               rows={5}
@@ -170,6 +164,7 @@ function Articles() {
               accept="image/*"
               className="InputImage col-8 mx-auto"
               type="file"
+              name="file"
               onChange={HandleChangeFile}
             />
           </div>
