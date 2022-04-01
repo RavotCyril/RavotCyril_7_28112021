@@ -20,16 +20,16 @@ function MyForums() {
         document.getElementById("Article").innerHTML +=
           "<article class='col-10 mx-auto'>" +
           "<img src={" +
-          element.data[0].image +
+          element.data.image +
           "} alt='Fichier selectionné' />" +
           "<h2>" +
-          element.data[0].sujet +
+          element.data.sujet +
           "</h2>" +
           "<p>" +
-          element.data[0].texte +
+          element.data.texte +
           "</p>" +
           "<p>" +
-          element.data[0].date +
+          element.data.date +
           "</p>" +
           "</article>";
       });

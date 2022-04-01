@@ -3,17 +3,17 @@ const fs = require('fs');
 
 // Créer un article / post
 exports.createModelsArticle = (req, res, next) => {
-    console.log(req.body)
+
+
     Models.Article.create({
             article_id: req.body.article_id,
             sujet: req.body.sujet,
             texte: req.body.texte,
             date: new Date().toUTCString(),
-            image: `${req.protocol}://${req.get('host')}/images/${req.file}`,
+            image: `${req.protocol}://${req.get('host')}/images/${req.image}`,
             user_id: req.body.user_id
         }).then(() => res.status(201).json({ message: 'article créé !' }))
         .catch(error => res.status(400).json({ message: error.message }));
-
 };
 // Afficher un seule article / GET
 

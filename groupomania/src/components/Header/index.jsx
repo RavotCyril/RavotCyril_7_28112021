@@ -17,6 +17,7 @@ function Header() {
     Permet aussi de se rediriger sur la page Inscription ( Signup) */
 
   const navigate = useNavigate();
+
   function logOut() {
     localStorage.clear();
     navigate("/signup", { replace: true });

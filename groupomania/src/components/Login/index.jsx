@@ -28,7 +28,7 @@ function Login() {
         .then((res) => {
           console.log(res);
           /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
-          // window.location.href = "http://localhost:3001/MyForums";
+          window.location.href = "http://localhost:3001/MyForums";
           /* Permet de stocker l'identification ( Token ) */
           localStorage.setItem(
             "Identification",
@@ -39,7 +39,7 @@ function Login() {
         })
         .catch((err) => {
           if (err.response.status === 400) {
-            // console.log("Mauvaise Adresse Email");
+            console.log("Mauvaise Adresse Email");
           } else if (err.response.status === 500) {
             console.log("Erreur serveur");
           }

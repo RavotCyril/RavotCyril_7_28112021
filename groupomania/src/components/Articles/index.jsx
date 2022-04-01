@@ -4,10 +4,11 @@ import axios from "axios";
 
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
-
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
   var date = new Date().toUTCString();
+
+  /* Authorisation Token + Content-Type Formulaire multipart/form-data */
 
   var configData = {
     headers: {
@@ -109,15 +110,11 @@ function Articles() {
 
   function HandleChangeFile(event) {
     setSelectedImage(event.target.files[0]);
+    setImage(URL.createObjectURL(selectedImage));
   }
   /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
   et de la transmettre à la constante image */
 
-  useEffect(() => {
-    if (selectedImage) {
-      setImage(URL.createObjectURL(selectedImage));
-    }
-  }, [selectedImage]);
   return (
     <main className="Articles container-fluid">
       {localStorage.getItem("Identification") != null ? (
