@@ -7,7 +7,7 @@ import "../../Styles/App.css";
 
 /* Crud pour Créer, Afficher un Article  */
 function Articles() {
-  var date = new Date();
+  var date = new Date().toUTCString();
 
   var configData = {
     headers: {
@@ -30,7 +30,9 @@ function Articles() {
 
       mydata.append("sujet", sujet);
       mydata.append("texte", texte);
-      mydata.append("file", image);
+      mydata.append("date", date);
+      mydata.append("image", image);
+      mydata.append("user_id", user_id);
 
       axios({
         method: "post",
@@ -41,11 +43,6 @@ function Articles() {
             "bearer " + JSON.parse(localStorage.getItem("Identification")),
           "Content-Type": "multipart/form-data",
         },
-        sujet,
-        texte,
-        date,
-        image,
-        user_id,
       })
         .then((res) => {
           console.log(res);
@@ -58,6 +55,8 @@ function Articles() {
             console.log("erreur serveur");
           }
         });
+    } else {
+      console.log("Tout les champs n'ont pas été correctement remplis");
     }
   };
   /* Crud pour Supprimer, Modifier un Article  */
@@ -156,7 +155,7 @@ function Articles() {
               accept="image/*"
               className="InputImage col-8 mx-auto"
               type="file"
-              name="file"
+              name="image"
               onChange={HandleChangeFile}
             />
           </div>

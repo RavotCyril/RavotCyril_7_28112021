@@ -13,30 +13,26 @@ function MyForums() {
       "Content-Type": "multipart/form-data",
     },
   };
-  console.log(configData);
   axios
     .get("http://localhost:3000/api/articles/", configData)
-    .then((res) => {
-      console.log(res);
-      //window.location.href = "http://localhost:3001/MyForums";
-      // console.log("testArticle");
-      // res.forEach((element) => {
-      //   document.getElementById("Article").innerHTML +=
-      //     "<article class='col-10 mx-auto'>" +
-      //     "<img src={" +
-      //     element.image +
-      //     "} alt='Fichier selectionné' />" +
-      //     "<h2>" +
-      //     element.sujet +
-      //     "</h2>" +
-      //     "<p>" +
-      //     element.texte +
-      //     "</p>" +
-      //     "<p>" +
-      //     element.date +
-      //     "</p>" +
-      //     "</article>";
-      // });
+    .then((article) => {
+      [article].forEach((element) => {
+        document.getElementById("Article").innerHTML +=
+          "<article class='col-10 mx-auto'>" +
+          "<img src={" +
+          element.data[0].image +
+          "} alt='Fichier selectionné' />" +
+          "<h2>" +
+          element.data[0].sujet +
+          "</h2>" +
+          "<p>" +
+          element.data[0].texte +
+          "</p>" +
+          "<p>" +
+          element.data[0].date +
+          "</p>" +
+          "</article>";
+      });
     })
     .catch((err) => {
       if (err.response.status === 400) {
@@ -45,6 +41,7 @@ function MyForums() {
         console.log("erreur serveur");
       }
     });
+  console.log("countArticlesFin");
   return (
     <main id="MyForum" className="pageMyForums container-fluid">
       <h1>Bienvenue sur le forum</h1>
@@ -62,9 +59,7 @@ function MyForums() {
           </li>
         </ul>
       </div>
-      {localStorage.getItem("Article") != null ? (
-        <div id="Article" className="row"></div>
-      ) : null}
+      <div id="Article" className="row"></div>
       <Commentaires />
     </main>
   );
