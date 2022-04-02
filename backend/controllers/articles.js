@@ -4,13 +4,12 @@ const fs = require('fs');
 // Créer un article / post
 exports.createModelsArticle = (req, res, next) => {
 
-
     Models.Article.create({
             article_id: req.body.article_id,
             sujet: req.body.sujet,
             texte: req.body.texte,
             date: new Date().toUTCString(),
-            image: `${req.protocol}://${req.get('host')}/images/${req.image}`,
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             user_id: req.body.user_id
         }).then(() => res.status(201).json({ message: 'article créé !' }))
         .catch(error => res.status(400).json({ message: error.message }));
