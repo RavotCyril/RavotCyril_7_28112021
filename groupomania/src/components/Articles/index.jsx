@@ -5,18 +5,75 @@ import axios from "axios";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
-/* Crud pour Créer, Afficher un Article  */
+/* Vérification de la validité du token 
+
+      -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
+      -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification 
+      
+    */
+// var decodedToken;
+// console.log(decodedToken);
+
+var Token = JSON.parse(localStorage.getItem("Identification"));
+var user_id = Token.user_id;
+console.log(user_id);
+console.log(Token.decodedToken);
+function expirationToken() {
+  if (Token.iat > Token.exp) {
+    /* Permet de vider le localStorage( Token ) et de deconnecter l'application.
+    Permet aussi de se rediriger sur la page Login ( Connexion) */
+    localStorage.clear();
+    alert("Token expiré Veuillez vous reconnectez");
+    console.log("test1");
+  } else {
+    /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant
+      son inscription ( Prénom - Email  et l'user_id ... ) avec la clef inscription du local Storage*/
+    Token = JSON.parse(localStorage.getItem("Identification"));
+    console.log("test");
+  }
+}
+expirationToken();
+
 function Articles() {
   var date = new Date().toUTCString();
+  /* Constante useState Sujet + Texte */
+
+  const [sujet, setSujet] = useState("");
+  const [texte, setTexte] = useState("");
+
+  /* Fonction pour capturer ce que l'on écrit dans l'input Sujet  */
+  function handleChangeTopic(e) {
+    setSujet(e.target.value);
+  }
+
+  /* Fonction pour capturer ce que l'on écrit dans l'input Texte  */
+
+  function handleChangeTexte(event) {
+    setTexte(event.target.value);
+  }
+
+  /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
+  et de la transmettre à la constante image */
+  const [userInfo, setuserInfo] = useState({
+    file: [],
+    filepreview: null,
+  });
+
+  const HandleChangeFile = (event) => {
+    setuserInfo({
+      ...userInfo,
+      /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
+      file: event.target.files[0],
+      filepreview: URL.createObjectURL(event.target.files[0]),
+    });
+  };
+  /* Crud pour Créer un Article  */
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (sujet && texte && userInfo.file && date) {
       /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant 
       son inscription ( Prénom - Email  et l'user_id ... ) avec la clef inscription du local Storage*/
-
-      let User = JSON.parse(localStorage.getItem("Inscription"));
-      var user_id = User.user_id;
 
       /* Fonction pour  récupérer le token enregistré dans le clef Identification */
       const mydata = new FormData();
@@ -53,40 +110,6 @@ function Articles() {
     }
   };
 
-  const [sujet, setSujet] = useState("");
-  const [texte, setTexte] = useState("");
-
-  /* Fonction pour capturer ce que l'on écrit dans l'input Sujet  */
-  function handleChangeTopic(e) {
-    setSujet(e.target.value);
-  }
-
-  /* Fonction pour capturer ce que l'on écrit dans l'input Texte  */
-
-  function handleChangeTexte(event) {
-    setTexte(event.target.value);
-  }
-
-  /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
-  et de la transmettre à la constante image */
-  const [userInfo, setuserInfo] = useState({
-    file: [],
-    filepreview: null,
-  });
-
-  const HandleChangeFile = (event) => {
-    setuserInfo({
-      ...userInfo,
-      /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
-      file: event.target.files[0],
-      filepreview: URL.createObjectURL(event.target.files[0]),
-    });
-  };
-  // console.log(userInfo.file);
-  // console.log(userInfo.filepreview);
-
-  const [isSucces, setSuccess] = useState(null);
-
   return (
     <main className="Articles container-fluid">
       {localStorage.getItem("Identification") != null ? (
@@ -119,7 +142,6 @@ function Articles() {
               wrap="hard"
             ></textarea>
           </div>
-          {isSucces !== null ? <h4> {isSucces} </h4> : null}
           <div className="row">
             <input
               accept="image/*"
@@ -140,7 +162,6 @@ function Articles() {
             <div className="col-10 mx-auto">
               <input
                 type="submit"
-                // type="button"
                 name="submit"
                 className="form-control btn btn-primary col-4 my-4 mx-auto"
                 value="Poster le nouveau sujet"

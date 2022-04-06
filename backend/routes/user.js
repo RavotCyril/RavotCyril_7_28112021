@@ -8,6 +8,7 @@ const passwordValidation = require("../middleware/passwordValidation");
 
 router.post('/signup', passwordValidation, userCtrl.signup);
 router.post('/login', userCtrl.login);
+router.get('/user', userCtrl.user);
 
 
 /* Exporte le routeur Express */

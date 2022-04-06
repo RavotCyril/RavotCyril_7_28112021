@@ -1,26 +1,47 @@
 /* Importations Bibliothèques React-router-dom  */
 import React from "react";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
+import { useEffect } from "react";
 // /* Importations des pages de styles + logo + images */
 
 import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
+  var user;
+  var configData = {
+    headers: {
+      Authorization:
+        "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      "Content-Type": "multipart/form-data",
+    },
+  };
   /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email ... ) 
-  avec la clef inscription du local Storage */
-
-  let User = JSON.parse(localStorage.getItem("Inscription"));
-
+  avec la base de données */
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/auth/user", configData)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  }, [user]);
   /* Permet de vider le localStorage( Token ) et de se deconnecter de l'application.
-    Permet aussi de se rediriger sur la page Inscription ( Signup) */
+    Permet aussi de se rediriger sur la page Connexion ( Login) */
 
   const navigate = useNavigate();
 
   function logOut() {
     localStorage.clear();
-    navigate("/signup", { replace: true });
+    navigate("/bob", { replace: true });
   }
   return (
     <header id="deconnexion">
@@ -80,7 +101,7 @@ function Header() {
                 )}
                 {localStorage.getItem("Identification") != null ? (
                   <li>
-                    <NavDropdown title={User && User.firstname}>
+                    <NavDropdown title={user && user.firstname}>
                       <NavDropdown.Item onClick={logOut}>
                         Se deconnecter
                       </NavDropdown.Item>

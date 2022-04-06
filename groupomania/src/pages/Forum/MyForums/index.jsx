@@ -4,8 +4,11 @@ import React from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import Commentaires from "../../../components/Commentaires";
+import { useState, useEffect } from "react";
 
 function MyForums() {
+  const [lstArticles, setLstArticles] = useState([]);
+
   var configData = {
     headers: {
       Authorization:
@@ -13,42 +16,24 @@ function MyForums() {
       "Content-Type": "multipart/form-data",
     },
   };
-  axios
-    .get("http://localhost:3000/api/articles/", configData)
-    .then((article) => {
-      console.log(article);
-    })
-    // {
-    //   [article].forEach((element) => {
-    //     document.getElementById("Article").innerHTML +=
-    //       "<article class='col-10 mx-auto'>" +
-    //       "<img src={" +
-    //       element.data.image +
-    //       "} alt='Fichier selectionné' />" +
-    //       "<h2>" +
-    //       element.data.sujet +
-    //       "</h2>" +
-    //       "<p>" +
-    //       element.data.texte +
-    //       "</p>" +
-    //       "<p>" +
-    //       element.data.date +
-    //       "</p>" +
-    //       "</article>";
-    //   });
-    // })
-    .catch((err) => {
-      if (err.response.status === 400) {
-        console.log("Tout les champs n'ont pas été correctement remplis");
-      } else if (err.response.status === 500) {
-        console.log("erreur serveur");
-      }
-    });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/articles/", configData)
+      .then((article) => {
+        setLstArticles(article.data);
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  }, []);
+
   /* Crud pour Supprimer, Modifier un Article  */
   const handleDelete = () => {
-    /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant 
-      son inscription ( Prénom - Email  et l'user_id ... ) avec la clef inscription du local Storage*/
-
     /* Fonction pour  récupérer le token enregistré dans le clef Identification */
     const mydata = new FormData();
     axios({
@@ -78,7 +63,7 @@ function MyForums() {
       .put("http://localhost:3000/api/articles/:id", configData)
       .then((res) => {
         console.log(res);
-        // window.location.href = "http://localhost:3001/NewTopic";
+        window.location.href = "http://localhost:3001/NewTopic";
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -106,7 +91,18 @@ function MyForums() {
           </li>
         </ul>
       </div>
-      <div id="Article" className="row"></div>
+      <div id="Article" className="row">
+        {lstArticles.map((article) => {
+          return (
+            <article key={article.article_id} className="articlecol-10 mx-auto">
+              <img src={article.image} alt="Fichier selectionné" />
+              <h2>{article.sujet}</h2>
+              <p>{article.texte}</p>
+              <p>{article.date}</p>
+            </article>
+          );
+        })}
+      </div>
       <div className="row">
         <div className="col-2 mx-auto">
           <button

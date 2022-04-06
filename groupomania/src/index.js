@@ -23,47 +23,23 @@ import NewTopic from "./pages/Forum/NewTopic";
 import "./Styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 /* Prop de rendu de la page Index avec toute les routes des components - pages de l'application  */
-ReactDOM.render( <
-    React.StrictMode >
-    <
-    Router >
-    <
-    Header / >
-    <
-    Routes >
-    <
-    Route path = "/Home"
-    element = { < Home / > }
-    />{" "} <
-    Route path = "/Services"
-    element = { < Services / > }
-    />{" "} <
-    Route path = "/Articles"
-    element = { < Articles / > }
-    />{" "} <
-    Route path = "/Commentaires"
-    element = { < Commentaires / > }
-    />{" "} <
-    Route path = "/Signup"
-    element = { < Signup / > }
-    />{" "} <
-    Route path = "/Login"
-    element = { < Login / > }
-    />{" "} <
-    Route path = "/MyForums"
-    element = { < MyForums / > }
-    />{" "} <
-    Route path = "/NewTopic"
-    element = { < NewTopic / > }
-    />{" "} <
-    Route path = "/Votes"
-    element = { < Votes / > }
-    />{" "} <
-    Route path = "*"
-    element = { < Error / > }
-    />{" "} <
-    /Routes>{" "} <
-    /Router>{" "} <
-    /React.StrictMode>,
-    document.getElementById("root")
+ReactDOM.render(
+  <React.StrictMode>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/Home" element={<Home />} />
+        <Route path="/Services" element={<Services />} />
+        <Route path="/Articles" element={<Articles />} />
+        <Route path="/Commentaires" element={<Commentaires />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/MyForums" element={<MyForums />} />
+        <Route path="/NewTopic" element={<NewTopic />} />
+        <Route path="/Votes" element={<Votes />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
+    </Router>
+  </React.StrictMode>,
+  document.getElementById("root")
 );

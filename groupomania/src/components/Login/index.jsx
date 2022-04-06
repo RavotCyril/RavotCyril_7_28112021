@@ -32,9 +32,7 @@ function Login() {
           /* Permet de stocker l'identification ( Token ) */
           localStorage.setItem(
             "Identification",
-            JSON.stringify(res.data.token),
-            /* Permet de stocker l'inscription l'utilisateur ( User ) */
-            localStorage.setItem("Inscription", JSON.stringify(res.data.User))
+            JSON.stringify(res.data.token)
           );
         })
         .catch((err) => {

@@ -56,3 +56,21 @@ exports.login = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
+exports.user = (req, res, next) => {
+    Models.User.findOne({ where: { email: req.body.email } })
+        .then(User => {
+            if (!User) {
+                return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+            }(User => {
+                    res.status(200).json({
+                        message: 'Utilisateur trouvé',
+                        User: User,
+                    });
+                })
+                .catch(error => {
+                    console.log(error)
+                    res.status(500).json({ error })
+                });
+        })
+        .catch(error => res.status(500).json({ error }));
+    }
