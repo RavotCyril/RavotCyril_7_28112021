@@ -70,6 +70,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 /* Enregistre les routes des articles et auth de l'application */
 app.use('/api/auth', userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/articles', articlesRoutes);
 app.use('/api/commentaires', commentairesRoutes);
 app.use('/api/votes', votesRoutes);

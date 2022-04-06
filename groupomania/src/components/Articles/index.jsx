@@ -1,39 +1,20 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
 /* Vérification de la validité du token 
-
       -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification 
-      
+     ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
-// var decodedToken;
-// console.log(decodedToken);
-
-var Token = JSON.parse(localStorage.getItem("Identification"));
-var user_id = Token.user_id;
-console.log(user_id);
-console.log(Token.decodedToken);
-function expirationToken() {
-  if (Token.iat > Token.exp) {
-    /* Permet de vider le localStorage( Token ) et de deconnecter l'application.
-    Permet aussi de se rediriger sur la page Login ( Connexion) */
-    localStorage.clear();
-    alert("Token expiré Veuillez vous reconnectez");
-    console.log("test1");
-  } else {
-    /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant
-      son inscription ( Prénom - Email  et l'user_id ... ) avec la clef inscription du local Storage*/
-    Token = JSON.parse(localStorage.getItem("Identification"));
-    console.log("test");
-  }
-}
-expirationToken();
-
+var token = JSON.parse(localStorage.getItem("Identification"));
+var decoded = jwt_decode(token);
+console.log(decoded);
+var userId = JSON.parse(localStorage.getItem("userId"));
 function Articles() {
   var date = new Date().toUTCString();
   /* Constante useState Sujet + Texte */
@@ -72,16 +53,12 @@ function Articles() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (sujet && texte && userInfo.file && date) {
-      /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant 
-      son inscription ( Prénom - Email  et l'user_id ... ) avec la clef inscription du local Storage*/
-
-      /* Fonction pour  récupérer le token enregistré dans le clef Identification */
       const mydata = new FormData();
       mydata.append("sujet", sujet);
       mydata.append("texte", texte);
       mydata.append("date", date);
       mydata.append("image", userInfo.file);
-      mydata.append("user_id", user_id);
+      mydata.append("user_id", userId);
 
       axios({
         method: "post",
@@ -95,7 +72,7 @@ function Articles() {
       })
         .then((article) => {
           console.log(article);
-          // window.location.href = "http://localhost:3001/MyForums";
+          window.location.href = "http://localhost:3001/MyForums";
         })
         .catch((err) => {
           if (err.response.status === 400) {

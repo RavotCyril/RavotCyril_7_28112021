@@ -34,6 +34,7 @@ function Login() {
             "Identification",
             JSON.stringify(res.data.token)
           );
+          localStorage.setItem("userId", JSON.stringify(res.data.userId));
         })
         .catch((err) => {
           if (err.response.status === 400) {

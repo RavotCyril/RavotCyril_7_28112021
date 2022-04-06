@@ -1,16 +1,16 @@
 /* Importations Bibliothèques React-router-dom  */
 import React from "react";
 import axios from "axios";
+
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
-import { useEffect } from "react";
+
 // /* Importations des pages de styles + logo + images */
 
 import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
-  var user;
   var configData = {
     headers: {
       Authorization:
@@ -20,20 +20,19 @@ function Header() {
   };
   /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email ... ) 
   avec la base de données */
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/auth/user", configData)
-      .then((user) => {
-        console.log(user);
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
-  }, [user]);
+  axios
+    .get("http://localhost:3000/api/user/:id", configData)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      if (err.response.status === 400) {
+        console.log("Tout les champs n'ont pas été correctement remplis");
+      } else if (err.response.status === 500) {
+        console.log("erreur serveur");
+      }
+    });
+
   /* Permet de vider le localStorage( Token ) et de se deconnecter de l'application.
     Permet aussi de se rediriger sur la page Connexion ( Login) */
 
@@ -101,7 +100,7 @@ function Header() {
                 )}
                 {localStorage.getItem("Identification") != null ? (
                   <li>
-                    <NavDropdown title={user && user.firstname}>
+                    <NavDropdown title={User && User.firstname}>
                       <NavDropdown.Item onClick={logOut}>
                         Se deconnecter
                       </NavDropdown.Item>

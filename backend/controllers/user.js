@@ -34,8 +34,7 @@ exports.login = (req, res, next) => {
         .then(User => {
             if (!User) {
                 return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-            }
-            bcrypt.compare(req.body.password, User.password)
+            } bcrypt.compare(req.body.password, User.password)
                 .then(valid => {
                     if (!valid) {
                         res.status(403).json({ error: 'Mot de passe incorrect !' });
@@ -46,7 +45,7 @@ exports.login = (req, res, next) => {
                         token: jwt.sign({ userId: User.user_id, }, /* Token d'authentification + userId */
                             process.env.DB_TOKEN, { expiresIn: '2 days' }, /* Temps de validité du Token */
                         ),
-                        User: User,
+                        userId: User.user_id,
                     });
                 })
                 .catch(error => {
@@ -57,20 +56,16 @@ exports.login = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 exports.user = (req, res, next) => {
-    Models.User.findOne({ where: { email: req.body.email } })
-        .then(User => {
-            if (!User) {
-                return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-            }(User => {
-                    res.status(200).json({
-                        message: 'Utilisateur trouvé',
-                        User: User,
-                    });
-                })
-                .catch(error => {
-                    console.log(error)
-                    res.status(500).json({ error })
+        Models.User.findOne()
+        .then(
+            (User) => {
+                res.status(200).json(User);
+            }
+        ).catch(
+            (error) => {
+                res.status(400).json({
+                    error: error
                 });
-        })
-        .catch(error => res.status(500).json({ error }));
-    }
+            }
+        );
+};
