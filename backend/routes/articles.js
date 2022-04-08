@@ -5,6 +5,11 @@ const articlesCtrl = require('../controllers/articles');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
+
+/* Administrateur qui peut supprimer les articles des utilisateurs */
+
+router.delete('/:id', articlesCtrl.deleteAdminModelsArticle);
+
 //* Routes Articles + Like  */
 
 router.get('/', auth, articlesCtrl.getAllModelsArticle);

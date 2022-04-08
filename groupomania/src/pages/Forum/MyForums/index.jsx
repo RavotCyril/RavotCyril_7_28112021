@@ -5,6 +5,8 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 import Commentaires from "../../../components/Commentaires";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
 function MyForums() {
   const [lstArticles, setLstArticles] = useState([]);
@@ -58,6 +60,33 @@ function MyForums() {
         }
       });
   };
+  /* Function de l'administrateur pour supprimer les articles des utilisateurs   */
+
+  const adminHandleDelete = () => {
+    /* Fonction pour  récupérer le token enregistré dans le clef Identification */
+    const mydata = new FormData();
+    axios({
+      method: "delete",
+      url: "http://localhost:3000/api/admin/:id",
+      data: mydata,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        window.location.href = "http://localhost:3001/MyForums";
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  };
   const handleUpdate = () => {
     axios
       .put("http://localhost:3000/api/articles/:id", configData)
@@ -91,43 +120,59 @@ function MyForums() {
           </li>
         </ul>
       </div>
-      <div id="Article" className="row">
+      <div className="row">
         {lstArticles.map((article) => {
           return (
-            <article key={article.article_id} className="articlecol-10 mx-auto">
+            <article
+              key={article.article_id}
+              id="Article"
+              className="mx-5 my-5 col-5"
+            >
               <img src={article.image} alt="Fichier selectionné" />
               <h2>{article.sujet}</h2>
               <p>{article.texte}</p>
               <p>{article.date}</p>
+              <br></br>
+              <div className="col-2 mx-auto">
+                <button
+                  className="btn btn-danger mx-3"
+                  onClick={() => {
+                    if (
+                      window.confirm("Confirmer pour supprimer cette article?")
+                    )
+                      handleDelete();
+                  }}
+                >
+                  Supprimer
+                </button>
+                <FontAwesomeIcon
+                  className="AdminIcon"
+                  size="lg"
+                  icon={faWindowClose}
+                  onClick={() => {
+                    if (
+                      "L'administrateur veut il bien supprimer cette article?"
+                    )
+                      adminHandleDelete();
+                  }}
+                />
+                <button
+                  className="btn btn-dark"
+                  onClick={() => {
+                    if (
+                      window.confirm("Confirmer pour modifier cette article?")
+                    )
+                      handleUpdate();
+                  }}
+                >
+                  modifier
+                </button>
+              </div>
+              <Commentaires />
             </article>
           );
         })}
       </div>
-      <div className="row">
-        <div className="col-2 mx-auto">
-          <button
-            className="btn btn-danger mx-3"
-            onClick={() => {
-              if (window.confirm("Confirmer pour supprimer cette article?"))
-                handleDelete();
-            }}
-          >
-            Supprimer
-            <div className="btn-container mx-auto"></div>
-          </button>
-          <button
-            className="btn btn-dark"
-            onClick={() => {
-              if (window.confirm("Confirmer pour modifier cette article?"))
-                handleUpdate();
-              alert("Article modifié avec succès");
-            }}
-          >
-            modifier
-          </button>
-        </div>
-      </div>
-      <Commentaires />
     </main>
   );
 }

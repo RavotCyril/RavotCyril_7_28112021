@@ -103,7 +103,7 @@ function Commentaires() {
                   type="button"
                   name="submit"
                   className="form-control btn btn-primary col-4 my-4 mx-auto"
-                  value="Poster le nouveau commentaire"
+                  value="Poster un commentaire"
                   aria-describedby="Bouton de validation pour créer le commentaire"
                   onClick={() => {
                     handleSubmit();

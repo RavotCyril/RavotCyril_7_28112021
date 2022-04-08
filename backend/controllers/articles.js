@@ -1,6 +1,19 @@
 const Models = require('../models/articles');
 const fs = require('fs');
 
+/* Exporte la fonction Administrateur pour supprimer les articles des utilisateurs*/
+
+exports.deleteAdminModelsArticle = (req, res, next) => {
+  Models.Article.findOne()
+        .then(Models => {
+                Models.destroy({ roleId: 1 })
+                    .then(() => res.status(200).json({ message: 'L\'administrateur a bien supprimé l\'article!' }))
+                    .catch(error => res.status(400).json({ error }));
+            })
+            .catch(error => res.status(500).json({ error }));
+};
+
+
 // Créer un article / post
 exports.createModelsArticle = (req, res, next) => {
 

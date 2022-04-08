@@ -8,7 +8,8 @@ dotenv.config();
 
 const Models = require('../models/user')
 
-/* Exporte la fonction  Inscription utilisateur  */
+
+/* Exporte la fonction  Authentification Inscription utilisateur  */
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10) /* Le sel à utiliser dans le cryptage. S'il est spécifié sous forme de nombre, un sel sera généré avec le nombre de tours spécifié et utilisé. */
@@ -27,7 +28,7 @@ exports.signup = (req, res, next) => {
 
 };
 
-/* Exporte la fonction connexion utilisateur */
+/* Exporte la fonction Authentification connexion utilisateur */
 
 exports.login = (req, res, next) => {
     Models.User.findOne({ where: { email: req.body.email } })
@@ -55,11 +56,13 @@ exports.login = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
-exports.user = (req, res, next) => {
+/* Exporte la fonction Utilisateur pour lire ces données */
+
+exports.getUser = (req, res, next) => {
         Models.User.findOne()
         .then(
-            (User) => {
-                res.status(200).json(User);
+            (Models) => {
+                res.status(200).json(Models);
             }
         ).catch(
             (error) => {
@@ -68,4 +71,15 @@ exports.user = (req, res, next) => {
                 });
             }
         );
+};
+/* Exporte la fonction Delete pour supprimer son compte utilisateur */
+
+exports.deleteUser = (req, res, next) => {
+  Models.User.findOne()
+        .then(Models => {
+                Models.destroy({ user_id: req.params.id })
+                    .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
+                    .catch(error => res.status(400).json({ error }));
+            })
+            .catch(error => res.status(500).json({ error }));
 };

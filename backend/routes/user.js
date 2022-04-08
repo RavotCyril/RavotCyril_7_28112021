@@ -6,9 +6,18 @@ const router = express.Router();
 const userCtrl = require('../controllers/user');
 const passwordValidation = require("../middleware/passwordValidation");
 
+
+/* Autentification : S'inscrire et se connecter */
 router.post('/signup', passwordValidation, userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.get('/:id', userCtrl.user);
+
+/* Utilisateur : 
+Read: lire son profil ( données - Email,  Prénom ... )
+Delete: le supprimer
+ */
+
+router.get('/:id', userCtrl.getUser);
+router.delete('/:id', userCtrl.deleteUser);
 
 
 /* Exporte le routeur Express */

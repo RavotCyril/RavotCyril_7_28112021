@@ -22,6 +22,7 @@ import NewTopic from "./pages/Forum/NewTopic";
 /* Importations styles / CSS + Bootstrap */
 import "./Styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 /* Prop de rendu de la page Index avec toute les routes des components - pages de l'application  */
 ReactDOM.render(
   <React.StrictMode>

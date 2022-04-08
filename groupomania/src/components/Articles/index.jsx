@@ -1,7 +1,7 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState } from "react";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
@@ -11,9 +11,12 @@ import "../../Styles/App.css";
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification 
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
-var token = JSON.parse(localStorage.getItem("Identification"));
-var decoded = jwt_decode(token);
-console.log(decoded);
+// var token = JSON.parse(localStorage.getItem("Identification"));
+// console.log(token);
+// var decoded = jwt_decode(token);
+// console.log(decoded);
+
+// console.log(decoded);
 var userId = JSON.parse(localStorage.getItem("userId"));
 function Articles() {
   var date = new Date().toUTCString();
@@ -35,14 +38,14 @@ function Articles() {
 
   /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
   et de la transmettre à la constante image */
-  const [userInfo, setuserInfo] = useState({
+  const [input, setInputFile] = useState({
     file: [],
     filepreview: null,
   });
 
   const HandleChangeFile = (event) => {
-    setuserInfo({
-      ...userInfo,
+    setInputFile({
+      ...input,
       /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
       file: event.target.files[0],
       filepreview: URL.createObjectURL(event.target.files[0]),
@@ -52,12 +55,12 @@ function Articles() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (sujet && texte && userInfo.file && date) {
+    if (sujet && texte && input.file && date) {
       const mydata = new FormData();
       mydata.append("sujet", sujet);
       mydata.append("texte", texte);
       mydata.append("date", date);
-      mydata.append("image", userInfo.file);
+      mydata.append("image", input.file);
       mydata.append("user_id", userId);
 
       axios({
@@ -129,9 +132,9 @@ function Articles() {
             />
           </div>
           <div className="Row">
-            {userInfo.filepreview !== null ? (
+            {input.filepreview !== null ? (
               <div className="Article-Image col-12 col-sm-12 mx-auto text-center">
-                <img src={userInfo.filepreview} alt="Img téléchargé" />
+                <img src={input.filepreview} alt="Img téléchargé" />
               </div>
             ) : null}
           </div>

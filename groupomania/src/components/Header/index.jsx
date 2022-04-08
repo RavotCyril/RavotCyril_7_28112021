@@ -4,6 +4,7 @@ import axios from "axios";
 
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
+import { useState, useEffect } from "react";
 
 // /* Importations des pages de styles + logo + images */
 
@@ -11,6 +12,8 @@ import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
+  const [user, setUser] = useState([]);
+
   var configData = {
     headers: {
       Authorization:
@@ -20,18 +23,40 @@ function Header() {
   };
   /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email ... ) 
   avec la base de données */
-  axios
-    .get("http://localhost:3000/api/user/:id", configData)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      if (err.response.status === 400) {
-        console.log("Tout les champs n'ont pas été correctement remplis");
-      } else if (err.response.status === 500) {
-        console.log("erreur serveur");
-      }
-    });
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/user/:id", configData)
+      .then((user) => {
+        setUser(user.data);
+        console.log(user);
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  }, []);
+
+  /* Se désinscrire et supprimé son compte utilisateur et toutes les données ( Email, Prénom, LocalStorage Token + userId) */
+
+  function toUnsubscribe() {
+    axios
+      .delete("http://localhost:3000/api/user/:id", configData)
+      .then((user) => {
+        console.log(user);
+        localStorage.clear();
+        window.location.href = "http://localhost:3001/Signup";
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  }
 
   /* Permet de vider le localStorage( Token ) et de se deconnecter de l'application.
     Permet aussi de se rediriger sur la page Connexion ( Login) */
@@ -40,7 +65,7 @@ function Header() {
 
   function logOut() {
     localStorage.clear();
-    navigate("/bob", { replace: true });
+    navigate("/Login", { replace: true });
   }
   return (
     <header id="deconnexion">
@@ -98,16 +123,21 @@ function Header() {
                     </li>
                   </>
                 )}
-                {localStorage.getItem("Identification") != null ? (
-                  <li>
-                    <NavDropdown title={User && User.firstname}>
-                      <NavDropdown.Item onClick={logOut}>
-                        Se deconnecter
-                      </NavDropdown.Item>
-                    </NavDropdown>
-                  </li>
-                ) : null}
               </ul>
+              {localStorage.getItem("Identification") != null ? (
+                <div className="Profil">
+                  Bienvenue {"\u00A0"}
+                  {user && user.firstname}
+                  <NavDropdown className="Profil" title="Mon Profil">
+                    <NavDropdown.Item onClick={logOut}>
+                      Se deconnecter
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={toUnsubscribe}>
+                      Se desinscrire
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </div>
+              ) : null}
             </div>
           </nav>
         </div>
