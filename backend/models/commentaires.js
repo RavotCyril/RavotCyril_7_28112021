@@ -20,9 +20,9 @@ exports.sequelize = sequelize;
 
 const Commentaire = sequelize.define('commentaire', {
 	commentaire_id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-	texte: { type: Sequelize.STRING(255) },
-	id_article: { type: Sequelize.INTEGER },
-	id_user: { type: Sequelize.INTEGER },
+	texte: { type: Sequelize.STRING(255),allowNull: false, },
+	id_article: { type: Sequelize.INTEGER,allowNull: false, },
+	id_user: { type: Sequelize.INTEGER,allowNull: false, },
 }, { tableName: 'commentaire', timestamps: false, underscored: true });
 
 exports.Commentaire = Commentaire;

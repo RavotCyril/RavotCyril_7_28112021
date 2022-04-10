@@ -6,7 +6,7 @@ const fs = require('fs');
 exports.deleteAdminModelsArticle = (req, res, next) => {
   Models.Article.findOne()
         .then(Models => {
-                Models.destroy({ roleId: 1 })
+                Models.destroy({ article_id: req.params.id })
                     .then(() => res.status(200).json({ message: 'L\'administrateur a bien supprimé l\'article!' }))
                     .catch(error => res.status(400).json({ error }));
             })

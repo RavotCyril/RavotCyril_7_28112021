@@ -24,11 +24,12 @@ function Header() {
   /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email ... ) 
   avec la base de données */
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/user/:id", configData)
+    axios({
+      method: "get",
+      url: "http://localhost:3000/api/user/:id",
+    })
       .then((user) => {
         setUser(user.data);
-        console.log(user);
       })
       .catch((err) => {
         if (err.response.status === 400) {

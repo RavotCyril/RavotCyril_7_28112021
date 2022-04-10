@@ -3,22 +3,11 @@ import React, { useState } from "react";
 import axios from "axios";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
-// import dataAuthentification from "../../Services";
-
-/* Permet de récupérer l'id_article et l'id_user des articles pour mettre 
-les commentaires définit par rapport à des articles ciblés */
 
 /* Crud pour Créer, Afficher un Commentaire  */
 
 function Commentaires() {
-  const Article = JSON.parse(localStorage.getItem("Article"));
-  if (Article != null) {
-    var id_article = Article.article_id;
-    var id_user = Article.user_id;
-  } else {
-    console.log("L'article doit être complété");
-  }
-
+  let id_user = JSON.parse(localStorage.getItem("Identification"));
   /* Fonction pour  récupérer le token enregistré dans le clef Identification  */
 
   var config = {
@@ -27,6 +16,7 @@ function Commentaires() {
         "bearer " + JSON.parse(localStorage.getItem("Identification")),
     },
   };
+
   /* Fonction pour vérifier ce que l'on écrit dans l'input du commentaire  */
   const [texte, setTexte] = useState("");
 
@@ -42,7 +32,7 @@ function Commentaires() {
           {
             commentaire: {
               texte,
-              id_article,
+              // id_article,
               id_user,
             },
           },
@@ -65,7 +55,7 @@ function Commentaires() {
         {
           commentaire: {
             texte,
-            id_article,
+            // id_article,
             id_user,
           },
         },
@@ -88,7 +78,7 @@ function Commentaires() {
         <form>
           <div className="row">
             <div className="col-12 col-sm-12  mx-auto text-center sujet">
-              <h2>Poster un commentaire&nbsp;&nbsp;</h2>
+              <br></br>
               <textarea
                 className="col-8 col-sm-6  mx-auto"
                 type="text"
@@ -103,10 +93,11 @@ function Commentaires() {
                   type="button"
                   name="submit"
                   className="form-control btn btn-primary col-4 my-4 mx-auto"
-                  value="Poster un commentaire"
+                  value="Valider le commentaire"
                   aria-describedby="Bouton de validation pour créer le commentaire"
                   onClick={() => {
                     handleSubmit();
+                    window.location.href = "http://localhost:3001/MyForums";
                   }}
                 />
               </div>

@@ -139,11 +139,11 @@ a {
 }
 
 .pageMyForums,
+.pageNewCommentaire,
 .pageNewTopic {
   background: #132944;
   box-shadow: inset 0px 0px 10px 10px #112442;
 }
-
 .pageNewTopic a:hover {
   color: rgb(0, 84, 180);
 }
