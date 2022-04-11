@@ -57,7 +57,6 @@ function Articles() {
       mydata.append("date", date);
       mydata.append("image", input.file);
       mydata.append("user_id", userId);
-
       axios({
         method: "post",
         url: "http://localhost:3000/api/articles/",
@@ -79,14 +78,12 @@ function Articles() {
             console.log("erreur serveur");
           }
         });
-      console.log(mydata);
-    } else {
-      console.log("Tout les champs n'ont pas été correctement remplis");
     }
   };
 
   return (
     <main className="container-fluid">
+      <Services />
       {localStorage.getItem("Identification") != null ? (
         <form>
           <div className="row">
@@ -149,7 +146,6 @@ function Articles() {
           </div>
         </form>
       ) : null}
-      <Services />
     </main>
   );
 }

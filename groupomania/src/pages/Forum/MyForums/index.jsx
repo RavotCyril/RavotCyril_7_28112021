@@ -6,21 +6,22 @@ import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import Services from "../../../Services";
 
 function MyForums() {
   const [lstArticles, setListArticles] = useState([]);
   const [articleId, setArticleId] = useState([]);
   const [user, setUser] = useState([]);
 
-  /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email ... ) 
-  avec la base de données */
-  useEffect(() => {
-    let userId = JSON.parse(localStorage.getItem("userId"));
+  let id = JSON.parse(localStorage.getItem("userId"));
+  console.log(id);
+  console.log(user);
 
+  useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:3000/api/user/",
-      id: userId,
+      url: "http://localhost:3000/api/user/:id",
+      id: id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
@@ -37,7 +38,7 @@ function MyForums() {
           console.log("erreur serveur");
         }
       });
-  }, []);
+  }, [id]);
   /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
   useEffect(() => {
     axios({
@@ -61,7 +62,7 @@ function MyForums() {
           console.log("erreur serveur");
         }
       });
-  }, []);
+  }, [articleId]);
 
   /* Permet de récupérer les données d'un seul article avec un Id spécifique */
 
@@ -86,7 +87,7 @@ function MyForums() {
           console.log("erreur serveur");
         }
       });
-  }, []);
+  }, [articleId]);
 
   /* Crud pour Supprimer,un Article  */
   const handleDelete = () => {
@@ -95,7 +96,7 @@ function MyForums() {
 
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/articles/",
+      url: "http://localhost:3000/api/articles/:id",
       id: articleId,
       data: mydata,
       headers: {
@@ -120,11 +121,12 @@ function MyForums() {
 
   const adminHandleDelete = () => {
     const mydata = new FormData();
-    let id = articleId;
-    console.log(id);
+    let rodeId = user.roleId;
+    console.log(rodeId);
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/admin/" + id,
+      url: "http://localhost:3000/api/admin/:id",
+      id: rodeId,
       data: mydata,
       headers: {
         Authorization:
@@ -167,6 +169,7 @@ function MyForums() {
   };
   return (
     <main id="MyForum" className="pageMyForums container-fluid">
+      <Services />
       <h1>Bienvenue sur le forum</h1>
       <div>
         <ul className="navbar-nav p-3">
@@ -182,36 +185,35 @@ function MyForums() {
           </li>
         </ul>
       </div>
-      <div className="row">
+      <div className="Container-Article">
         {lstArticles.map((article) => {
           return (
-            <article
-              key={article.article_id}
-              id="Article"
-              className="mx-5 my-5 col-5"
-            >
+            <article key={article.article_id} id="Article">
               <p className="Article-date">{article.date}</p>
               <h2>{article.sujet}</h2>
+              <br></br>
               <div className="Div-Image">
                 <img src={article.image} alt="Fichier selectionné" />
               </div>
               <br></br>
-              <p>{article.texte}</p>
+              <p className="Article-texte">{article.texte}</p>
               <br></br>
               {user.roleId === 1 ? (
-                <FontAwesomeIcon
-                  className="AdminIcon"
-                  size="lg"
-                  icon={faWindowClose}
-                  onClick={() => {
-                    if (
-                      "L'administrateur veut il bien supprimer cette article?"
-                    )
-                      adminHandleDelete();
-                  }}
-                />
+                <button>
+                  <FontAwesomeIcon
+                    className="AdminIcon"
+                    size="lg"
+                    icon={faWindowClose}
+                    onClick={() => {
+                      if (
+                        "L'administrateur veut il bien supprimer cette article?"
+                      )
+                        adminHandleDelete();
+                    }}
+                  />
+                </button>
               ) : null}
-              <div className="d-flex col-2 mx-auto">
+              <div className="d-flex mx-auto">
                 <button
                   className="btn btn-danger mx-3"
                   onClick={() => {
@@ -235,11 +237,11 @@ function MyForums() {
                   modifier
                 </button>
               </div>
-              <div className="col-12 col-sm-8 mx-auto">
+              <div className="">
                 <input
                   type="button"
                   name="submit"
-                  className="form-control btn btn-primary col-4 my-4 mx-auto"
+                  className="form-control btn btn-primary mx-auto"
                   value="Poster un commentaire"
                   aria-describedby="Bouton de validation pour créer le commentaire"
                   onClick={() => {

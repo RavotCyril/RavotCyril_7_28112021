@@ -1,6 +1,8 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState } from "react";
 import axios from "axios";
+import Services from "../../Services";
+
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
@@ -74,6 +76,7 @@ function Commentaires() {
   };
   return (
     <div>
+      <Services />
       {localStorage.getItem("Identification") != null ? (
         <form>
           <div className="row">

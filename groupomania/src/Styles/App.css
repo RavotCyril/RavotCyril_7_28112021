@@ -17,10 +17,19 @@ body {
 .Profil a:hover {
   color: white;
 }
+
+.Container-Article {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 #Article {
   box-shadow: 1px 1px 3px 3px black;
   background: white;
   position: relative;
+  width: 40%;
+  margin: 50px;
+  padding: 10px;
 }
 .Div-Image {
   text-align: center;
@@ -36,6 +45,11 @@ body {
 .Article-date {
   font-weight: bold;
   font-style: italic;
+}
+.Article-texte {
+  font-style: italic;
+  font-size: 1rem;
+  text-align: justify;
 }
 
 .AdminIcon {
@@ -88,6 +102,7 @@ body {
 
 #deconnexion .dropdown-item:hover {
   background: rgb(0, 84, 180);
+  width: 80%;
 }
 
 h1 {
@@ -167,6 +182,10 @@ a {
     object-fit: cover;
     object-position: center;
   }
+  #Article {
+    width: 80%;
+    margin: 20px auto;
+  }
   #Article img {
     width: 50%;
     height: auto;
@@ -184,6 +203,10 @@ a {
     object-fit: cover;
     object-position: center;
   }
+  #Article {
+    width: 80%;
+    margin: 20px auto;
+  }
   #Article img {
     width: 60%;
     height: auto;
@@ -200,6 +223,10 @@ a {
     height: auto;
     object-fit: cover;
     object-position: center;
+  }
+  #Article {
+    width: 80%;
+    margin: 20px auto;
   }
   #Article img {
     width: 60%;
