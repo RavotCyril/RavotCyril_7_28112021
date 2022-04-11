@@ -2,7 +2,6 @@
 -> React, useState + axios (Api post-get..) */
 import React, { useState } from "react";
 import axios from "axios";
-import Connexion from "../../Services";
 // /* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
@@ -34,7 +33,6 @@ function Login() {
             "Identification",
             JSON.stringify(res.data.token)
           );
-          localStorage.setItem("userId", JSON.stringify(res.data.userId));
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -92,7 +90,6 @@ function Login() {
           </div>
         </div>
       </form>
-      <Connexion />
     </main>
   );
 }

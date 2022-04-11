@@ -1,9 +1,9 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState } from "react";
 import axios from "axios";
-// import jwt_decode from "jwt-decode";
+import Services from "../../Services";
 
-// /* Importations des pages de styles + images */
+/* Importations des pages de styles + images */
 import "../../Styles/App.css";
 
 /* Vérification de la validité du token 
@@ -11,13 +11,8 @@ import "../../Styles/App.css";
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification 
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
-// var token = JSON.parse(localStorage.getItem("Identification"));
-// console.log(token);
-// var decoded = jwt_decode(token);
-// console.log(decoded);
-
-// console.log(decoded);
 var userId = JSON.parse(localStorage.getItem("userId"));
+
 function Articles() {
   var date = new Date().toUTCString();
   /* Constante useState Sujet + Texte */
@@ -91,7 +86,7 @@ function Articles() {
   };
 
   return (
-    <main className="Articles container-fluid">
+    <main className="container-fluid">
       {localStorage.getItem("Identification") != null ? (
         <form>
           <div className="row">
@@ -133,7 +128,7 @@ function Articles() {
           </div>
           <div className="Row">
             {input.filepreview !== null ? (
-              <div className="Article-Image col-12 col-sm-12 mx-auto text-center">
+              <div className="col-12 col-sm-12 mx-auto text-center">
                 <img src={input.filepreview} alt="Img téléchargé" />
               </div>
             ) : null}
@@ -154,6 +149,7 @@ function Articles() {
           </div>
         </form>
       ) : null}
+      <Services />
     </main>
   );
 }

@@ -22,21 +22,29 @@ body {
   background: white;
   position: relative;
 }
+.Div-Image {
+  text-align: center;
+}
+.Div-Image img {
+  width: 60%;
+  height: auto;
+  box-shadow: 1px 1px 10px black;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.Article-date {
+  font-weight: bold;
+  font-style: italic;
+}
+
 .AdminIcon {
   position: absolute;
   top: 0px;
   right: 0px;
 }
-.Article-Image img {
-  width: 60%;
-  height: auto;
-}
 
 .InputImage {
-  color: white;
-}
-
-.Articles img {
   color: white;
 }
 
@@ -59,8 +67,7 @@ body {
   text-decoration: none;
 }
 
-#MyForum p,
-#MyForum img {
+#MyForum p {
   color: black;
 }
 
@@ -131,10 +138,12 @@ a {
   background: #132944;
   box-shadow: inset 0px 0px 10px 10px #000;
 }
-
-.pageNewTopic h2,
-.pageMyForums h2 {
+.pageNewTopic h2 {
   color: white;
+  text-align: center;
+}
+.pageMyForums h2 {
+  color: black;
   text-align: center;
 }
 
@@ -158,7 +167,7 @@ a {
     object-fit: cover;
     object-position: center;
   }
-  .Article-Image img {
+  #Article img {
     width: 50%;
     height: auto;
   }
@@ -175,7 +184,7 @@ a {
     object-fit: cover;
     object-position: center;
   }
-  .Article-Image img {
+  #Article img {
     width: 60%;
     height: auto;
   }
@@ -192,12 +201,8 @@ a {
     object-fit: cover;
     object-position: center;
   }
-  .Article-Image img {
+  #Article img {
     width: 60%;
-    height: auto;
-  }
-  .Article-Image img {
-    width: 100%;
     height: auto;
   }
 }

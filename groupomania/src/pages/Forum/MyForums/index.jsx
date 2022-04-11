@@ -190,10 +190,13 @@ function MyForums() {
               id="Article"
               className="mx-5 my-5 col-5"
             >
-              <img src={article.image} alt="Fichier selectionné" />
+              <p className="Article-date">{article.date}</p>
               <h2>{article.sujet}</h2>
+              <div className="Div-Image">
+                <img src={article.image} alt="Fichier selectionné" />
+              </div>
+              <br></br>
               <p>{article.texte}</p>
-              <p>{article.date}</p>
               <br></br>
               {user.roleId === 1 ? (
                 <FontAwesomeIcon
@@ -208,7 +211,7 @@ function MyForums() {
                   }}
                 />
               ) : null}
-              <div className="col-2 mx-auto">
+              <div className="d-flex col-2 mx-auto">
                 <button
                   className="btn btn-danger mx-3"
                   onClick={() => {

@@ -7,8 +7,8 @@ import "../../Styles/App.css";
 /* Crud pour Créer, Afficher un Commentaire  */
 
 function Commentaires() {
-  let id_user = JSON.parse(localStorage.getItem("Identification"));
-  /* Fonction pour  récupérer le token enregistré dans le clef Identification  */
+  /* Fonction pour  récupérer l'userId enregistré dans le clef userId  */
+  var id_user = JSON.parse(localStorage.getItem("userId"));
 
   var config = {
     headers: {
