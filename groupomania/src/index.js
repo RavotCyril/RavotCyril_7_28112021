@@ -16,6 +16,7 @@ import Votes from "./components/Votes";
 
 import Services from "./Services";
 import Home from "./pages/Home";
+import Article from "./pages/Forum/Article";
 import MyForums from "./pages/Forum/MyForums";
 import NewTopic from "./pages/Forum/NewTopic";
 
@@ -32,6 +33,7 @@ ReactDOM.render(
         <Route path="/Home" element={<Home />} />
         <Route path="/Services" element={<Services />} />
         <Route path="/Articles" element={<Articles />} />
+        <Route path="/Article" element={<Article />} />
         <Route path="/Commentaires" element={<Commentaires />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />

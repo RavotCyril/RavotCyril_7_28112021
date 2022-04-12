@@ -46,6 +46,7 @@ exports.login = (req, res, next) => {
                         token: jwt.sign({ userId: User.user_id, }, /* Token d'authentification + userId */
                             process.env.DB_TOKEN, { expiresIn: '2 days' }, /* Temps de validité du Token */
                         ),
+                        userId: User.user_id
                     });
                 })
                 .catch(error => {
@@ -58,10 +59,13 @@ exports.login = (req, res, next) => {
 /* Exporte la fonction Utilisateur pour lire ces données */
 
 exports.getUser = (req, res, next) => {
+    
+    console.log(req.params)
         Models.User.findOne({ where: { user_id: req.params.id } })
         .then(
-            (Models) => {
-                res.status(200).json(Models);
+            (model) => {
+                console.log("id du user"+model.user_id)
+                res.status(200).json(model);
             }
         ).catch(
             (error) => {

@@ -18,7 +18,22 @@ function Services() {
 
   function authentificationToken() {
     var token = JSON.parse(localStorage.getItem("Identification"));
-    var decoded = jwt_decode(token);
+
+    try {
+      var decoded = jwt_decode(token);
+    } catch (err) {
+      var notify = () =>
+        toast.error(err.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
+      notify();
+    }
 
     if (token && decoded.iat < decoded.exp) {
       /* Permet de stocker dans la variable userId l'identification userId

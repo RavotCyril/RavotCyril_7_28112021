@@ -14,6 +14,8 @@ import Logo from "../../assets/LogoGroupomaniaWhite.png";
 function Header() {
   const [user, setUser] = useState([]);
 
+  var user_id = JSON.parse(localStorage.getItem("userId"));
+
   var configData = {
     headers: {
       Authorization:
@@ -26,7 +28,7 @@ function Header() {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:3000/api/user/:id",
+      url: "http://localhost:3000/api/user/" + user_id,
     })
       .then((user) => {
         setUser(user.data);
@@ -38,7 +40,7 @@ function Header() {
           console.log("erreur serveur");
         }
       });
-  }, []);
+  }, [user_id]);
 
   /* Se désinscrire et supprimé son compte utilisateur et toutes les données ( Email, Prénom, LocalStorage Token + userId) */
 
