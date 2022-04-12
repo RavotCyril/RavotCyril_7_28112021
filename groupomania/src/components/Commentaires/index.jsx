@@ -25,6 +25,7 @@ function Commentaires() {
   function handleChangeTexte(event) {
     setTexte(event.target.value);
   }
+  /* Permet de créer et de poster un commentaire  */
 
   const handleSubmit = () => {
     if (texte != null) {
@@ -51,6 +52,8 @@ function Commentaires() {
           }
         });
     }
+    /* Permet de lire tous les commentaires des articles de l'application */
+
     axios
       .get(
         "http://localhost:3000/api/commentaires/",

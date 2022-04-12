@@ -2,8 +2,11 @@
 
 import React from "react";
 import axios from "axios";
+
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
+
+/* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import Services from "../../../Services";
@@ -12,16 +15,12 @@ function MyForums() {
   const [lstArticles, setListArticles] = useState([]);
   const [articleId, setArticleId] = useState([]);
   const [user, setUser] = useState([]);
-
-  let id = JSON.parse(localStorage.getItem("userId"));
-  console.log(id);
-  console.log(user);
+  var user_id = JSON.parse(localStorage.getItem("userId"));
 
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:3000/api/user/:id",
-      id: id,
+      url: "http://localhost:3000/api/user/" + user_id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
@@ -30,6 +29,7 @@ function MyForums() {
     })
       .then((user) => {
         setUser(user.data);
+        console.log(user);
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -38,13 +38,12 @@ function MyForums() {
           console.log("erreur serveur");
         }
       });
-  }, [id]);
+  }, [user_id]);
   /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
   useEffect(() => {
     axios({
       method: "get",
       url: "http://localhost:3000/api/articles/",
-      id: articleId,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
@@ -62,15 +61,14 @@ function MyForums() {
           console.log("erreur serveur");
         }
       });
-  }, [articleId]);
+  }, []);
 
   /* Permet de récupérer les données d'un seul article avec un Id spécifique */
 
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:3000/api/articles/",
-      id: articleId,
+      url: "http://localhost:3000/api/articles/" + articleId,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
@@ -87,17 +85,15 @@ function MyForums() {
           console.log("erreur serveur");
         }
       });
-  }, [articleId]);
+  }, []);
 
   /* Crud pour Supprimer,un Article  */
   const handleDelete = () => {
-    /* Fonction pour  récupérer le token enregistré dans le clef Identification */
     const mydata = new FormData();
 
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/articles/:id",
-      id: articleId,
+      url: "http://localhost:3000/api/articles/" + articleId,
       data: mydata,
       headers: {
         Authorization:
@@ -122,10 +118,9 @@ function MyForums() {
   const adminHandleDelete = () => {
     const mydata = new FormData();
     let rodeId = user.roleId;
-    console.log(rodeId);
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/admin/:id",
+      url: "http://localhost:3000/api/admin/" + rodeId,
       id: rodeId,
       data: mydata,
       headers: {
@@ -149,11 +144,9 @@ function MyForums() {
   /*  Crud pour Modifier un Article*/
 
   const handleUpdate = () => {
-    let id = articleId;
-    console.log(id);
     axios({
       method: "put",
-      url: "http://localhost:3000/api/articles/" + id,
+      url: "http://localhost:3000/api/articles/" + articleId,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
@@ -193,7 +186,9 @@ function MyForums() {
               <h2>{article.sujet}</h2>
               <br></br>
               <div className="Div-Image">
-                <img src={article.image} alt="Fichier selectionné" />
+                <a href={article.image}>
+                  <img src={article.image} alt="Fichier selectionné" />
+                </a>
               </div>
               <br></br>
               <p className="Article-texte">{article.texte}</p>
@@ -237,7 +232,8 @@ function MyForums() {
                   modifier
                 </button>
               </div>
-              <div className="">
+              <br></br>
+              <div>
                 <input
                   type="button"
                   name="submit"

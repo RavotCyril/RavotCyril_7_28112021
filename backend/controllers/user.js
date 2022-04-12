@@ -58,7 +58,7 @@ exports.login = (req, res, next) => {
 /* Exporte la fonction Utilisateur pour lire ces données */
 
 exports.getUser = (req, res, next) => {
-        Models.User.findOne()
+        Models.User.findOne({ where: { user_id: req.params.id } })
         .then(
             (Models) => {
                 res.status(200).json(Models);
