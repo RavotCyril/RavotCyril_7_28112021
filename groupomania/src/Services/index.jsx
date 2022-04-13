@@ -1,13 +1,10 @@
 /* Importations des bibliothèques react + Yarn
 -> React, useState , PasswordChecklist + axios (Api post-get..) */
-
 import React from "react";
 import jwt_decode from "jwt-decode";
-
 /* Styles CSS  react-toastify  ( Pour personnaliser les erreurs - Messages - Alert */
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 function Services() {
   /* Permet de stocker l'identification ( Token ) dans la variable connexion  */
   /* Vérification de la validité du token
@@ -18,12 +15,10 @@ function Services() {
 
   function authentificationToken() {
     var token = JSON.parse(localStorage.getItem("Identification"));
-
     try {
       var decoded = jwt_decode(token);
-    } catch (err) {
-      var notify = () =>
-        toast.error(err.message, {
+      if (decoded.iat < decoded.exp)
+        toast.success("Authentification réussi et connexion réussi !", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -32,18 +27,8 @@ function Services() {
           draggable: true,
           progress: undefined,
         });
-      notify();
-    }
-
-    if (token && decoded.iat < decoded.exp) {
-      /* Permet de stocker dans la variable userId l'identification userId
-      une fois le token présent dans le localStorage puis décodé */
-      var userId = decoded.userId;
-      localStorage.setItem("userId", JSON.stringify(userId));
-    } else {
-      localStorage.clear();
-      window.location.href = "http://localhost:3001/Login";
-      var notify = () =>
+    } catch {
+      var error = () =>
         toast.error(
           "Suite à une trop longue inactivité votre session a expiré veuillez vous reconnecter",
           {
@@ -56,11 +41,13 @@ function Services() {
             progress: undefined,
           }
         );
-      notify();
+      localStorage.clear();
+      window.location.href = "http://localhost:3001/Login";
+      error();
     }
   }
-  authentificationToken();
 
+  authentificationToken();
   return (
     <div>
       <ToastContainer

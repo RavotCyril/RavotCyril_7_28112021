@@ -12,6 +12,7 @@ function Article() {
   const [lstArticles, setListArticles] = useState([]);
   const [articleId, setArticleId] = useState();
 
+  setArticleId(lstArticles.article_id);
   /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
   useEffect(() => {
     axios({
@@ -20,7 +21,6 @@ function Article() {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "multipart/form-data",
       },
     })
       .then((res) => {
@@ -44,7 +44,6 @@ function Article() {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "multipart/form-data",
       },
     }).catch((err) => {
       if (err.response.status === 400) {
@@ -66,7 +65,6 @@ function Article() {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "multipart/form-data",
       },
     })
       .then((res) => {

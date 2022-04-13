@@ -11,7 +11,7 @@ import "../../Styles/App.css";
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification 
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
-var userId = JSON.parse(localStorage.getItem("userId"));
+var user_id = JSON.parse(localStorage.getItem("user_id"));
 
 function Articles() {
   var date = new Date().toUTCString();
@@ -56,7 +56,7 @@ function Articles() {
       mydata.append("texte", texte);
       mydata.append("date", date);
       mydata.append("image", input.file);
-      mydata.append("user_id", userId);
+      mydata.append("user_id", user_id);
       axios({
         method: "post",
         url: "http://localhost:3000/api/articles/",

@@ -17,7 +17,19 @@ body {
 .Profil a:hover {
   color: white;
 }
+.Icon-User {
+  display: inline;
+  padding: 17px 0px;
+}
 
+.Message-Bienvenue {
+  color: black;
+  font-size: 1.2rem;
+  width: 200px;
+}
+.Message-Bienvenue:hover {
+  color: white;
+}
 .Container-Article {
   display: flex;
   flex-wrap: wrap;
@@ -103,7 +115,7 @@ body {
 
 #deconnexion .dropdown-item:hover {
   background: rgb(0, 84, 180);
-  width: 80%;
+  width: 90%;
 }
 
 h1 {

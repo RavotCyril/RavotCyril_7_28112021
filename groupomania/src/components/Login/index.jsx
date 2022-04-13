@@ -17,7 +17,6 @@ function Login() {
     setemailData(e.target.value);
   }
   function testLogin() {
-    console.log("DebutTestLogin");
     if (password && email) {
       axios
         .post("http://localhost:3000/api/auth/login", {
@@ -25,7 +24,6 @@ function Login() {
           email,
         })
         .then((res) => {
-          console.log(res);
           /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
           window.location.href = "http://localhost:3001/MyForums";
           /* Permet de stocker l'identification ( Token ) */
@@ -33,7 +31,7 @@ function Login() {
             "Identification",
             JSON.stringify(res.data.token)
           );
-          localStorage.setItem("userId", JSON.stringify(res.data.userId));
+          localStorage.setItem("user_id", JSON.stringify(res.data.user_id));
         })
         .catch((err) => {
           if (err.response.status === 400) {

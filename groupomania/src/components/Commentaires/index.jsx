@@ -10,7 +10,7 @@ import "../../Styles/App.css";
 
 function Commentaires() {
   /* Fonction pour  récupérer l'userId enregistré dans le clef userId  */
-  var id_user = JSON.parse(localStorage.getItem("userId"));
+  var id_user = JSON.parse(localStorage.getItem("user_id"));
 
   var config = {
     headers: {

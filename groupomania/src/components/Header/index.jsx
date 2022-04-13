@@ -7,20 +7,21 @@ import { NavDropdown } from "react-bootstrap";
 import { useState, useEffect } from "react";
 
 // /* Importations des pages de styles + logo + images */
-
+/* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../../Styles/App.css";
 import Logo from "../../assets/LogoGroupomaniaWhite.png";
 
 function Header() {
   const [user, setUser] = useState([]);
 
-  var user_id = JSON.parse(localStorage.getItem("userId"));
+  var user_id = JSON.parse(localStorage.getItem("user_id"));
 
   var configData = {
     headers: {
       Authorization:
         "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      "Content-Type": "multipart/form-data",
     },
   };
   /* Permet de récupérer les données ( valeurs ) de l'utilisateur pendant son inscription ( Prénom - Email ... ) 
@@ -129,16 +130,25 @@ function Header() {
               </ul>
               {localStorage.getItem("Identification") != null ? (
                 <div className="Profil">
-                  Bienvenue {"\u00A0"}
-                  {user && user.firstname}
-                  <NavDropdown className="Profil" title="Mon Profil">
-                    <NavDropdown.Item onClick={logOut}>
-                      Se deconnecter
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={toUnsubscribe}>
-                      Se desinscrire
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                  <p className="Message-Bienvenue">
+                    Bienvenue {"\u00A0"} {user && user.firstname}
+                  </p>
+                  <div className="d-flex">
+                    <div className="Icon-User">
+                      <FontAwesomeIcon size="lg" icon={faUser} />
+                    </div>
+                    <div className="Profil">
+                      <NavDropdown title="Mon Profil">
+                        {"\u00A0"} {"\u00A0"} {"\u00A0"} {user && user.email}
+                        <NavDropdown.Item onClick={logOut}>
+                          Déconnexion
+                        </NavDropdown.Item>
+                        <NavDropdown.Item onClick={toUnsubscribe}>
+                          Supprimer mon compte
+                        </NavDropdown.Item>
+                      </NavDropdown>
+                    </div>
+                  </div>
                 </div>
               ) : null}
             </div>

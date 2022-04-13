@@ -8,7 +8,8 @@ import { useState, useEffect } from "react";
 
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { faWindowClose, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import Zoom from "react-medium-image-zoom";
 import Services from "../../../Services";
 
 function MyForums() {
@@ -16,14 +17,12 @@ function MyForums() {
   const [articleId, setArticleId] = useState([]);
   const [user, setUser] = useState([]);
 
-  var user_id = JSON.parse(localStorage.getItem("userId"));
-  console.log(user_id);
+  var user_id = JSON.parse(localStorage.getItem("user_id"));
 
   useEffect(() => {
     axios({
       method: "get",
       url: "http://localhost:3000/api/user/" + user_id,
-
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
@@ -34,14 +33,13 @@ function MyForums() {
         setUser(user.data);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
         }
       });
-  }, []);
+  }, [user_id]);
   /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
   useEffect(() => {
     axios({
@@ -50,7 +48,6 @@ function MyForums() {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "multipart/form-data",
       },
     })
       .then((res) => {
@@ -74,7 +71,6 @@ function MyForums() {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "multipart/form-data",
       },
     })
       .then((article) => {
@@ -102,7 +98,6 @@ function MyForums() {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "multipart/form-data",
       },
     })
       .then((res) => {
@@ -135,7 +130,7 @@ function MyForums() {
           return (
             <a
               id="Article"
-              href={"http://localhost:3001/api/articles/?id=" + articleId}
+              href={"http://localhost:3001/api/articles/" + articleId}
               key={article.article_id}
             >
               <article key={article.article_id} id={article.article_id}>
@@ -143,9 +138,9 @@ function MyForums() {
                 <h2 key={article.sujet}>{article.sujet}</h2>
                 <br></br>
                 <div key={article.image} className="Div-Image">
-                  <a href={article.image}>
-                    <img src={article.image} alt="Fichier selectionné" />
-                  </a>
+                  <Zoom>
+                    <img onClick={article.image} alt="Fichier selectionné" />
+                  </Zoom>
                 </div>
                 <br></br>
                 <p key={article.texte} className="Article-texte">
@@ -153,19 +148,19 @@ function MyForums() {
                 </p>
                 <br></br>
                 {user.roleId === 1 ? (
-                  <button>
-                    <FontAwesomeIcon
-                      className="AdminIcon"
-                      size="lg"
-                      icon={faWindowClose}
-                      onClick={() => {
-                        if (
+                  <FontAwesomeIcon
+                    className="AdminIcon"
+                    size="lg"
+                    icon={faWindowClose}
+                    onClick={() => {
+                      if (
+                        window.confirm(
                           "L'administrateur veut il bien supprimer cette article?"
                         )
-                          adminHandleDelete();
-                      }}
-                    />
-                  </button>
+                      )
+                        adminHandleDelete();
+                    }}
+                  />
                 ) : null}
                 <div>
                   <input
@@ -178,6 +173,14 @@ function MyForums() {
                   />
                 </div>
               </article>
+              <br></br>
+              <div>
+                <FontAwesomeIcon
+                  size="lg"
+                  icon={faThumbsUp}
+                  onClick={() => {}}
+                />
+              </div>
             </a>
           );
         })}
