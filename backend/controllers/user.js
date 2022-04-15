@@ -50,7 +50,7 @@ exports.login = (req, res, next) => {
                     });
                 })
                 .catch(error => {
-                    res.status(500).json({ message:'serveur indisponible'})
+                    return res.status(500).json({ message:'serveur indisponible'})
                 });
         })
         .catch(error => res.status(500).json({ message :'serveur indisponible' }));

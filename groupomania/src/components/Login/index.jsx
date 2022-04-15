@@ -48,15 +48,32 @@ function Login() {
             draggable: true,
             progress: undefined,
           });
+          setEmail(null);
+          setPassword(null);
+          setServeur(null);
           window.location.href = "http://localhost:3001/MyForums";
         })
         .catch((err) => {
-          if (err.response.status === 401) {
-            setEmail("Email non enregistré ou mal formulé !");
+          if (!err.response) {
+            // network error
+            setServeur("Erreur serveur");
+            setPassword(null);
+            setEmail(null);
+          } else if (err.response.status === 0) {
+            setEmail(null);
+            setPassword(null);
+            setServeur("Serveur non connecté");
           } else if (err.response.status === 403) {
+            setEmail(null);
+            setServeur(null);
             setPassword("Mot de passe incorrecte !");
           } else if (err.response.status === 500) {
             setServeur("Erreur serveur");
+          } else if (err.response.status === 401) {
+            setPassword(null);
+            setEmail("Email non enregistré ou mal formulé !");
+          } else {
+            setServeur(err.response.data.message);
           }
         });
     }
@@ -73,7 +90,6 @@ function Login() {
           {errorPassword}
           {errorServeur}
         </p>
-        ;
         <div className="row">
           <div className="form-group col-8 my-4 mx-auto">
             <label htmlFor="Email">Email</label>
