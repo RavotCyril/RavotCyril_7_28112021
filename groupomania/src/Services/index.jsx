@@ -3,8 +3,10 @@
 import React from "react";
 import jwt_decode from "jwt-decode";
 /* Styles CSS  react-toastify  ( Pour personnaliser les erreurs - Messages - Alert */
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 function Services() {
   /* Permet de stocker l'identification ( Token ) dans la variable connexion  */
   /* Vérification de la validité du token
@@ -12,21 +14,13 @@ function Services() {
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
-
   function authentificationToken() {
     var token = JSON.parse(localStorage.getItem("Identification"));
     try {
       var decoded = jwt_decode(token);
-      if (decoded.iat < decoded.exp)
-        toast.success("Authentification réussi et connexion réussi !", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-        });
+      if (decoded.iat < decoded.exp) {
+        console.log("Connexion réussi");
+      }
     } catch {
       var error = () =>
         toast.error(

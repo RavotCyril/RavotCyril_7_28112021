@@ -2,13 +2,21 @@
 -> React, useState + axios (Api post-get..) */
 import React, { useState } from "react";
 import axios from "axios";
-// /* Importations des pages de styles + images */
+
+/* Importations des pages de styles + images */
+/* Styles CSS  react-toastify  ( Pour personnaliser les erreurs - Messages - Alert */
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../../Styles/App.css";
 
 function Login() {
   // event.preventDefault();
   const [email, setemailData] = useState("");
   const [password, setpasswordData] = useState("");
+  const [errorEmail, setEmail] = useState("");
+  const [errorPassword, setPassword] = useState("");
+  const [errorServeur, setServeur] = useState("");
 
   function handleChangePassword(e) {
     setpasswordData(e.target.value);
@@ -25,19 +33,30 @@ function Login() {
         })
         .then((res) => {
           /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
-          window.location.href = "http://localhost:3001/MyForums";
           /* Permet de stocker l'identification ( Token ) */
           localStorage.setItem(
             "Identification",
             JSON.stringify(res.data.token)
           );
           localStorage.setItem("user_id", JSON.stringify(res.data.user_id));
+          toast.success("Authentification réussi et connexion réussi !", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+          });
+          window.location.href = "http://localhost:3001/MyForums";
         })
         .catch((err) => {
-          if (err.response.status === 400) {
-            console.log("Mauvaise Adresse Email");
+          if (err.response.status === 401) {
+            setEmail("Email non enregistré ou mal formulé !");
+          } else if (err.response.status === 403) {
+            setPassword("Mot de passe incorrecte !");
           } else if (err.response.status === 500) {
-            console.log("Erreur serveur");
+            setServeur("Erreur serveur");
           }
         });
     }
@@ -49,6 +68,12 @@ function Login() {
           Pour vous connectez au forum veuillez remplir le formulaire de
           connexion !
         </h1>
+        <p className="invalid">
+          {errorEmail}
+          {errorPassword}
+          {errorServeur}
+        </p>
+        ;
         <div className="row">
           <div className="form-group col-8 my-4 mx-auto">
             <label htmlFor="Email">Email</label>
@@ -89,6 +114,20 @@ function Login() {
           </div>
         </div>
       </form>
+      <div>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          theme="colored"
+        />
+      </div>
     </main>
   );
 }

@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import Zoom from "react-medium-image-zoom";
 import Services from "../../../Services";
 
 function MyForums() {
@@ -138,9 +137,9 @@ function MyForums() {
                 <h2 key={article.sujet}>{article.sujet}</h2>
                 <br></br>
                 <div key={article.image} className="Div-Image">
-                  <Zoom>
-                    <img onClick={article.image} alt="Fichier selectionné" />
-                  </Zoom>
+                  <a href={article.image}>
+                    <img src={article.image} alt="Fichier selectionné" />
+                  </a>
                 </div>
                 <br></br>
                 <p key={article.texte} className="Article-texte">

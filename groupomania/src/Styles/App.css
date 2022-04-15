@@ -182,7 +182,7 @@ a {
   box-shadow: inset 0px 0px 10px 10px #112442;
 }
 .pageNewTopic a:hover {
-  color: rgb(0, 84, 180);
+  color: white;
 }
 
 @media screen and (min-width: 769px) and (max-width: 1089px) /* styles pour tablettes*/ {
