@@ -11,11 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import Services from "../../../Services";
 
-function MyForums() {
+function MyForums(article) {
   const [listArticles, setListArticles] = useState([]);
-  const [articleId, setArticleId] = useState([]);
+  const [article_id, setArticleId] = useState([]);
   const [user, setUser] = useState([]);
-
   var user_id = JSON.parse(localStorage.getItem("user_id"));
 
   useEffect(() => {
@@ -38,7 +37,7 @@ function MyForums() {
           console.log("erreur serveur");
         }
       });
-  }, [user_id]);
+  }, []);
   /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
   useEffect(() => {
     axios({
@@ -53,7 +52,35 @@ function MyForums() {
         setListArticles(res.data);
       })
       .catch((err) => {
-        if (err.response.status === 400) {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        } else {
+          console.log(err.response.data.message);
+        }
+      });
+  }, []);
+
+  /* Permet de récupérer les données d'un seul article avec un Id spécifique */
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:3000/api/articles/" + article_id,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
+      .then((article) => {
+        console.log(article.data);
+      })
+      .catch((err) => {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
@@ -61,38 +88,13 @@ function MyForums() {
       });
   }, []);
 
-  /* Permet de récupérer les données d'un seul article avec un Id spécifique */
-
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:3000/api/articles/" + articleId,
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      },
-    })
-      .then((article) => {
-        setArticleId(article.data);
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
-  }, [articleId]);
-
   /* Function de l'administrateur pour supprimer les articles des utilisateurs   */
 
   const adminHandleDelete = () => {
     const mydata = new FormData();
-    let rodeId = user.roleId;
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/admin/" + rodeId,
-      id: rodeId,
+      url: "http://localhost:3000/api/admin/" + article_id,
       data: mydata,
       headers: {
         Authorization:
@@ -129,22 +131,24 @@ function MyForums() {
           return (
             <a
               id="Article"
-              href={"http://localhost:3001/api/articles/" + articleId}
+              href={"http://localhost:3001/api/articles/" + article.article_id}
               key={article.article_id}
+              onClick={() => {
+                setArticleId(article.article_id);
+                console.log(article.article_id);
+              }}
             >
-              <article key={article.article_id} id={article.article_id}>
+              <article id={article.article_id}>
                 <p className="Article-date">{article.date}</p>
-                <h2 key={article.sujet}>{article.sujet}</h2>
+                <h2>{article.sujet}</h2>
                 <br></br>
-                <div key={article.image} className="Div-Image">
+                <div className="Div-Image">
                   <a href={article.image}>
                     <img src={article.image} alt="Fichier selectionné" />
                   </a>
                 </div>
                 <br></br>
-                <p key={article.texte} className="Article-texte">
-                  {article.texte}
-                </p>
+                <p className="Article-texte">{article.texte}</p>
                 <br></br>
                 {user.roleId === 1 ? (
                   <FontAwesomeIcon

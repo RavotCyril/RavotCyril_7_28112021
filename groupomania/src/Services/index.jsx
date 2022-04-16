@@ -19,7 +19,6 @@ function Services() {
     try {
       var decoded = jwt_decode(token);
       if (decoded.iat < decoded.exp) {
-        console.log("Connexion réussi");
       }
     } catch {
       var error = () =>

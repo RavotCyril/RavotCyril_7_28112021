@@ -24,7 +24,7 @@ exports.createModelsArticle = (req, res, next) => {
             date: new Date().toUTCString(),
             image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             user_id: req.body.user_id
-        }).then(() => res.status(201).json({ message: 'article créé !' }))
+        }).then((user) => res.status(201).json({ user, message: 'article créé !' }))
         .catch(error => res.status(400).json({ message: error.message }));
 };
 // Afficher un seule article / GET
@@ -32,13 +32,14 @@ exports.createModelsArticle = (req, res, next) => {
 exports.getOneModelsArticle = (req, res, next) => {
 
     Models.Article.findOne({ where: { article_id: req.params.id } })
+
         .then(
             (Models) => {
                 res.status(200).json(Models);
             }
         ).catch(
             (error) => {
-                res.status(404).json({
+                res.status(400).json({
                     error: error
                 });
             }
