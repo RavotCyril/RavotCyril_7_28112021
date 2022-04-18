@@ -5,9 +5,9 @@ import axios from "axios";
 
 /* Fonction pour pouvoir lire un seul article selectionné . (Article) */
 
-function Article({ article }) {
+function Articles({ article }) {
   /*  Crud pour Modifier un Article*/
-
+  console.log({ article });
   const handleUpdate = () => {
     axios({
       method: "put",
@@ -18,6 +18,7 @@ function Article({ article }) {
       },
     })
       .then((res) => {
+        console.log(article.articleId);
         window.location.href = "http://localhost:3001/NewTopic";
       })
 
@@ -53,7 +54,7 @@ function Article({ article }) {
       });
   };
   return (
-    <main>
+    <div>
       <div className="d-flex mx-auto">
         <button
           className="btn btn-danger mx-3"
@@ -75,7 +76,7 @@ function Article({ article }) {
         </button>
       </div>
       <br></br>
-    </main>
+    </div>
   );
 }
-export default Article;
+export default Articles;

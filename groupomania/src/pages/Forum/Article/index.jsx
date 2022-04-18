@@ -1,13 +1,12 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import Services from "../../../Services";
-import Article from "../../../components/Articles";
+import Articles from "../../../components/Articles";
 
 /* Vérification de la validité du token 
       -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
@@ -16,7 +15,7 @@ import Article from "../../../components/Articles";
     */
 var user_id = JSON.parse(localStorage.getItem("user_id"));
 
-function Articles() {
+function Article() {
   var date = new Date().toUTCString();
   /* Constante useState Sujet + Texte */
 
@@ -71,7 +70,7 @@ function Articles() {
         },
       })
         .then((res) => {
-          console.log(res);
+          window.location.href = "http://localhost:3001/Articles";
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -132,43 +131,22 @@ function Articles() {
         }
       });
   }, []);
-
-  /* Permet de récupérer les données d'un seul article avec un Id spécifique */
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:3000/api/articles/",
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      },
-    })
-      .then((article) => {
-        setArticleId(article.data);
-      })
-      .catch((err) => {
-        if (!err.response) {
-          console.log("Erreur serveur");
-        } else if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
-  }, []);
-
   /* Function de l'administrateur pour supprimer les articles des utilisateurs   */
 
-  const adminHandleDelete = () => {
+  const adminHandleDelete = (idPost) => {
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/admin/",
+      url: "http://localhost:3000/api/admin/" + idPost,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
-      .then((res) => {})
+      .then((res) => {
+        const newList = listArticles.filter((x) => x.article_id !== idPost);
+
+        setListArticles(newList);
+      })
       .catch((err) => {
         if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
@@ -177,70 +155,78 @@ function Articles() {
         }
       });
   };
+
   return (
-    <main className="container-fluid">
+    <main className="Main-Article container-fluid">
       <Services />
+      <h1>Créer un nouveau article</h1>
       {localStorage.getItem("Identification") != null ? (
-        <form className="Article">
-          <div className="row">
-            <div className="col-12 mx-auto text-center sujet">
-              <br />
-              <h2>Sujet&nbsp;&nbsp;</h2>
-              <input
-                className="col-3 mx-auto text-center sujet"
-                type="text"
-                name="sujet"
-                value={sujet}
-                onChange={handleChangeTopic}
-              />
-              <br />
-              <br />
-            </div>
-          </div>
-          <div className="row">
-            <h2>Texte&nbsp;&nbsp;</h2>
-            <textarea
-              className="col-6 mx-auto"
-              type="text"
-              name="texte"
-              value={texte}
-              onChange={handleChangeTexte}
-              rows={5}
-              cols={5}
-              wrap="hard"
-            ></textarea>
-          </div>
-          <div className="row">
-            <input
-              accept="image/*"
-              className="InputImage col-8 mx-auto"
-              type="file"
-              name="image"
-              onChange={HandleChangeFile}
-            />
-          </div>
-          <div className="Row">
-            {input.filepreview !== null ? (
-              <div className="col-12 col-sm-12 mx-auto text-center">
-                <img src={input.filepreview} alt="Img téléchargé" />
+        <article>
+          <form className="UnArticle">
+            <div className="row">
+              <div className="col-12 mx-auto text-center sujet">
+                <br />
+                <h2>Sujet&nbsp;&nbsp;</h2>
+                <input
+                  className="col-3 mx-auto text-center sujet"
+                  type="text"
+                  name="sujet"
+                  value={sujet}
+                  onChange={handleChangeTopic}
+                />
+                <br />
+                <br />
               </div>
-            ) : null}
-          </div>
-          <div className="row">
-            <div className="col-10 mx-auto">
+            </div>
+            <div className="row">
               <input
-                type="submit"
-                name="submit"
-                className="form-control btn btn-primary col-4 my-4 mx-auto"
-                value="Poster le nouveau sujet"
-                aria-describedby="Bouton de validation pour s'enregistrer"
-                onClick={(e) => {
-                  handleSubmit(e);
-                }}
+                accept="image/*"
+                className="InputImage col-8 mx-auto"
+                type="file"
+                name="image"
+                onChange={HandleChangeFile}
               />
             </div>
-          </div>
-        </form>
+            <br></br>
+            <div className="Row">
+              {input.filepreview !== null ? (
+                <div className="Div-Image col-12 col-sm-12 mx-auto text-center">
+                  <img src={input.filepreview} alt="Img téléchargé" />
+                </div>
+              ) : null}
+            </div>
+            <br></br>
+            <div className="row">
+              <div className="col-12 mx-auto text-center sujet">
+                <h2>Texte&nbsp;&nbsp;</h2>
+                <textarea
+                  className="Textarea-Article col-6 mx-auto"
+                  type="text"
+                  name="texte"
+                  value={texte}
+                  onChange={handleChangeTexte}
+                  rows={5}
+                  cols={5}
+                  wrap="hard"
+                ></textarea>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-10 mx-auto">
+                <input
+                  type="submit"
+                  name="submit"
+                  className="form-control btn btn-primary col-4 my-4 mx-auto"
+                  value="Poster le nouveau sujet"
+                  aria-describedby="Bouton de validation pour s'enregistrer"
+                  onClick={(e) => {
+                    handleSubmit(e);
+                  }}
+                />
+              </div>
+            </div>
+          </form>
+        </article>
       ) : null}
       <div id="MyForum" className="pageMyForums container-fluid">
         <div className="row">
@@ -272,7 +258,6 @@ function Articles() {
                       <button className="AdminIcon">
                         <FontAwesomeIcon
                           size="xl"
-                          color="black"
                           icon={faWindowClose}
                           onClick={() => {
                             if (
@@ -280,7 +265,7 @@ function Articles() {
                                 "L'administrateur veut il bien supprimer cette article?"
                               )
                             )
-                              adminHandleDelete();
+                              adminHandleDelete(article.article_id);
                           }}
                         />
                       </button>
@@ -296,7 +281,7 @@ function Articles() {
                       />
                     </div>
                     <br></br>
-                    <Article article_id={article.article_id} />
+                    <Articles articleId={article.article_id} />
                     <button className="Like">
                       <FontAwesomeIcon
                         size="xl"
@@ -313,4 +298,4 @@ function Articles() {
     </main>
   );
 }
-export default Articles;
+export default Article;
