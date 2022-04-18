@@ -121,8 +121,8 @@ function Header() {
                       </NavLink>
                     </li>
                     <li className="nav-item">
-                      <NavLink to="/MyForums" className="navbar-brand">
-                        Forum
+                      <NavLink to="/Articles" className="navbar-brand">
+                        Articles
                       </NavLink>
                     </li>
                   </>

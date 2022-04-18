@@ -35,12 +35,21 @@ body {
   flex-wrap: wrap;
 }
 
-#Article {
+.Article {
   text-decoration: none;
   box-shadow: 1px 1px 3px 3px black;
   background: white;
   position: relative;
   width: 40%;
+  margin: 50px;
+  padding: 10px;
+}
+.UnArticle {
+  text-decoration: none;
+  box-shadow: 1px 1px 3px 3px black;
+  background: white;
+  position: relative;
+  width: 80%;
   margin: 50px;
   padding: 10px;
 }
@@ -67,10 +76,20 @@ body {
 
 .AdminIcon {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 1px;
+  right: 2px;
+  background: none;
+  border: none;
 }
-
+.Like {
+  border: none;
+  color: dark;
+  background: none;
+}
+.Like:hover {
+  border: none;
+  color: dodgerblue;
+}
 .InputImage {
   color: white;
 }
@@ -98,7 +117,7 @@ body {
   color: black;
 }
 
-#MyForum .navbar-nav .nav-item hover {
+#MyForum .navbar-nav .nav-item:hover {
   color: rgb(0, 84, 180);
 }
 
@@ -195,11 +214,13 @@ a {
     object-fit: cover;
     object-position: center;
   }
-  #Article {
+  .Article,
+  .UnArticle {
     width: 80%;
     margin: 20px auto;
   }
-  #Article img {
+  .Article img,
+  .UnArticle img {
     width: 50%;
     height: auto;
   }
@@ -216,11 +237,13 @@ a {
     object-fit: cover;
     object-position: center;
   }
-  #Article {
+  .Article,
+  .UnArticle {
     width: 80%;
     margin: 20px auto;
   }
-  #Article img {
+  .Article img,
+  .UnArticle img {
     width: 60%;
     height: auto;
   }
@@ -237,11 +260,13 @@ a {
     object-fit: cover;
     object-position: center;
   }
-  #Article {
+  .Article,
+  .UnArticle {
     width: 80%;
     margin: 20px auto;
   }
-  #Article img {
+  .Article img,
+  .UnArticle img {
     width: 60%;
     height: auto;
   }

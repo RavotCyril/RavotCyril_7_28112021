@@ -1,152 +1,81 @@
-/* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
-import React, { useState } from "react";
+/* Importations des bibliothèques react + component + Article ...*/
+
+import React from "react";
 import axios from "axios";
-import Services from "../../Services";
 
-/* Importations des pages de styles + images */
-import "../../Styles/App.css";
+/* Fonction pour pouvoir lire un seul article selectionné . (Article) */
 
-/* Vérification de la validité du token 
-      -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
-      -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification 
-     ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
-    */
-var user_id = JSON.parse(localStorage.getItem("user_id"));
+function Article({ article }) {
+  /*  Crud pour Modifier un Article*/
 
-function Articles() {
-  var date = new Date().toUTCString();
-  /* Constante useState Sujet + Texte */
-
-  const [sujet, setSujet] = useState("");
-  const [texte, setTexte] = useState("");
-
-  /* Fonction pour capturer ce que l'on écrit dans l'input Sujet  */
-  function handleChangeTopic(e) {
-    setSujet(e.target.value);
-  }
-
-  /* Fonction pour capturer ce que l'on écrit dans l'input Texte  */
-
-  function handleChangeTexte(event) {
-    setTexte(event.target.value);
-  }
-
-  /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
-  et de la transmettre à la constante image */
-  const [input, setInputFile] = useState({
-    file: [],
-    filepreview: null,
-  });
-
-  const HandleChangeFile = (event) => {
-    setInputFile({
-      ...input,
-      /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
-      file: event.target.files[0],
-      filepreview: URL.createObjectURL(event.target.files[0]),
-    });
-  };
-  /* Crud pour Créer un Article  */
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (sujet && texte && input.file && date) {
-      const mydata = new FormData();
-      mydata.append("sujet", sujet);
-      mydata.append("texte", texte);
-      mydata.append("date", date);
-      mydata.append("image", input.file);
-      mydata.append("user_id", user_id);
-      axios({
-        method: "post",
-        url: "http://localhost:3000/api/articles/",
-        data: mydata,
-        headers: {
-          Authorization:
-            "bearer " + JSON.parse(localStorage.getItem("Identification")),
-          "Content-Type": "multipart/form-data",
-        },
+  const handleUpdate = () => {
+    axios({
+      method: "put",
+      url: "http://localhost:3000/api/articles/" + article.articleId,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
+      .then((res) => {
+        window.location.href = "http://localhost:3001/NewTopic";
       })
-        .then((article) => {
-          console.log(article);
-          window.location.href = "http://localhost:3001/MyForums";
-        })
-        .catch((err) => {
-          if (err.response.status === 400) {
-            console.log("Tout les champs n'ont pas été correctement remplis");
-          } else if (err.response.status === 500) {
-            console.log("erreur serveur");
-          }
-        });
-    }
+
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
   };
 
+  /* Crud pour Supprimer,un Article  */
+  const handleDelete = () => {
+    axios({
+      method: "delete",
+      url: "http://localhost:3000/api/articles/" + article.articleId,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        window.location.href = "http://localhost:3001/MyForums";
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  };
   return (
-    <main className="container-fluid">
-      <Services />
-      {localStorage.getItem("Identification") != null ? (
-        <form>
-          <div className="row">
-            <div className="col-12 mx-auto text-center sujet">
-              <br />
-              <h2>Sujet&nbsp;&nbsp;</h2>
-              <input
-                className="col-3 mx-auto text-center sujet"
-                type="text"
-                name="sujet"
-                value={sujet}
-                onChange={handleChangeTopic}
-              />
-              <br />
-              <br />
-            </div>
-          </div>
-          <div className="row">
-            <h2>Texte&nbsp;&nbsp;</h2>
-            <textarea
-              className="col-6 mx-auto"
-              type="text"
-              name="texte"
-              value={texte}
-              onChange={handleChangeTexte}
-              rows={5}
-              cols={5}
-              wrap="hard"
-            ></textarea>
-          </div>
-          <div className="row">
-            <input
-              accept="image/*"
-              className="InputImage col-8 mx-auto"
-              type="file"
-              name="image"
-              onChange={HandleChangeFile}
-            />
-          </div>
-          <div className="Row">
-            {input.filepreview !== null ? (
-              <div className="col-12 col-sm-12 mx-auto text-center">
-                <img src={input.filepreview} alt="Img téléchargé" />
-              </div>
-            ) : null}
-          </div>
-          <div className="row">
-            <div className="col-10 mx-auto">
-              <input
-                type="submit"
-                name="submit"
-                className="form-control btn btn-primary col-4 my-4 mx-auto"
-                value="Poster le nouveau sujet"
-                aria-describedby="Bouton de validation pour s'enregistrer"
-                onClick={(e) => {
-                  handleSubmit(e);
-                }}
-              />
-            </div>
-          </div>
-        </form>
-      ) : null}
+    <main>
+      <div className="d-flex mx-auto">
+        <button
+          className="btn btn-danger mx-3"
+          onClick={() => {
+            if (window.confirm("Confirmer pour supprimer cette article?"))
+              handleDelete();
+          }}
+        >
+          Supprimer
+        </button>
+        <button
+          className="btn btn-dark"
+          onClick={() => {
+            if (window.confirm("Confirmer pour modifier cette article?"))
+              handleUpdate();
+          }}
+        >
+          modifier
+        </button>
+      </div>
+      <br></br>
     </main>
   );
 }
-export default Articles;
+export default Article;
