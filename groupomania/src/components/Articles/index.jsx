@@ -7,7 +7,6 @@ import axios from "axios";
 
 function Articles({ article }) {
   /*  Crud pour Modifier un Article*/
-  console.log({ article });
   const handleUpdate = () => {
     axios({
       method: "put",

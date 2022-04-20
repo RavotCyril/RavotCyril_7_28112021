@@ -14,33 +14,31 @@ function Services() {
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
-  function authentificationToken() {
-    var token = JSON.parse(localStorage.getItem("Identification"));
-    try {
-      var decoded = jwt_decode(token);
-      if (decoded.iat < decoded.exp) {
+  var token = JSON.parse(localStorage.getItem("Identification"));
+  var date = Math.round(new Date().getTime() / 1000);
+  var decoded = jwt_decode(token);
+
+  if (date < decoded.exp) {
+    decoded = jwt_decode(token);
+  } else if (date > decoded.exp) {
+    toast.error(
+      "Suite à une trop longue inactivité votre session a expiré veuillez vous reconnecter",
+      {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
       }
-    } catch {
-      var error = () =>
-        toast.error(
-          "Suite à une trop longue inactivité votre session a expiré veuillez vous reconnecter",
-          {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-          }
-        );
+    );
+    window.setTimeout(function () {
       localStorage.clear();
       window.location.href = "http://localhost:3001/Login";
-      error();
-    }
+    }, 5000);
   }
 
-  authentificationToken();
   return (
     <div>
       <ToastContainer

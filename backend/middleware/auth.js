@@ -28,9 +28,8 @@ module.exports = (req, res, next) => {
             next(); /* Si ok, passe au prochain middleware */
         }
     } catch (err) {
-        console.log(err)
         res.status(401).json({
-            message: 'Authorisation Token invalide -> Expiration du token!'
+            message:'Sécurité : Déconnexion de la session -> Expiration du Token login'
         });
     }
 };

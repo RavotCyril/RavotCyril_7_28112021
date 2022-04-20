@@ -21,7 +21,7 @@ exports.createModelsArticle = (req, res, next) => {
             article_id: req.body.article_id,
             sujet: req.body.sujet,
             texte: req.body.texte,
-            date: new Date().toUTCString(),
+            date: new Date(),
             image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             user_id: req.body.user_id
         }).then((user) => res.status(201).json({ user, message: 'article créé !' }))

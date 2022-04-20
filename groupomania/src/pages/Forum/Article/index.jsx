@@ -5,8 +5,8 @@ import axios from "axios";
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import Services from "../../../Services";
 import Articles from "../../../components/Articles";
+import Services from "../../../Services/";
 
 /* Vérification de la validité du token 
       -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
@@ -16,7 +16,8 @@ import Articles from "../../../components/Articles";
 var user_id = JSON.parse(localStorage.getItem("user_id"));
 
 function Article() {
-  var date = new Date().toUTCString();
+  var date = new Date();
+
   /* Constante useState Sujet + Texte */
 
   const [sujet, setSujet] = useState("");
@@ -240,19 +241,26 @@ function Article() {
                   <article
                     className="Article"
                     key={article.article_id}
-                    id={article.article_id}
                     article={article}
                   >
-                    <p className="Article-date">{article.date}</p>
-                    <h2>{article.sujet}</h2>
+                    <p key={article.date} className="Article-date">
+                      {article.date}
+                    </p>
+                    <h2 key={article.sujet}>{article.sujet}</h2>
                     <br></br>
                     <div className="Div-Image">
-                      <a href={article.image}>
-                        <img src={article.image} alt="Fichier selectionné" />
+                      <a key={article.image} href={article.image}>
+                        <img
+                          key={article.image}
+                          src={article.image}
+                          alt="Fichier selectionné"
+                        />
                       </a>
                     </div>
                     <br></br>
-                    <p className="Article-texte">{article.texte}</p>
+                    <p key={article.texte} className="Article-texte">
+                      {article.texte}
+                    </p>
                     <br></br>
                     {user.roleId === 1 ? (
                       <button className="AdminIcon">

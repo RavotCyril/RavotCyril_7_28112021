@@ -14,6 +14,16 @@ function Signup() {
   const [isValid, setIsValid] = useState();
   const [message, setMessage] = useState("");
 
+  // function bob() {
+
+  // var lot = ""
+  // var tes = ""
+  // var mps =""
+  //   if (lot === null || tes === null || mps === null) {
+  //     alert("test");
+  // }
+  // bob();
+
   /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
   function handleChangePassword(e) {
     setPasswordData(e.target.value);
@@ -27,7 +37,6 @@ function Signup() {
    + Appel Post Api et transmission des proprietés enregistrés 
    -> firstName, email, password et le role_id (2: utilisateur )
    le role_id ( 1: administrateur ) est prit par moi même */
-
   function testSignup() {
     /* Vérifier le mot de passe et si les valeurs firstName, email, password sont complétés et donc valide.
      La sécurité + la vérification des inputs du mot de passe et de l'émail sur le front
@@ -52,13 +61,15 @@ function Signup() {
             console.log("erreur serveur");
           }
         });
+    } else if (firstName === null || email === null || password === null) {
+      alert("test");
     }
   }
 
   /* L'expression régulière pour valider l'email
   // Permet de détecter si l'email est un émail valide au focus, onblur, onChange
   Avec forcément un  @  et un . + 2 lettre après fr ou com ou autre ..  */
-  const emailRegex = /[\w-]+@[\w-]+\.[a-z]{1,4}$/i;
+  const emailRegex = /[\w-]+@[\w-]+\.[a-z]{2,4}$/i;
 
   const handleChangeEmail = (event) => {
     setEmail(event.target.value);
@@ -78,7 +89,10 @@ function Signup() {
           Veuillez remplir ce formulaire pour vous enregistrer sur le forum !
         </h1>
         <div className="row">
-          <div className="form-group col-8 my-4 mx-auto">
+          <p className={`message ${isValid ? "valid" : "invalid"}`}>
+            {message}
+          </p>
+          <div className="form-group col-8 mx-auto">
             <label htmlFor="FirstName">Prénom</label>
             <input
               required={true}
@@ -92,7 +106,7 @@ function Signup() {
               onChange={handleChangeFirstName}
             />
           </div>
-          <div className="form-group col-8 my-4 mx-auto relative">
+          <div className="form-group col-8 my-2 mx-auto relative">
             <label htmlFor="Email">Email</label>
             <input
               title="Merci d'indiquer un émail valide"
@@ -108,7 +122,7 @@ function Signup() {
             />
             <div className="col-12 d-flex text-center">
               <div className={`message ${isValid ? "valid" : "invalid"}`}>
-                <br></br> <br></br>
+                <br></br>
                 {message}
               </div>
             </div>
@@ -125,11 +139,14 @@ function Signup() {
             className="form-control password"
             aria-describedby="Tapper votre mot de passe"
             onChange={handleChangePassword}
+            onBlur={handleChangePassword}
+            onFocus={handleChangePassword}
           />
           <PasswordChecklist
             rules={["minLength", "maxLength", "capital", "lowercase", "number"]}
             minLength={8}
             value={password}
+            error="red"
             messages={{
               minLength: "Le mot de passe doit contenir au moins 8 caractères",
               maxLength: "Le mot de passe peut contenir maximum 100 caractères",
@@ -139,15 +156,15 @@ function Signup() {
             }}
           />
         </div>
-        <div className="col-12">
+        <div className="col-4 mx-auto">
           <input
             type="button"
             name="submit"
             onClick={() => {
               testSignup();
             }}
-            className="form-control btn btn-primary col-4 my-4 mx-auto"
-            value="S`enregistrer"
+            className="form-control btn btn-primary col-2 my-2 mx-auto"
+            value="S'enregistrer"
             aria-describedby="Bouton de validation pour s'enregistrer"
           />
         </div>
@@ -155,4 +172,5 @@ function Signup() {
     </main>
   );
 }
+
 export default Signup;

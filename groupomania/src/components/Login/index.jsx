@@ -40,7 +40,7 @@ function Login() {
           );
           localStorage.setItem("user_id", JSON.stringify(res.data.user_id));
           toast.success("Authentification réussi et connexion réussi !", {
-            position: "top-center",
+            position: "bottom-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -51,29 +51,22 @@ function Login() {
           setEmail(null);
           setPassword(null);
           setServeur(null);
-          window.location.href = "http://localhost:3001/MyForums";
+          window.setTimeout(function () {
+            window.location.href = "http://localhost:3001/Article";
+          }, 1500);
         })
         .catch((err) => {
           if (!err.response) {
-            // network error
             setServeur("Erreur serveur");
             setPassword(null);
             setEmail(null);
-          } else if (err.response.status === 0) {
-            setEmail(null);
-            setPassword(null);
-            setServeur("Serveur non connecté");
           } else if (err.response.status === 403) {
             setEmail(null);
             setServeur(null);
             setPassword("Mot de passe incorrecte !");
-          } else if (err.response.status === 500) {
-            setServeur("Erreur serveur");
           } else if (err.response.status === 401) {
             setPassword(null);
             setEmail("Email non enregistré ou mal formulé !");
-          } else {
-            setServeur(err.response.data.message);
           }
         });
     }
