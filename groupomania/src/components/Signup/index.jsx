@@ -14,16 +14,6 @@ function Signup() {
   const [isValid, setIsValid] = useState();
   const [message, setMessage] = useState("");
 
-  // function bob() {
-
-  // var lot = ""
-  // var tes = ""
-  // var mps =""
-  //   if (lot === null || tes === null || mps === null) {
-  //     alert("test");
-  // }
-  // bob();
-
   /* Fonction pour vérifier ce que l'on écrit dans l'input Password  */
   function handleChangePassword(e) {
     setPasswordData(e.target.value);
@@ -61,11 +51,10 @@ function Signup() {
             console.log("erreur serveur");
           }
         });
-    } else if (firstName === null || email === null || password === null) {
-      alert("test");
+    } else {
+      alert("veuillez remplir correctement les champs Prénom, Email, Password");
     }
   }
-
   /* L'expression régulière pour valider l'email
   // Permet de détecter si l'email est un émail valide au focus, onblur, onChange
   Avec forcément un  @  et un . + 2 lettre après fr ou com ou autre ..  */
@@ -89,20 +78,15 @@ function Signup() {
           Veuillez remplir ce formulaire pour vous enregistrer sur le forum !
         </h1>
         <div className="row">
-          <p className={`message ${isValid ? "valid" : "invalid"}`}>
-            {message}
-          </p>
           <div className="form-group col-8 mx-auto">
             <label htmlFor="FirstName">Prénom</label>
             <input
-              required={true}
-              autoComplete="given-name"
+              title="Merci d'indiquer un prénom valide de maximum 20 caractères"
               maxLength="20"
               name="firstName"
-              type="text"
               className="form-control"
-              id="firstName"
-              aria-describedby="Tapper votre Prénom"
+              type="text"
+              placeholder="cyril"
               onChange={handleChangeFirstName}
             />
           </div>
@@ -110,12 +94,11 @@ function Signup() {
             <label htmlFor="Email">Email</label>
             <input
               title="Merci d'indiquer un émail valide"
-              required={true}
               autoComplete="email"
               type="email"
               name="email"
-              className="form-control Email"
-              aria-describedby="Tapper votre Email"
+              className="form-control"
+              placeholder="cyril@hotmail.fr"
               onChange={handleChangeEmail}
               onBlur={handleChangeEmail}
               onFocus={handleChangeEmail}
@@ -131,16 +114,16 @@ function Signup() {
         <div className="form-group col-8 my-4 mx-auto">
           <label htmlFor="Password">Mot de passe</label>
           <input
-            required={true}
-            autoComplete="current-password"
+            title="Merci d'indiquer un mot de passe valide"
             id="Password"
             name="password"
             type="password"
-            className="form-control password"
+            className="form-control"
             aria-describedby="Tapper votre mot de passe"
             onChange={handleChangePassword}
             onBlur={handleChangePassword}
             onFocus={handleChangePassword}
+            placeholder="Azerty69"
           />
           <PasswordChecklist
             rules={["minLength", "maxLength", "capital", "lowercase", "number"]}

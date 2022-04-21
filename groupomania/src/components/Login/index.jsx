@@ -1,6 +1,7 @@
 /* Importations des bibliothèques react
 -> React, useState + axios (Api post-get..) */
 import React, { useState } from "react";
+import PasswordChecklist from "react-password-checklist";
 import axios from "axios";
 
 /* Importations des pages de styles + images */
@@ -11,12 +12,12 @@ import "react-toastify/dist/ReactToastify.css";
 import "../../Styles/App.css";
 
 function Login() {
-  // event.preventDefault();
   const [email, setemailData] = useState("");
   const [password, setpasswordData] = useState("");
   const [errorEmail, setEmail] = useState("");
   const [errorPassword, setPassword] = useState("");
   const [errorServeur, setServeur] = useState("");
+  const emailRegex = /[\w-]+@[\w-]+\.[a-z]{2,4}$/i;
 
   function handleChangePassword(e) {
     setpasswordData(e.target.value);
@@ -24,6 +25,25 @@ function Login() {
   function handleChangeEmail(e) {
     setemailData(e.target.value);
   }
+  /* Validation de l'input Email avec la touche entrée du clavier  */
+  const emailHandleKeyDown = (event) => {
+    if (event.key === "Enter" && emailRegex.test(email)) {
+      emailRegex.test(email);
+      setEmail(null);
+    } else if (!emailRegex.test(email)) {
+      setEmail("Email non enregistré ou mal formulé !");
+    }
+  };
+  /* Validation de l'input Email avec la touche entrée du clavier  */
+
+  const passwordHandleKeyDown = (event) => {
+    if (event.key === "Enter" && PasswordChecklist.test(password)) {
+      PasswordChecklist.test(password);
+      setPassword(null);
+    } else if (!PasswordChecklist.test(password)) {
+      setPassword("Mot de passe incorrecte !");
+    }
+  };
   function testLogin() {
     if (password && email) {
       axios
@@ -69,6 +89,8 @@ function Login() {
             setEmail("Email non enregistré ou mal formulé !");
           }
         });
+    } else {
+      alert("veuillez remplir correctement les champs Email, Password");
     }
   }
   return (
@@ -95,6 +117,7 @@ function Login() {
               aria-describedby="emailHelp"
               placeholder="Entrer votre émail"
               onChange={handleChangeEmail}
+              onKeyDown={emailHandleKeyDown}
             />
           </div>
           <div className="form-group col-8 my-4 mx-auto">
@@ -107,6 +130,19 @@ function Login() {
               id="Password"
               placeholder="Mot de passe"
               onChange={handleChangePassword}
+              onKeyDown={passwordHandleKeyDown}
+            />
+            <PasswordChecklist
+              rules={[
+                "minLength",
+                "maxLength",
+                "capital",
+                "lowercase",
+                "number",
+              ]}
+              minLength={8}
+              value={password}
+              error="red"
             />
           </div>
           <div className="row">

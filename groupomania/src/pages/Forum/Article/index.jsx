@@ -182,9 +182,11 @@ function Article() {
             <div className="row">
               <input
                 accept="image/*"
-                className="InputImage col-8 mx-auto"
+                className="form-control InputImage col-8 mx-auto"
                 type="file"
                 name="image"
+                id="formFileDisabled"
+                disabled
                 onChange={HandleChangeFile}
               />
             </div>
