@@ -1,7 +1,6 @@
 /* Importations des bibliothèques react
 -> React, useState + axios (Api post-get..) */
 import React, { useState } from "react";
-import PasswordChecklist from "react-password-checklist";
 import axios from "axios";
 
 /* Importations des pages de styles + images */
@@ -18,6 +17,7 @@ function Login() {
   const [errorPassword, setPassword] = useState("");
   const [errorServeur, setServeur] = useState("");
   const emailRegex = /[\w-]+@[\w-]+\.[a-z]{2,4}$/i;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
 
   function handleChangePassword(e) {
     setpasswordData(e.target.value);
@@ -25,25 +25,81 @@ function Login() {
   function handleChangeEmail(e) {
     setemailData(e.target.value);
   }
-  /* Validation de l'input Email avec la touche entrée du clavier  */
+
+  /* Function Validation de l'input Email avec la touche entrée du clavier  */
   const emailHandleKeyDown = (event) => {
     if (event.key === "Enter" && emailRegex.test(email)) {
       emailRegex.test(email);
       setEmail(null);
-    } else if (!emailRegex.test(email)) {
+    } else if (event.key === "Enter" && !emailRegex.test(email)) {
       setEmail("Email non enregistré ou mal formulé !");
     }
   };
-  /* Validation de l'input Email avec la touche entrée du clavier  */
+  /* Function Validation de l'input password avec la touche entrée du clavier  */
 
-  const passwordHandleKeyDown = (event) => {
-    if (event.key === "Enter" && PasswordChecklist.test(password)) {
-      PasswordChecklist.test(password);
+  const passwordHandleKeyDown = () => {
+    if (passwordRegex.test(password)) {
       setPassword(null);
-    } else if (!PasswordChecklist.test(password)) {
-      setPassword("Mot de passe incorrecte !");
+    } else if (!passwordRegex.test(password)) {
+      setPassword("Mot de passe incorecte !");
     }
   };
+  /* Function Validation de l'input password + l'input Email avec la touche entrée du clavier  */
+
+  const emailPasswordHandleKeyDown = (event) => {
+    if (
+      event.key === "Enter" &&
+      passwordRegex.test(password) &&
+      emailRegex.test(email)
+    ) {
+      axios
+        .post("http://localhost:3000/api/auth/login", {
+          password,
+          email,
+        })
+        .then((res) => {
+          /* Enregistrer le token et permet de sécuriser la connexion et l'identification de l'utilisateur  */
+          /* Permet de stocker l'identification ( Token ) */
+          localStorage.setItem(
+            "Identification",
+            JSON.stringify(res.data.token)
+          );
+          localStorage.setItem("user_id", JSON.stringify(res.data.user_id));
+          toast.success("Authentification réussi et connexion réussi !", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+          });
+          setEmail(null);
+          setPassword(null);
+          setServeur(null);
+          window.setTimeout(function () {
+            window.location.href = "http://localhost:3001/Article";
+          }, 1500);
+        })
+        .catch((err) => {
+          if (!err.response) {
+            setServeur("Erreur serveur");
+            setPassword(null);
+            setEmail(null);
+          } else if (err.response.status === 403) {
+            setEmail(null);
+            setServeur(null);
+            setPassword("Mot de passe incorrecte !");
+          } else if (err.response.status === 401) {
+            setPassword(null);
+            setEmail("Email non enregistré ou mal formulé !");
+          }
+        });
+    } else {
+      alert("veuillez remplir correctement les champs Email, Password");
+    }
+  };
+
   function testLogin() {
     if (password && email) {
       axios
@@ -95,7 +151,7 @@ function Login() {
   }
   return (
     <main>
-      <form className="container-fluid">
+      <form className="container-fluid" onKeyDown={emailPasswordHandleKeyDown}>
         <h1 className="form-group H1Login col-12 mx-auto">
           Pour vous connectez au forum veuillez remplir le formulaire de
           connexion !
@@ -123,26 +179,14 @@ function Login() {
           <div className="form-group col-8 my-4 mx-auto">
             <label htmlFor="Password">Mot de passe</label>
             <input
-              autoComplete="current-password"
               name="Password"
               type="password"
+              autoComplete="password"
               className="form-control"
               id="Password"
               placeholder="Mot de passe"
               onChange={handleChangePassword}
               onKeyDown={passwordHandleKeyDown}
-            />
-            <PasswordChecklist
-              rules={[
-                "minLength",
-                "maxLength",
-                "capital",
-                "lowercase",
-                "number",
-              ]}
-              minLength={8}
-              value={password}
-              error="red"
             />
           </div>
           <div className="row">
