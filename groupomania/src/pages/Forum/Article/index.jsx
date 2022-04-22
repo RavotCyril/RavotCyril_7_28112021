@@ -71,7 +71,8 @@ function Article() {
         },
       })
         .then((res) => {
-          window.location.href = "http://localhost:3001/Article";
+          console.log(res);
+          // window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -143,7 +144,6 @@ function Article() {
     })
       .then((res) => {
         const newList = listArticles.filter((x) => x.article_id !== article_id);
-
         setListArticles(newList);
       })
       .catch((err) => {
@@ -236,7 +236,11 @@ function Article() {
           {listArticles != null
             ? listArticles.map((article) => {
                 return (
-                  <article className="Article" key={article.article_id}>
+                  <article
+                    className="Article"
+                    key={article.article_id}
+                    id={article.article_id}
+                  >
                     <p className="Article-date">{article.date}</p>
                     <h2>{article.sujet}</h2>
                     <br></br>
@@ -277,9 +281,9 @@ function Article() {
                     </div>
                     <br></br>
                     <Articles
-                      article_id={article.article_id}
-                      listArticles={listArticles}
                       setListArticles={setListArticles}
+                      article={listArticles}
+                      id={article.article_id}
                     />
                     <button className="Like">
                       <FontAwesomeIcon

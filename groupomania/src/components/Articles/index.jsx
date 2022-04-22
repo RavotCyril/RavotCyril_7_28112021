@@ -1,26 +1,54 @@
 /* Importations des bibliothèques react + component + Article ...*/
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Articles({ article_id, listArticles, setListArticles }) {
-  [listArticles, setListArticles] = useState([""]);
+function Articles({ setListArticles, article, id }) {
   /*  Crud pour Modifier un Article*/
-  const handleUpdate = (article_id) => {
-    console.log(article_id);
+  const [mydata, setData] = useState("");
+  /* user_id du compte lu sur la page  */
+  const [articleUser_id, setUser_id] = useState("");
+  /* user_id du compte connecté */
+  var user_id = JSON.parse(localStorage.getItem("user_id"));
+
+  /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
+  useEffect(() => {
     axios({
-      method: "put",
-      url: "http://localhost:3000/api/articles/" + article_id,
+      method: "get",
+      url: "http://localhost:3000/api/articles/" + id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        const newList = listArticles.filter((x) => x.article_id !== article_id);
-
-        setListArticles(newList);
-        window.location.href = "http://localhost:3001/NewTopic";
+        setUser_id(res.data.user_id);
+      })
+      .catch((err) => {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        } else {
+          console.log(err.response.data.message);
+        }
+      });
+  }, []);
+  const HandleUpdate = (id) => {
+    axios({
+      method: "put",
+      url: "http://localhost:3000/api/articles/" + id,
+      data: setData,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
+      .then((res) => {
+        console.log(mydata);
+        // window.location.href = "http://localhost:3001/Article";
       })
 
       .catch((err) => {
@@ -31,22 +59,20 @@ function Articles({ article_id, listArticles, setListArticles }) {
         }
       });
   };
-
   /* Crud pour Supprimer,un Article  */
-  const handleDelete = (article_id) => {
+  const handleDelete = (id) => {
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/articles/" + article_id,
+      url: "http://localhost:3000/api/articles/" + id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        const newList = listArticles.filter((x) => x.article_id !== article_id);
-
+        const newList = article.filter((x) => x.article_id !== id);
         setListArticles(newList);
-        window.location.href = "http://localhost:3001/MyForums";
+        // window.location.href = "http://localhost:3001/Article";
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -58,26 +84,28 @@ function Articles({ article_id, listArticles, setListArticles }) {
   };
   return (
     <div>
-      <div className="d-flex mx-auto">
-        <button
-          className="btn btn-danger mx-3"
-          onClick={() => {
-            if (window.confirm("Confirmer pour supprimer cette article?"))
-              handleDelete();
-          }}
-        >
-          Supprimer
-        </button>
-        <button
-          className="btn btn-dark"
-          onClick={() => {
-            if (window.confirm("Confirmer pour modifier cette article?"))
-              handleUpdate(article_id);
-          }}
-        >
-          modifier
-        </button>
-      </div>
+      {user_id === articleUser_id ? (
+        <div className="d-flex mx-auto">
+          <button
+            className="btn btn-danger mx-3"
+            onClick={() => {
+              if (window.confirm("Confirmer pour supprimer cette article?"))
+                handleDelete(id);
+            }}
+          >
+            Supprimer
+          </button>
+          <button
+            className="btn btn-dark"
+            onClick={() => {
+              if (window.confirm("Confirmer pour modifier cette article?"))
+                HandleUpdate(id);
+            }}
+          >
+            modifier
+          </button>
+        </div>
+      ) : null}
       <br></br>
     </div>
   );
