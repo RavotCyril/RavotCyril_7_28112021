@@ -1,23 +1,25 @@
 /* Importations des bibliothèques react + component + Article ...*/
 
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-/* Fonction pour pouvoir lire un seul article selectionné . (Article) */
-
-function Articles({ article }) {
+function Articles({ article_id, listArticles, setListArticles }) {
+  [listArticles, setListArticles] = useState([""]);
   /*  Crud pour Modifier un Article*/
-  const handleUpdate = () => {
+  const handleUpdate = (article_id) => {
+    console.log(article_id);
     axios({
       method: "put",
-      url: "http://localhost:3000/api/articles/" + article.articleId,
+      url: "http://localhost:3000/api/articles/" + article_id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        console.log(article.articleId);
+        const newList = listArticles.filter((x) => x.article_id !== article_id);
+
+        setListArticles(newList);
         window.location.href = "http://localhost:3001/NewTopic";
       })
 
@@ -31,17 +33,19 @@ function Articles({ article }) {
   };
 
   /* Crud pour Supprimer,un Article  */
-  const handleDelete = () => {
+  const handleDelete = (article_id) => {
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/articles/" + article.articleId,
+      url: "http://localhost:3000/api/articles/" + article_id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        console.log(res);
+        const newList = listArticles.filter((x) => x.article_id !== article_id);
+
+        setListArticles(newList);
         window.location.href = "http://localhost:3001/MyForums";
       })
       .catch((err) => {
@@ -68,7 +72,7 @@ function Articles({ article }) {
           className="btn btn-dark"
           onClick={() => {
             if (window.confirm("Confirmer pour modifier cette article?"))
-              handleUpdate();
+              handleUpdate(article_id);
           }}
         >
           modifier

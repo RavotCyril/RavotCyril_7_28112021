@@ -16,12 +16,13 @@ exports.deleteAdminModelsArticle = (req, res, next) => {
 
 // Créer un article / post
 exports.createModelsArticle = (req, res, next) => {
-
+  var date = new Date();
+  date = date.toString();
     Models.Article.create({
             article_id: req.body.article_id,
             sujet: req.body.sujet,
             texte: req.body.texte,
-            date: new Date(),
+            date: date,
             image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             user_id: req.body.user_id
         }).then((user) => res.status(201).json({ user, message: 'article créé !' }))

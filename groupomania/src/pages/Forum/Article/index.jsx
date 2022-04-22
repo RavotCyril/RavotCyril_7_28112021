@@ -14,9 +14,9 @@ import Services from "../../../Services/";
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
 var user_id = JSON.parse(localStorage.getItem("user_id"));
-
 function Article() {
   var date = new Date();
+  date = date.toString();
 
   /* Constante useState Sujet + Texte */
 
@@ -71,7 +71,7 @@ function Article() {
         },
       })
         .then((res) => {
-          window.location.href = "http://localhost:3001/Articles";
+          window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -83,7 +83,6 @@ function Article() {
     }
   };
   const [listArticles, setListArticles] = useState(["null"]);
-  const [article_id, setArticleId] = useState([]);
   const [user, setUser] = useState([]);
 
   useEffect(() => {
@@ -133,18 +132,17 @@ function Article() {
       });
   }, []);
   /* Function de l'administrateur pour supprimer les articles des utilisateurs   */
-
-  const adminHandleDelete = (idPost) => {
+  const adminHandleDelete = (article_id) => {
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/admin/" + idPost,
+      url: "http://localhost:3000/api/admin/" + article_id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        const newList = listArticles.filter((x) => x.article_id !== idPost);
+        const newList = listArticles.filter((x) => x.article_id !== article_id);
 
         setListArticles(newList);
       })
@@ -182,11 +180,9 @@ function Article() {
             <div className="row">
               <input
                 accept="image/*"
-                className="form-control InputImage col-8 mx-auto"
+                className="InputImage col-8 mx-auto"
                 type="file"
                 name="image"
-                id="formFileDisabled"
-                disabled
                 onChange={HandleChangeFile}
               />
             </div>
@@ -240,29 +236,17 @@ function Article() {
           {listArticles != null
             ? listArticles.map((article) => {
                 return (
-                  <article
-                    className="Article"
-                    key={article.article_id}
-                    article={article}
-                  >
-                    <p key={article.date} className="Article-date">
-                      {article.date}
-                    </p>
-                    <h2 key={article.sujet}>{article.sujet}</h2>
+                  <article className="Article" key={article.article_id}>
+                    <p className="Article-date">{article.date}</p>
+                    <h2>{article.sujet}</h2>
                     <br></br>
                     <div className="Div-Image">
-                      <a key={article.image} href={article.image}>
-                        <img
-                          key={article.image}
-                          src={article.image}
-                          alt="Fichier selectionné"
-                        />
+                      <a href={article.image}>
+                        <img src={article.image} alt="Fichier selectionné" />
                       </a>
                     </div>
                     <br></br>
-                    <p key={article.texte} className="Article-texte">
-                      {article.texte}
-                    </p>
+                    <p className="Article-texte">{article.texte}</p>
                     <br></br>
                     {user.roleId === 1 ? (
                       <button className="AdminIcon">
@@ -274,8 +258,9 @@ function Article() {
                               window.confirm(
                                 "L'administrateur veut il bien supprimer cette article?"
                               )
-                            )
+                            ) {
                               adminHandleDelete(article.article_id);
+                            }
                           }}
                         />
                       </button>
@@ -291,12 +276,22 @@ function Article() {
                       />
                     </div>
                     <br></br>
-                    <Articles articleId={article.article_id} />
+                    <Articles
+                      article_id={article.article_id}
+                      listArticles={listArticles}
+                      setListArticles={setListArticles}
+                    />
                     <button className="Like">
                       <FontAwesomeIcon
                         size="xl"
                         icon={faThumbsUp}
-                        onClick={() => {}}
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              "L'administrateur veut il bien supprimer cette article?"
+                            )
+                          );
+                        }}
                       />
                     </button>
                   </article>
