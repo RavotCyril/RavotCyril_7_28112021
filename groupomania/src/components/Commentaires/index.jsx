@@ -1,76 +1,82 @@
-/* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
-import React, { useState } from "react";
+/* Importations des bibliothèques react + component + Article ...*/
+
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-// /* Importations des pages de styles + images */
-import "../../Styles/App.css";
+function Commentaires({ setListArticles, article, id }) {
+  /*  Crud pour Modifier un Article*/
+  const [mydata, setData] = useState("");
+  /* user_id du compte lu sur la page  */
+  const [articleId_user, setId_user] = useState("");
+  /* user_id du compte connecté */
+  var user_id = JSON.parse(localStorage.getItem("user_id"));
 
-/* Crud pour Créer, Afficher un Commentaire  */
-
-function Commentaires() {
-  /* Fonction pour  récupérer l'userId enregistré dans le clef userId  */
-  var id_user = JSON.parse(localStorage.getItem("user_id"));
-
-  var config = {
-    headers: {
-      Authorization:
-        "bearer " + JSON.parse(localStorage.getItem("Identification")),
-    },
-  };
-
-  /* Fonction pour vérifier ce que l'on écrit dans l'input du commentaire  */
-  const [texte, setTexte] = useState("");
-
-  function handleChangeTexte(event) {
-    setTexte(event.target.value);
-  }
-  /* Permet de créer et de poster un commentaire  */
-
-  const handleSubmit = () => {
-    if (texte != null) {
-      axios
-        .post(
-          "http://localhost:3000/api/commentaires/",
-          {
-            commentaire: {
-              texte,
-              // id_article,
-              id_user,
-            },
-          },
-          config
-        )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          if (err.response.status === 400) {
-            console.log("Texte vide");
-          } else if (err.response.status === 500) {
-            console.log("erreur serveur");
-          }
-        });
-    }
-    /* Permet de lire tous les commentaires des articles de l'application */
-
-    axios
-      .get(
-        "http://localhost:3000/api/commentaires/",
-        {
-          commentaire: {
-            texte,
-            // id_article,
-            id_user,
-          },
-        },
-        config
-      )
+  /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:3000/api/commentaires/" + id,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
       .then((res) => {
-        console.log(res);
+        setId_user(res.data.id_user);
+      })
+      .catch((err) => {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        } else {
+          console.log(err.response.data.message);
+        }
+      });
+  }, []);
+  const HandleUpdate = (id) => {
+    axios({
+      method: "put",
+      url: "http://localhost:3000/api/commentaires/" + id,
+      data: setData,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
+      .then((res) => {
+        console.log(mydata);
+        // window.location.href = "http://localhost:3001/Article";
+      })
+
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  };
+  /* Crud pour Supprimer,un Article  */
+  const handleDelete = (id) => {
+    axios({
+      method: "delete",
+      url: "http://localhost:3000/api/commentaires/" + id,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
+      .then((res) => {
+        const newList = article.filter((x) => x.id_article !== id);
+        setListArticles(newList);
+        window.location.href = "http://localhost:3001/Article";
       })
       .catch((err) => {
         if (err.response.status === 400) {
-          console.log("Texte vide");
+          console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
         }
@@ -78,37 +84,29 @@ function Commentaires() {
   };
   return (
     <div>
-      {localStorage.getItem("Identification") != null ? (
-        <form>
-          <div className="row">
-            <div className="col-12 col-sm-12  mx-auto text-center sujet">
-              <br></br>
-              <textarea
-                className="col-8 col-sm-6  mx-auto"
-                type="text"
-                value={texte}
-                onChange={handleChangeTexte}
-                rows={3}
-                cols={3}
-                wrap="hard"
-              ></textarea>
-              <div className="col-12 col-sm-8 mx-auto">
-                <input
-                  type="button"
-                  name="submit"
-                  className="form-control btn btn-primary col-4 my-4 mx-auto"
-                  value="Valider le commentaire"
-                  aria-describedby="Bouton de validation pour créer le commentaire"
-                  onClick={() => {
-                    handleSubmit();
-                    window.location.href = "http://localhost:3001/MyForums";
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        </form>
+      {user_id === articleId_user ? (
+        <div className="d-flex mx-auto">
+          <button
+            className="btn btn-danger mx-3"
+            onClick={() => {
+              if (window.confirm("Confirmer pour supprimer ce commentaire ?"))
+                handleDelete(id);
+            }}
+          >
+            Supprimer
+          </button>
+          <button
+            className="btn btn-dark"
+            onClick={() => {
+              if (window.confirm("Confirmer pour modifier ce commentaire ?"))
+                HandleUpdate(id);
+            }}
+          >
+            modifier
+          </button>
+        </div>
       ) : null}
+      <br></br>
     </div>
   );
 }
