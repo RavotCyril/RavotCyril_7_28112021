@@ -1,10 +1,16 @@
 /* Importations des bibliothèques react + component + Article ...*/
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Commentaires({ setListArticles, article, id_article, id_user }) {
+/* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
+
+function Commentaires({ setListArticles, article, id_article, id_user, user }) {
   var date = new Date();
+  date = date.toString();
 
   const [mydata, setData] = useState("");
   /* user_id du compte connecté */
@@ -50,8 +56,7 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
   };
 
   /* Fonction méthode Get Permet de lire  les commentaires  */
-
-  if (listCommentaires != null) {
+  useEffect(() => {
     axios({
       method: "get",
       url: "http://localhost:3000/api/commentaires/",
@@ -62,8 +67,7 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
       },
     })
       .then((res) => {
-        console.log(res.data);
-        // setListCommentaires(res.data);
+        setListCommentaires(res.data);
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -72,7 +76,7 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
           console.log("erreur serveur");
         }
       });
-  }
+  }, []);
   /* Fonction methode Put pour modifier un commentaire  */
 
   const HandleUpdate = (id_article) => {
@@ -100,17 +104,19 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
   };
   /* Fonction methode delete pour Supprimer un commentaire   */
 
-  const handleDelete = (id_article) => {
+  const handleDelete = (commentaire_id) => {
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/commentaires/" + id_article,
+      url: "http://localhost:3000/api/commentaires/" + commentaire_id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        const newList = article.filter((x) => x.id_article !== id_article);
+        const newList = article.filter(
+          (x) => x.commentaire_id !== commentaire_id
+        );
         setListArticles(newList);
         window.location.href = "http://localhost:3001/Article";
       })
@@ -124,31 +130,6 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
   };
   return (
     <div>
-      {listCommentaires != null
-        ? listCommentaires.map((commentaire) => {
-            if (commentaire.id_article === id_article)
-              return (
-                <div
-                  key={commentaire.commentaire_id}
-                  id={commentaire.commentaire_id}
-                  className="Textarea-Article col-12 mx-auto"
-                  type="text"
-                  name="texte"
-                  rows={5}
-                  cols={5}
-                  wrap="hard"
-                >
-                  <p
-                    key={commentaire.texte}
-                    className="Article-texte"
-                    value={date}
-                  >
-                    {commentaire.texte}
-                  </p>
-                </div>
-              );
-          })
-        : null}
       <input
         title="Ajouter un commentaire"
         className="Textarea-Article col-12 mx-auto"
@@ -174,29 +155,71 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
       />
       <br></br>
       <br></br>
-      {user_id === id_user ? (
-        <div className="d-flex mx-auto">
-          <button
-            className="btn btn-danger mx-3"
-            onClick={() => {
-              if (window.confirm("Confirmer pour supprimer ce commentaire ?"))
-                handleDelete(id_article);
-            }}
-          >
-            Supprimer
-          </button>
-          <button
-            className="btn btn-dark"
-            onClick={() => {
-              if (window.confirm("Confirmer pour modifier ce commentaire ?"))
-                HandleUpdate(id_article);
-            }}
-          >
-            modifier
-          </button>
-        </div>
-      ) : null}
-      <br></br>
+      {listCommentaires != null
+        ? listCommentaires.map((commentaire) => {
+            if (commentaire.id_article === id_article)
+              return (
+                <div
+                  key={commentaire.commentaire_id}
+                  id={commentaire.commentaire_id}
+                  className="row"
+                  type="text"
+                  name="texte"
+                  rows={5}
+                  cols={5}
+                  wrap="hard"
+                >
+                  <span className="col-1">{user.firstname}</span>
+                  <span className="col-9 Date-Italic">
+                    &nbsp;
+                    {date}
+                  </span>
+                  {user_id === commentaire.id_user ? (
+                    <div className="col-2 Boutton-Commentaires">
+                      <i className="fa-solid fa-pencil"></i>
+                      <button className="BouttonDelete">
+                        <FontAwesomeIcon
+                          className="btn btn-danger mx-3"
+                          size="xl"
+                          icon={faTrash}
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                "Confirmer pour supprimer ce commentaire ?"
+                              )
+                            )
+                              handleDelete(id_article);
+                          }}
+                        />
+                        Supprimer
+                      </button>
+                      <i className="fa-solid fa-circle-trash"></i>
+                      <button className="BouttonUpdate">
+                        <FontAwesomeIcon
+                          className="btn btn-dark"
+                          icon={faPencil}
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                "Confirmer pour modifier ce commentaire ?"
+                              )
+                            )
+                              HandleUpdate(id_article);
+                          }}
+                        />
+                        &nbsp;&nbsp; Modifier
+                      </button>
+                    </div>
+                  ) : null}
+                  <div className="row">
+                    <p key={commentaire.texte} className="col-12 Article-texte">
+                      {commentaire.texte}
+                    </p>
+                  </div>
+                </div>
+              );
+          })
+        : null}
     </div>
   );
 }

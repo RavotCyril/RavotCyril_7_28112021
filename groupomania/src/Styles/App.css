@@ -87,7 +87,22 @@ body {
 .AdminIcon:hover {
   color: red;
 }
+.Boutton-Commentaires {
+  display: flex;
+  flex-direction: column;
+  margin: 0px auto;
+}
 
+.BouttonDelete,
+.BouttonUpdate {
+  background: none;
+  border: none;
+  padding: 5px 0px;
+  width: 150px;
+}
+.Date-Italic {
+  font-style: italic;
+}
 .Like {
   border: none;
   color: dark;

@@ -275,6 +275,7 @@ function Article() {
                         article={listArticles}
                         id_article={article.article_id}
                         id_user={article.user_id}
+                        user={user}
                       />
                     </div>
                     <br></br>
