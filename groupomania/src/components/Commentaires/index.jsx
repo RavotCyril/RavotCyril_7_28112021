@@ -4,33 +4,36 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function Commentaires({ setListArticles, article, id_article, id_user }) {
-  /*  Crud pour Modifier un Article*/
+  var date = new Date();
+
   const [mydata, setData] = useState("");
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
 
-  /* Permet de faire la méthode Post des commentaires  */
   const [listCommentaires, setListCommentaires] = useState(["null"]);
   const [texte, setCommentaire] = useState("");
 
-  /* Fonction pour capturer ce que l'on écrit dans l'input Texte  */
+  /* Fonction pour capturer ce que l'on écrit dans l'input Texte du commentaire */
 
   function handleChangeCommentaire(event) {
     setCommentaire(event.target.value);
   }
+  /* Fonction méthode Post pour poster un commentaire  */
+
   const handleSubmitCommentaire = (event, id_article) => {
     event.preventDefault();
     if (texte != null) {
-      axios({
-        method: "post",
-        url: "http://localhost:3000/api/commentaires/",
-        data: { texte, id_article, id_user },
-        headers: {
-          Authorization:
-            "bearer " + JSON.parse(localStorage.getItem("Identification")),
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      axios
+        .post(
+          "http://localhost:3000/api/commentaires/",
+          { texte, id_article, id_user },
+          {
+            headers: {
+              Authorization:
+                "bearer " + JSON.parse(localStorage.getItem("Identification")),
+            },
+          }
+        )
         .then((res) => {
           window.location.href = "http://localhost:3001/Article";
         })
@@ -46,27 +49,31 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
     }
   };
 
-  /* Permet de lire  les commentaires  */
-  // axios({
-  //   method: "get",
-  //   url: "http://localhost:3000/api/commentaires/",
-  //   headers: {
-  //     Authorization:
-  //       "bearer " + JSON.parse(localStorage.getItem("Identification")),
-  //     "Content-Type": "multipart/form-data",
-  //   },
-  // })
-  //   .then((res) => {
-  //     setListCommentaires(res.data);
-  //     // window.location.href = "http://localhost:3001/Article";
-  //   })
-  //   .catch((err) => {
-  //     if (err.response.status === 400) {
-  //       console.log("Tout les champs n'ont pas été correctement remplis");
-  //     } else if (err.response.status === 500) {
-  //       console.log("erreur serveur");
-  //     }
-  //   });
+  /* Fonction méthode Get Permet de lire  les commentaires  */
+
+  if (listCommentaires != null) {
+    axios({
+      method: "get",
+      url: "http://localhost:3000/api/commentaires/",
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        // setListCommentaires(res.data);
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  }
+  /* Fonction methode Put pour modifier un commentaire  */
 
   const HandleUpdate = (id_article) => {
     axios({
@@ -91,7 +98,8 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
         }
       });
   };
-  /* Crud pour Supprimer,un Article  */
+  /* Fonction methode delete pour Supprimer un commentaire   */
+
   const handleDelete = (id_article) => {
     axios({
       method: "delete",
@@ -116,17 +124,31 @@ function Commentaires({ setListArticles, article, id_article, id_user }) {
   };
   return (
     <div>
-      {listCommentaires != null ? (
-        <p
-          className="Textarea-Article col-12 mx-auto"
-          type="text"
-          name="texte"
-          value={listCommentaires}
-          rows={5}
-          cols={5}
-          wrap="hard"
-        ></p>
-      ) : null}
+      {listCommentaires != null
+        ? listCommentaires.map((commentaire) => {
+            if (commentaire.id_article === id_article)
+              return (
+                <div
+                  key={commentaire.commentaire_id}
+                  id={commentaire.commentaire_id}
+                  className="Textarea-Article col-12 mx-auto"
+                  type="text"
+                  name="texte"
+                  rows={5}
+                  cols={5}
+                  wrap="hard"
+                >
+                  <p
+                    key={commentaire.texte}
+                    className="Article-texte"
+                    value={date}
+                  >
+                    {commentaire.texte}
+                  </p>
+                </div>
+              );
+          })
+        : null}
       <input
         title="Ajouter un commentaire"
         className="Textarea-Article col-12 mx-auto"

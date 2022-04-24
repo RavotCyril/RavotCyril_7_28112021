@@ -72,7 +72,7 @@ function Article() {
         },
       })
         .then((res) => {
-          window.location.href = "http://localhost:3001/Article";
+          // window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (err.response.status === 400) {

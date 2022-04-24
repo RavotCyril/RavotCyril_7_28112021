@@ -3,7 +3,6 @@ const Models = require('../models/commentaires');
 // Créer un commentaire / post
 
 exports.createModelsCommentaire = (req, res, next) => {
-    console.log(req.body)
     Models.Commentaire.create({
         commentaire_id: req.body.commentaire_id,
         texte: req.body.texte,
