@@ -3,13 +3,12 @@ const Models = require('../models/commentaires');
 // Créer un commentaire / post
 
 exports.createModelsCommentaire = (req, res, next) => {
-
-    // Appel du body du commentaire ou du post crée.
-    // console.log(req.body)
-    let commentaire = req.body.commentaire;
-
+    console.log(req.body)
     Models.Commentaire.create({
-            ...commentaire,
+        commentaire_id: req.body.commentaire_id,
+        texte: req.body.texte,
+        id_article: req.body.id_article,
+        id_user: req.body.id_user
         }).then(() => res.status(201).json(({ message: 'commentaire créé !' })))
         .catch(error => res.status(400).json({ message: error.message }));
 };
@@ -25,7 +24,7 @@ exports.getAllModelsCommentaire = (req, res, next) => {
             }
         ).catch(
             (error) => {
-                res.status(404).json({
+                res.status(400).json({
                     message: error.message
                 });
             }

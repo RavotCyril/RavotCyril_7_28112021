@@ -19,61 +19,6 @@ function Article() {
   var date = new Date();
   date = date.toString();
 
-  /* Permet de faire la méthode Post des commentaires  */
-  const [listCommentaires, setListCommentaires] = useState(["null"]);
-
-  const handleSubmitCommentaire = (event, article_id) => {
-    event.preventDefault();
-    if (texte != null) {
-      const mydata = new FormData();
-      mydata.append("texte", texte);
-      mydata.append("id_article", article_id);
-      mydata.append("id_user", user_id);
-      axios({
-        method: "post",
-        url: "http://localhost:3000/api/commentaires/",
-        data: mydata,
-        headers: {
-          Authorization:
-            "bearer " + JSON.parse(localStorage.getItem("Identification")),
-          "Content-Type": "multipart/form-data",
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          window.location.href = "http://localhost:3001/Article";
-        })
-        .catch((err) => {
-          if (err.response.status === 400) {
-            console.log("Tout les champs n'ont pas été correctement remplis");
-          } else if (err.response.status === 500) {
-            console.log("erreur serveur");
-          }
-        });
-    }
-  };
-  /* Permet de lire  les commentaires  */
-
-  axios({
-    method: "get",
-    url: "http://localhost:3000/api/commentaires/",
-    headers: {
-      Authorization:
-        "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      "Content-Type": "multipart/form-data",
-    },
-  })
-    .then((res) => {
-      setListCommentaires(res.data);
-      window.location.href = "http://localhost:3001/Article";
-    })
-    .catch((err) => {
-      if (err.response.status === 400) {
-        console.log("Tout les champs n'ont pas été correctement remplis");
-      } else if (err.response.status === 500) {
-        console.log("erreur serveur");
-      }
-    });
   /* Constante useState Sujet + Texte */
 
   const [sujet, setSujet] = useState("");
@@ -127,8 +72,7 @@ function Article() {
         },
       })
         .then((res) => {
-          console.log(res);
-          // window.location.href = "http://localhost:3001/Article";
+          window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -325,36 +269,14 @@ function Article() {
                         />
                       </button>
                     ) : null}
-                    <Commentaires
-                      setListArticles={setListArticles}
-                      article={listArticles}
-                      id={article.article_id}
-                    />
-                    <div>
-                      <input
-                        type="button"
-                        name="submit"
-                        className="form-control btn btn-primary mx-auto"
-                        value="Poster un commentaire"
-                        aria-describedby="Bouton de validation pour créer le commentaire"
-                        onClick={(e) => {
-                          handleSubmitCommentaire(e);
-                        }}
+                    <div className="Textarea-Article col-8 mx-auto">
+                      <Commentaires
+                        setListArticles={setListArticles}
+                        article={listArticles}
+                        id_article={article.article_id}
+                        id_user={article.user_id}
                       />
                     </div>
-                    {listCommentaires != null
-                      ? listCommentaires.map((commentaire) => {
-                          return (
-                            <p
-                              id={commentaire.article_id}
-                              key={commentaire.texte}
-                              className="Article-texte"
-                            >
-                              {commentaire.texte}
-                            </p>
-                          );
-                        })
-                      : null}
                     <br></br>
                     <Articles
                       setListArticles={setListArticles}

@@ -1,6 +1,6 @@
 /* Importations des bibliothèques react + component + Article ...*/
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 function Articles({ setListArticles, article, id }) {
@@ -11,31 +11,6 @@ function Articles({ setListArticles, article, id }) {
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
 
-  /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:3000/api/articles/" + id,
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      },
-    })
-      .then((res) => {
-        setUser_id(res.data.user_id);
-      })
-      .catch((err) => {
-        if (!err.response) {
-          console.log("Erreur serveur");
-        } else if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        } else {
-          console.log(err.response.data.message);
-        }
-      });
-  }, []);
   const HandleUpdate = (id) => {
     axios({
       method: "put",
@@ -48,6 +23,7 @@ function Articles({ setListArticles, article, id }) {
     })
       .then((res) => {
         console.log(mydata);
+        setUser_id(res.data.user_id);
         // window.location.href = "http://localhost:3001/Article";
       })
 
@@ -70,6 +46,7 @@ function Articles({ setListArticles, article, id }) {
       },
     })
       .then((res) => {
+        setUser_id(res.data.user_id);
         const newList = article.filter((x) => x.article_id !== id);
         setListArticles(newList);
         // window.location.href = "http://localhost:3001/Article";
