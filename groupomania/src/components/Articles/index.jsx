@@ -3,14 +3,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Articles({ setListArticles, article, id }) {
+function Articles({ setListArticles, article, id, articleUser_id }) {
   /*  Crud pour Modifier un Article*/
   const [mydata, setData] = useState("");
-  /* user_id du compte lu sur la page  */
-  const [articleUser_id, setUser_id] = useState("");
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
-
   const HandleUpdate = (id) => {
     axios({
       method: "put",
@@ -23,7 +20,6 @@ function Articles({ setListArticles, article, id }) {
     })
       .then((res) => {
         console.log(mydata);
-        setUser_id(res.data.user_id);
         // window.location.href = "http://localhost:3001/Article";
       })
 
@@ -46,7 +42,6 @@ function Articles({ setListArticles, article, id }) {
       },
     })
       .then((res) => {
-        setUser_id(res.data.user_id);
         const newList = article.filter((x) => x.article_id !== id);
         setListArticles(newList);
         // window.location.href = "http://localhost:3001/Article";

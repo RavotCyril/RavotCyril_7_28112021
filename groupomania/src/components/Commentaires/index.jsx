@@ -8,11 +8,10 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 
-function Commentaires({ setListArticles, article, id_article, id_user, user }) {
+function Commentaires({ id_article, id_user, user }) {
   var date = new Date();
   date = date.toString();
 
-  const [mydata, setData] = useState("");
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
 
@@ -63,7 +62,6 @@ function Commentaires({ setListArticles, article, id_article, id_user, user }) {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "multipart/form-data",
       },
     })
       .then((res) => {
@@ -79,19 +77,18 @@ function Commentaires({ setListArticles, article, id_article, id_user, user }) {
   }, []);
   /* Fonction methode Put pour modifier un commentaire  */
 
-  const HandleUpdate = (id_article) => {
+  const HandleUpdate = (commentaire_id) => {
     axios({
       method: "put",
-      url: "http://localhost:3000/api/commentaires/" + id_article,
-      data: setData,
+      url: "http://localhost:3000/api/commentaires/" + commentaire_id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        console.log(mydata);
-        window.location.href = "http://localhost:3001/Article";
+        console.log(res);
+        // window.location.href = "http://localhost:3001/Article";
       })
 
       .catch((err) => {
@@ -114,14 +111,16 @@ function Commentaires({ setListArticles, article, id_article, id_user, user }) {
       },
     })
       .then((res) => {
-        const newList = article.filter(
-          (x) => x.commentaire_id !== commentaire_id
+        const newList = listCommentaires.filter(
+          (x) => x.commentaire_id === commentaire_id
         );
-        setListArticles(newList);
-        window.location.href = "http://localhost:3001/Article";
+        setListCommentaires(newList);
+        // window.location.href = "http://localhost:3001/Article";
       })
       .catch((err) => {
-        if (err.response.status === 400) {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
@@ -188,7 +187,7 @@ function Commentaires({ setListArticles, article, id_article, id_user, user }) {
                                 "Confirmer pour supprimer ce commentaire ?"
                               )
                             )
-                              handleDelete(id_article);
+                              handleDelete(commentaire.commentaire_id);
                           }}
                         />
                         Supprimer
@@ -198,13 +197,15 @@ function Commentaires({ setListArticles, article, id_article, id_user, user }) {
                         <FontAwesomeIcon
                           className="btn btn-dark"
                           icon={faPencil}
+                          value={commentaire.texte}
                           onClick={() => {
                             if (
                               window.confirm(
                                 "Confirmer pour modifier ce commentaire ?"
                               )
-                            )
-                              HandleUpdate(id_article);
+                            ) {
+                            }
+                            HandleUpdate(commentaire.commentaire_id);
                           }}
                         />
                         &nbsp;&nbsp; Modifier

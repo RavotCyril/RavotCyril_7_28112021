@@ -34,9 +34,12 @@ exports.getAllModelsCommentaire = (req, res, next) => {
 
 exports.modifyModelsCommentaire = (req, res, next) => {
     // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
-    Models.Commentaire.findOne({ where: { commentaire_id: req.params.id } }).then
+    Models.Commentaire.findOne()
     const commentaire = {
-        ...req.body.commentaire
+        commentaire_id: req.body.commentaire_id,
+        texte: req.body.texte,
+        id_article: req.body.id_article,
+        id_user: req.body.id_user
     }
     Models.Commentaire.update({...commentaire }, { where: { commentaire_id: req.params.id } })
         .then(() => res.status(200).json({ message: 'commentaire modifié !' }))
@@ -46,7 +49,7 @@ exports.modifyModelsCommentaire = (req, res, next) => {
 // Supprimer un commentaire / DELETE 
 
 exports.deleteModelsCommentaire = (req, res, next) => {
-    Models.Commentaire.findOne({ where: { commentaire_id: req.params.id } })
+    Models.Commentaire.findOne()
         .then(Models => {
             Models.destroy({ commentaire_id: req.params.id })
                 .then(() => res.status(200).json({ message: 'commentaire supprimé !' }))

@@ -283,6 +283,7 @@ function Article() {
                       setListArticles={setListArticles}
                       article={listArticles}
                       id={article.article_id}
+                      articleUser_id={article.user_id}
                     />
                     <button className="Like">
                       <FontAwesomeIcon
