@@ -4,9 +4,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 // /* Importations des pages de styles + images */
-import "../../Styles/App.css";
+/* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
-function Votes() {
+function Votes(article_id, user_id) {
   const [like, setLike] = useState("0");
   const [dislike, setDisLike] = useState("0");
 
@@ -17,22 +19,46 @@ function Votes() {
     setDisLike(event.target.value);
   }
   if (like || dislike) {
-    axios.post("http://localhost:3000/api/votes/:id/like", {
+    axios.post("http://localhost:3000/api/votes/:id", {
       like,
       dislike,
+      article_id,
+      user_id,
     });
   }
   return (
-    <main>
-      <button onClick={handleLike}>
-        <i class="fa-solid fa-thumbs-up"></i>
-        {setLike}
+    <div>
+      <button className="Like">
+        <FontAwesomeIcon
+          size="xl"
+          icon={faThumbsUp}
+          onClick={() => {
+            if (
+              window.confirm(
+                "L'administrateur veut il bien supprimer cette article?"
+              )
+            ) {
+              handleLike(article_id, user_id);
+            }
+          }}
+        />
       </button>
-      <button onClick={handleDislike}>
-        <i class="fa-solid fa-thumbs-down"></i>
-        {setDisLike}
+      <button className="Like">
+        <FontAwesomeIcon
+          size="xl"
+          icon={faThumbsDown}
+          onClick={() => {
+            if (
+              window.confirm(
+                "L'administrateur veut il bien supprimer cette article?"
+              )
+            ) {
+              handleDislike(article_id, user_id);
+            }
+          }}
+        />
       </button>
-    </main>
+    </div>
   );
 }
 

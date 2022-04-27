@@ -4,10 +4,11 @@ import axios from "axios";
 
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowClose, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import Articles from "../../../components/Articles";
 import Services from "../../../Services/";
 import Commentaires from "../../../components/Commentaires";
+import Votes from "../../../components/Votes";
 
 /* Vérification de la validité du token 
       -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
@@ -17,7 +18,7 @@ import Commentaires from "../../../components/Commentaires";
 var user_id = JSON.parse(localStorage.getItem("user_id"));
 function Article() {
   var date = new Date();
-  date = date.toString();
+  date = date.toString("MMM,yyy");
 
   /* Constante useState Sujet + Texte */
 
@@ -51,8 +52,7 @@ function Article() {
     });
   };
   /* Crud pour Créer un Article  */
-
-  const handleSubmit = (event) => {
+  const HandleSubmit = (event) => {
     event.preventDefault();
     if (sujet && texte && input.file && date) {
       const mydata = new FormData();
@@ -72,7 +72,7 @@ function Article() {
         },
       })
         .then((res) => {
-          // window.location.href = "http://localhost:3001/Article";
+          window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -83,6 +83,7 @@ function Article() {
         });
     }
   };
+
   const [listArticles, setListArticles] = useState(["null"]);
   const [user, setUser] = useState([]);
 
@@ -219,7 +220,7 @@ function Article() {
                   value="Poster le nouveau sujet"
                   aria-describedby="Bouton de validation pour s'enregistrer"
                   onClick={(e) => {
-                    handleSubmit(e);
+                    HandleSubmit(e);
                   }}
                 />
               </div>
@@ -285,19 +286,10 @@ function Article() {
                       id={article.article_id}
                       articleUser_id={article.user_id}
                     />
-                    <button className="Like">
-                      <FontAwesomeIcon
-                        size="xl"
-                        icon={faThumbsUp}
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              "L'administrateur veut il bien supprimer cette article?"
-                            )
-                          );
-                        }}
-                      />
-                    </button>
+                    <Votes
+                      article_id={article.article_id}
+                      user_id={article.user_id}
+                    />
                   </article>
                 );
               })

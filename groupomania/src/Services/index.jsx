@@ -2,6 +2,7 @@
 -> React, useState , PasswordChecklist + axios (Api post-get..) */
 import React from "react";
 import jwt_decode from "jwt-decode";
+import { useState } from "react";
 /* Styles CSS  react-toastify  ( Pour personnaliser les erreurs - Messages - Alert */
 
 import { ToastContainer, toast } from "react-toastify";
@@ -17,10 +18,11 @@ function Services() {
   var token = JSON.parse(localStorage.getItem("Identification"));
   var date = Math.round(new Date().getTime() / 1000);
   var decoded = jwt_decode(token);
+  const [isTokenValid, setisTokenValid] = useState(false);
 
   if (date < decoded.exp) {
     decoded = jwt_decode(token);
-  } else if (date > decoded.exp) {
+  } else if (date > decoded.exp && !isTokenValid) {
     toast.error(
       "Suite à une trop longue inactivité votre session a expiré veuillez vous reconnecter",
       {
@@ -33,6 +35,8 @@ function Services() {
         progress: undefined,
       }
     );
+    setisTokenValid(true);
+
     window.setTimeout(function () {
       localStorage.clear();
       window.location.href = "http://localhost:3001/Login";

@@ -9,14 +9,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 
 function Commentaires({ id_article, id_user, user }) {
-  var date = new Date();
-  date = date.toString();
+  var dateT = new Date();
+  var date = new Intl.DateTimeFormat("fr-Fr").format(dateT);
 
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
 
-  const [listCommentaires, setListCommentaires] = useState(["null"]);
+  const [listCommentaires, setListCommentaires] = useState([]);
   const [texte, setCommentaire] = useState("");
+  const [isModify, setisModify] = useState(false);
 
   /* Fonction pour capturer ce que l'on écrit dans l'input Texte du commentaire */
 
@@ -27,6 +28,7 @@ function Commentaires({ id_article, id_user, user }) {
 
   const handleSubmitCommentaire = (event, id_article) => {
     event.preventDefault();
+
     if (texte != null) {
       axios
         .post(
@@ -40,7 +42,16 @@ function Commentaires({ id_article, id_user, user }) {
           }
         )
         .then((res) => {
-          window.location.href = "http://localhost:3001/Article";
+          // console.log(res.data);
+
+          setListCommentaires((listCommentaires) => [
+            ...listCommentaires,
+            res.data,
+          ]);
+
+          console.log(listCommentaires);
+
+          //window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (!err.response) {
@@ -75,9 +86,15 @@ function Commentaires({ id_article, id_user, user }) {
         }
       });
   }, []);
-  /* Fonction methode Put pour modifier un commentaire  */
 
+  //TODO Faire un bouton valider qui remplace le bouton modifier lors de l'etait modifier is true
+  //a ce moment là appeler la méthode axios put et passer tout l'objet commentaire pour qu'il soit modifié en bdd
+
+  /* Fonction methode Put pour modifier un commentaire  */
   const HandleUpdate = (commentaire_id) => {
+    // on change d'etat => en modifier
+    setisModify(true);
+
     axios({
       method: "put",
       url: "http://localhost:3000/api/commentaires/" + commentaire_id,
@@ -204,8 +221,8 @@ function Commentaires({ id_article, id_user, user }) {
                                 "Confirmer pour modifier ce commentaire ?"
                               )
                             ) {
+                              HandleUpdate(commentaire.commentaire_id);
                             }
-                            HandleUpdate(commentaire.commentaire_id);
                           }}
                         />
                         &nbsp;&nbsp; Modifier
@@ -213,9 +230,19 @@ function Commentaires({ id_article, id_user, user }) {
                     </div>
                   ) : null}
                   <div className="row">
-                    <p key={commentaire.texte} className="col-12 Article-texte">
-                      {commentaire.texte}
-                    </p>
+                    {isModify ? (
+                      <textarea
+                        type="text"
+                        value={commentaire.texte}
+                      ></textarea>
+                    ) : (
+                      <p
+                        key={commentaire.texte}
+                        className="col-12 Article-texte"
+                      >
+                        {commentaire.texte}
+                      </p>
+                    )}
                   </div>
                 </div>
               );
