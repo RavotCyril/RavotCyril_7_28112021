@@ -204,11 +204,11 @@ a {
 }
 
 .Menu {
-  background: #132944;
+  background: #868686;
   box-shadow: inset 0px 0px 10px 10px #000;
 }
 .Main-Article {
-  background: #132944;
+  background: #868686;
 }
 
 .pageMyForums h2 {
@@ -217,7 +217,7 @@ a {
 }
 .pageMyForums,
 .pageNewCommentaire {
-  box-shadow: inset 0px 0px 10px 10px #112442;
+  box-shadow: inset 0px 0px 10px 10px #444;
 }
 
 @media screen and (min-width: 769px) and (max-width: 1089px) /* styles pour tablettes*/ {

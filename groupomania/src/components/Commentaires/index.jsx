@@ -18,6 +18,7 @@ function Commentaires({ id_article, id_user, user }) {
   const [listCommentaires, setListCommentaires] = useState([]);
   const [texte, setCommentaire] = useState("");
   const [isModify, setisModify] = useState(false);
+  const [editedContent, setEditContent] = useState("");
 
   /* Fonction pour capturer ce que l'on écrit dans l'input Texte du commentaire */
 
@@ -33,7 +34,7 @@ function Commentaires({ id_article, id_user, user }) {
       axios
         .post(
           "http://localhost:3000/api/commentaires/",
-          { texte, id_article, id_user },
+          { texte, id_article, id_user, date },
           {
             headers: {
               Authorization:
@@ -43,10 +44,10 @@ function Commentaires({ id_article, id_user, user }) {
         )
         .then((res) => {
           // console.log(res.data);
-
+          console.log(res.data.Commentaire);
           setListCommentaires((listCommentaires) => [
             ...listCommentaires,
-            res.data,
+            res.data.Commentaire,
           ]);
 
           console.log(listCommentaires);
@@ -87,25 +88,26 @@ function Commentaires({ id_article, id_user, user }) {
       });
   }, []);
 
-  //TODO Faire un bouton valider qui remplace le bouton modifier lors de l'etait modifier is true
+  //TODO Faire un bouton valider qui remplace le bouton modifier lors de l'etat modifier is true
   //a ce moment là appeler la méthode axios put et passer tout l'objet commentaire pour qu'il soit modifié en bdd
 
   /* Fonction methode Put pour modifier un commentaire  */
-  const HandleUpdate = (commentaire_id) => {
-    // on change d'etat => en modifier
-    setisModify(true);
-
+  const HandleUpdate = (commentaire, commentaire_id) => {
+    const data = {
+      content: editedContent ? editedContent : commentaire.content,
+      date: commentaire.date,
+    };
     axios({
       method: "put",
       url: "http://localhost:3000/api/commentaires/" + commentaire_id,
+      data: data,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        console.log(res);
-        // window.location.href = "http://localhost:3001/Article";
+        setisModify(false);
       })
 
       .catch((err) => {
@@ -129,7 +131,7 @@ function Commentaires({ id_article, id_user, user }) {
     })
       .then((res) => {
         const newList = listCommentaires.filter(
-          (x) => x.commentaire_id === commentaire_id
+          (x) => x.commentaire_id !== commentaire_id
         );
         setListCommentaires(newList);
         // window.location.href = "http://localhost:3001/Article";
@@ -144,6 +146,7 @@ function Commentaires({ id_article, id_user, user }) {
         }
       });
   };
+
   return (
     <div>
       <input
@@ -209,41 +212,30 @@ function Commentaires({ id_article, id_user, user }) {
                         />
                         Supprimer
                       </button>
-                      <i className="fa-solid fa-circle-trash"></i>
-                      <button className="BouttonUpdate">
-                        <FontAwesomeIcon
-                          className="btn btn-dark"
-                          icon={faPencil}
-                          value={commentaire.texte}
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                "Confirmer pour modifier ce commentaire ?"
-                              )
-                            ) {
-                              HandleUpdate(commentaire.commentaire_id);
-                            }
-                          }}
-                        />
-                        &nbsp;&nbsp; Modifier
-                      </button>
                     </div>
                   ) : null}
-                  <div className="row">
-                    {isModify ? (
-                      <textarea
-                        type="text"
+                  {isModify ? (
+                    <textarea
+                      onChange={(e) => setEditContent(e.target.value)}
+                    ></textarea>
+                  ) : (
+                    <p>{editedContent ? editedContent : commentaire.content}</p>
+                  )}
+                  {isModify ? (
+                    <button>
+                      <FontAwesomeIcon
+                        className="btn btn-dark"
+                        icon={faPencil}
                         value={commentaire.texte}
-                      ></textarea>
-                    ) : (
-                      <p
-                        key={commentaire.texte}
-                        className="col-12 Article-texte"
-                      >
-                        {commentaire.texte}
-                      </p>
-                    )}
-                  </div>
+                        onClick={() => {
+                          HandleUpdate(commentaire.commentaire_id);
+                        }}
+                      />
+                      Valider
+                    </button>
+                  ) : (
+                    <button onClick={() => setisModify(true)}>Modifier</button>
+                  )}
                 </div>
               );
           })

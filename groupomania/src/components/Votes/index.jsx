@@ -1,7 +1,7 @@
 /* Importations des bibliothèques react + Yarn 
 -> React, useState , PasswordChecklist + axios (Api post-get..) */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 // /* Importations des pages de styles + images */
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
@@ -18,14 +18,32 @@ function Votes(article_id, user_id) {
   function handleDislike(event) {
     setDisLike(event.target.value);
   }
-  if (like || dislike) {
-    axios.post("http://localhost:3000/api/votes/:id", {
-      like,
-      dislike,
-      article_id,
-      user_id,
-    });
-  }
+  useEffect(() => {
+    if (like || dislike) {
+      axios
+        .post("http://localhost:3000/api/votes/:id", {
+          like,
+          dislike,
+          article_id,
+          user_id,
+          headers: {
+            Authorization:
+              "bearer " + JSON.parse(localStorage.getItem("Identification")),
+          },
+        })
+        .then((res) => {})
+        .catch((err) => {
+          if (!err.response) {
+            console.log("Erreur serveur");
+          } else if (err.response.status === 400) {
+            console.log("Tout les champs n'ont pas été correctement remplis");
+          } else if (err.response.status === 500) {
+            console.log("erreur serveur");
+          }
+        });
+    }
+  }, []);
+
   return (
     <div>
       <button className="Like">

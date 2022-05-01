@@ -6,9 +6,10 @@ exports.createModelsCommentaire = (req, res, next) => {
     Models.Commentaire.create({
         commentaire_id: req.body.commentaire_id,
         texte: req.body.texte,
+        date:req.body.date,
         id_article: req.body.id_article,
         id_user: req.body.id_user
-        }).then(() => res.status(201).json(({ message: 'commentaire créé !' })))
+        }).then((Commentaire) => res.status(201).json(({Commentaire, message: 'commentaire créé !' })))
         .catch(error => res.status(400).json({ message: error.message }));
 };
 
@@ -38,6 +39,7 @@ exports.modifyModelsCommentaire = (req, res, next) => {
     const commentaire = {
         commentaire_id: req.body.commentaire_id,
         texte: req.body.texte,
+        date:req.body.date,
         id_article: req.body.id_article,
         id_user: req.body.id_user
     }
