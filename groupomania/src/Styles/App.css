@@ -76,6 +76,20 @@ body {
 .Textarea-Article {
   padding: 15px;
 }
+.Like,
+.Dislike {
+  border: none;
+  background: none;
+  margin: 0px 10px 0px 0px;
+}
+
+.Like:focus {
+  color: green;
+}
+.Dislike:focus {
+  color: red;
+}
+
 .AdminIcon {
   position: absolute;
   color: black;
@@ -103,15 +117,7 @@ body {
 .Date-Italic {
   font-style: italic;
 }
-.Like {
-  border: none;
-  color: dark;
-  background: none;
-}
-.Like:hover {
-  border: none;
-  color: dodgerblue;
-}
+
 .InputImage {
   color: white;
 }

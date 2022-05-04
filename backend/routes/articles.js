@@ -8,7 +8,7 @@ const multer = require('../middleware/multer-config');
 
 /* Administrateur qui peut supprimer les articles des utilisateurs */
 
-router.delete('/:id', auth , articlesCtrl.deleteAdminModelsArticle);
+router.delete('/:id', auth, articlesCtrl.deleteAdminModelsArticle);
 
 //* Routes Articles + Like  */
 

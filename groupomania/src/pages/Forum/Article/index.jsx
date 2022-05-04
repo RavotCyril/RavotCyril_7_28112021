@@ -144,6 +144,7 @@ function Article() {
       },
     })
       .then((res) => {
+        console.log(res);
         const newList = listArticles.filter((x) => x.article_id !== article_id);
         setListArticles(newList);
       })

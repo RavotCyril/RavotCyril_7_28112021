@@ -4,13 +4,16 @@ const fs = require('fs');
 /* Exporte la fonction Administrateur pour supprimer les articles des utilisateurs*/
 
 exports.deleteAdminModelsArticle = (req, res, next) => {
-  Models.Article.findOne()
+    Models.Article.findOne({ where: { article_id: req.params.id } })
         .then(Models => {
-                Models.destroy({ article_id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'L\'administrateur a bien supprimé l\'article!' }))
+            const filename = Models.image.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => {
+                Models.destroy({ where: { article_id: req.params.id } })
+                    .then(() => res.status(200).json({message: 'article supprimé !' }))
                     .catch(error => res.status(400).json({ error }));
-            })
-            .catch(error => res.status(500).json({ error }));
+            });
+        })
+        .catch(error => res.status(500).json({ error }));
 };
 
 
@@ -66,14 +69,13 @@ exports.modifyModelsArticle = (req, res, next) => {
     }).catch(() => res.status(500).json({ message: 'Erreur Article non modifié !' }));
 };
 // Supprimer un article / DELETE 
-
 exports.deleteModelsArticle = (req, res, next) => {
     Models.Article.findOne({ where: { article_id: req.params.id } })
         .then(Models => {
             const filename = Models.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
-                Models.destroy({ article_id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'article supprimé !' }))
+                Models.destroy({ where: { article_id: req.params.id } })
+                    .then((filename) => res.status(200).json({ filename,message: 'article supprimé !' }))
                     .catch(error => res.status(400).json({ error }));
             });
         })

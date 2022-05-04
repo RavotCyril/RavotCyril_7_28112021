@@ -1,83 +1,102 @@
 /* Importations des bibliothèques react + Yarn 
 -> React, useState , PasswordChecklist + axios (Api post-get..) */
 
-import React, { useState, useEffect } from "react";
+import React, { useReducer } from "react";
 import axios from "axios";
 // /* Importations des pages de styles + images */
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
-function Votes(article_id, user_id) {
-  const [like, setLike] = useState("0");
-  const [dislike, setDisLike] = useState("0");
+const HANDLE_LIKE = { faThumbsDown };
+const HANDLE_DISLIKE = { faThumbsDown };
+const initialState = {
+  like: 0,
+  dislike: 0,
+  active: null,
+};
 
-  function handleLike(event) {
-    setLike(event.target.value);
+const reducer = (state, action) => {
+  const { like, dislike, active, article_id, user_id } = state;
+  console.log(article_id, user_id);
+
+  switch (action.type) {
+    case HANDLE_LIKE:
+      return {
+        ...state,
+        like: state.like + 1,
+        dislike: active === "Dislike" ? dislike - 1 : dislike,
+        active: "Like",
+        article_id,
+        user_id,
+      };
+    case HANDLE_DISLIKE:
+      return {
+        ...state,
+        like: active === "Like" ? like - 1 : like,
+        active: "Dislike",
+        dislike: dislike + 1,
+        article_id,
+        user_id,
+      };
+    default:
+      return state;
   }
-  function handleDislike(event) {
-    setDisLike(event.target.value);
-  }
-  useEffect(() => {
-    if (like || dislike) {
-      axios
-        .post("http://localhost:3000/api/votes/:id", {
-          like,
-          dislike,
-          article_id,
-          user_id,
-          headers: {
-            Authorization:
-              "bearer " + JSON.parse(localStorage.getItem("Identification")),
-          },
-        })
-        .then((res) => {})
-        .catch((err) => {
-          if (!err.response) {
-            console.log("Erreur serveur");
-          } else if (err.response.status === 400) {
-            console.log("Tout les champs n'ont pas été correctement remplis");
-          } else if (err.response.status === 500) {
-            console.log("erreur serveur");
-          }
-        });
-    }
-  }, []);
+};
+
+function Votes(article_id, user_id) {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { like, dislike, active } = state;
+  axios({
+    method: "post",
+    url: "http://localhost:3000/api/votes/",
+    headers: {
+      Authorization:
+        "bearer " + JSON.parse(localStorage.getItem("Identification")),
+    },
+    like,
+    dislike,
+    article_id,
+    user_id,
+  })
+    .then((res) => {})
+    .catch((err) => {
+      if (!err.response) {
+        console.log("Erreur serveur");
+      } else if (err.response.status === 400) {
+        console.log("Tout les champs n'ont pas été correctement remplis");
+      } else if (err.response.status === 500) {
+        console.log("erreur serveur");
+      }
+    });
 
   return (
     <div>
-      <button className="Like">
-        <FontAwesomeIcon
-          size="xl"
-          icon={faThumbsUp}
-          onClick={() => {
-            if (
-              window.confirm(
-                "L'administrateur veut il bien supprimer cette article?"
-              )
-            ) {
-              handleLike(article_id, user_id);
+      <div>
+        <button className="Like">
+          <FontAwesomeIcon
+            className="Like"
+            size="xl"
+            icon={faThumbsUp}
+            onClick={() =>
+              active !== "Like" ? dispatch({ type: HANDLE_LIKE }) : null
             }
-          }}
-        />
-      </button>
-      <button className="Like">
-        <FontAwesomeIcon
-          size="xl"
-          icon={faThumbsDown}
-          onClick={() => {
-            if (
-              window.confirm(
-                "L'administrateur veut il bien supprimer cette article?"
-              )
-            ) {
-              handleDislike(article_id, user_id);
+          />
+          {like}
+        </button>
+        <button className="Dislike">
+          <FontAwesomeIcon
+            className="Dislike"
+            size="xl"
+            icon={faThumbsDown}
+            onClick={() =>
+              active !== "Dislike" ? dispatch({ type: HANDLE_DISLIKE }) : null
             }
-          }}
-        />
-      </button>
+          />
+          {dislike}
+        </button>
+      </div>
     </div>
   );
 }
-
 export default Votes;

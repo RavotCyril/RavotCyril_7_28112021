@@ -44,7 +44,6 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
       .then((res) => {
         const newList = article.filter((x) => x.article_id !== id);
         setListArticles(newList);
-        // window.location.href = "http://localhost:3001/Article";
       })
       .catch((err) => {
         if (err.response.status === 400) {
