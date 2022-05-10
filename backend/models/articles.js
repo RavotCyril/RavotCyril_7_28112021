@@ -42,6 +42,8 @@ const Vote = sequelize.define('vote', {
     dislike: { type: Sequelize.INTEGER },
     article_id: { type: Sequelize.INTEGER },
     user_id: { type: Sequelize.INTEGER },
+    usersLiked: { type: Sequelize.INTEGER},
+    usersDisliked: { type: Sequelize.INTEGER },
 }, { tableName: 'vote', timestamps: false, underscored: true });
 
 exports.Vote = Vote;

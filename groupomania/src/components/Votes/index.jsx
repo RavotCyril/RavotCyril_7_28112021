@@ -41,27 +41,26 @@ const reducer = (state, action) => {
       return state;
   }
 };
-function Votes(article_id, user_id) {
+function Votes({ article_id, user_id }) {
   /* Permet de retransmettre l'état du click à la fonction dispatch 
   fonction des likes, dislikes, active avec le switch en fonction du click  */
   const [state, dispatch] = useReducer(reducer, initialState);
   const { like, dislike, active } = state;
+
   const LikeSubmit = (article_id, user_id) => {
-    axios({
-      method: "post",
-      url: "http://localhost:3000/api/votes/" + article_id,
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      },
-      like,
-      dislike,
-      article_id,
-      user_id,
-    })
+    axios
+      .post(
+        "http://localhost:3000/api/votes/" + article_id,
+        { like, dislike, article_id, user_id },
+        {
+          headers: {
+            Authorization:
+              "bearer " + JSON.parse(localStorage.getItem("Identification")),
+          },
+        }
+      )
       .then((res) => {
-        console.log(res);
-        console.log("test");
+        console.log(res.data);
       })
       .catch((err) => {
         if (!err.response) {

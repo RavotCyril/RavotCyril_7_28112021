@@ -6,7 +6,11 @@ import axios from "axios";
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faPencil,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Commentaires({ id_article, id_user, user }) {
   var dateT = new Date();
@@ -29,8 +33,7 @@ function Commentaires({ id_article, id_user, user }) {
 
   const handleSubmitCommentaire = (event, id_article) => {
     event.preventDefault();
-
-    if (texte != null) {
+    if (texte !== "") {
       axios
         .post(
           "http://localhost:3000/api/commentaires/",
@@ -43,16 +46,11 @@ function Commentaires({ id_article, id_user, user }) {
           }
         )
         .then((res) => {
-          // console.log(res.data);
-          console.log(res.data.Commentaire);
           setListCommentaires((listCommentaires) => [
             ...listCommentaires,
             res.data.Commentaire,
           ]);
-
-          console.log(listCommentaires);
-
-          //window.location.href = "http://localhost:3001/Article";
+          // window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (!err.response) {
@@ -63,6 +61,8 @@ function Commentaires({ id_article, id_user, user }) {
             console.log("erreur serveur");
           }
         });
+    } else if (texte === "") {
+      alert("Veuillez écrire un commentaire le champ est vide");
     }
   };
 
@@ -80,7 +80,9 @@ function Commentaires({ id_article, id_user, user }) {
         setListCommentaires(res.data);
       })
       .catch((err) => {
-        if (err.response.status === 400) {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
@@ -92,10 +94,10 @@ function Commentaires({ id_article, id_user, user }) {
   //a ce moment là appeler la méthode axios put et passer tout l'objet commentaire pour qu'il soit modifié en bdd
 
   /* Fonction methode Put pour modifier un commentaire  */
-  const HandleUpdate = (commentaire, commentaire_id) => {
+  const HandleUpdate = ({ commentaire, commentaire_id }) => {
     const data = {
-      content: editedContent ? editedContent : commentaire.content,
-      date: commentaire.date,
+      texte: editedContent ? editedContent : commentaire.texte,
+      date: date,
     };
     axios({
       method: "put",
@@ -111,7 +113,9 @@ function Commentaires({ id_article, id_user, user }) {
       })
 
       .catch((err) => {
-        if (err.response.status === 400) {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
@@ -188,18 +192,56 @@ function Commentaires({ id_article, id_user, user }) {
                   cols={5}
                   wrap="hard"
                 >
-                  <span className="col-1">{user.firstname}</span>
-                  <span className="col-9 Date-Italic">
-                    &nbsp;
-                    {date}
-                  </span>
-                  {user_id === commentaire.id_user ? (
-                    <div className="col-2 Boutton-Commentaires">
-                      <i className="fa-solid fa-pencil"></i>
+                  <div className="col-12">
+                    <span className="Article-date">{user.firstname}</span>
+                    <span className="Date-Italic">
+                      &nbsp;
+                      {date}
+                    </span>
+                  </div>
+                  {isModify ? (
+                    <textarea
+                      className="my-2"
+                      onChange={(e) => setEditContent(e.target.value)}
+                    ></textarea>
+                  ) : (
+                    <p>{editedContent ? editedContent : commentaire.texte}</p>
+                  )}
+                  <div className="col-12 Boutton-Commentaires d-flex mx-auto">
+                    {isModify ? (
+                      <button
+                        className="BoutonValider"
+                        onClick={() => {
+                          if (editedContent === "") {
+                            alert(
+                              "Modification vide ! Veuillez remplir votre nouveau commentaire !"
+                            );
+                          }
+                          HandleUpdate(commentaire, commentaire.commentaire_id);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          className="btn btn-primary mx-2"
+                          icon={faCircleCheck}
+                        />
+                        Valider
+                      </button>
+                    ) : (
+                      <button
+                        className="BoutonModifier"
+                        onClick={() => setisModify(true)}
+                      >
+                        <FontAwesomeIcon
+                          className="btn btn-dark mx-2"
+                          icon={faPencil}
+                        />
+                        Modifier
+                      </button>
+                    )}
+                    {user_id === commentaire.id_user ? (
                       <button className="BouttonDelete">
                         <FontAwesomeIcon
                           className="btn btn-danger mx-3"
-                          size="xl"
                           icon={faTrash}
                           onClick={() => {
                             if (
@@ -212,30 +254,8 @@ function Commentaires({ id_article, id_user, user }) {
                         />
                         Supprimer
                       </button>
-                    </div>
-                  ) : null}
-                  {isModify ? (
-                    <textarea
-                      onChange={(e) => setEditContent(e.target.value)}
-                    ></textarea>
-                  ) : (
-                    <p>{editedContent ? editedContent : commentaire.content}</p>
-                  )}
-                  {isModify ? (
-                    <button>
-                      <FontAwesomeIcon
-                        className="btn btn-dark"
-                        icon={faPencil}
-                        value={commentaire.texte}
-                        onClick={() => {
-                          HandleUpdate(commentaire.commentaire_id);
-                        }}
-                      />
-                      Valider
-                    </button>
-                  ) : (
-                    <button onClick={() => setisModify(true)}>Modifier</button>
-                  )}
+                    ) : null}
+                  </div>
                 </div>
               );
           })

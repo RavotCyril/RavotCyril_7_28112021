@@ -6,6 +6,7 @@ import axios from "axios";
 function Articles({ setListArticles, article, id, articleUser_id }) {
   /*  Crud pour Modifier un Article*/
   const [mydata, setData] = useState("");
+
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
   const HandleUpdate = (id) => {

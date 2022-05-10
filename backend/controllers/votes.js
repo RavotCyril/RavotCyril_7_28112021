@@ -9,12 +9,14 @@ exports.createLikeModelsArticle = (req, res, next) => {
 		/* Like présent dans le body */
 	const dislike = req.body.dislike;
 	/* l'id de l'article / post */
-    const article_id =req.body.article_id
-    
-    Models.Vote.findOne({where: { article_id: req.params.id}})
+    const article_id =req.body.article_id;
+    const usersLiked =[];
+    const usersDisliked =[]
+    Models.Vote.findOne({id : article_id})
+            console.log(article_id)
         .then(article_id => {
             console.log("avant " + article_id)
-            switch (like,dislike) {
+            switch (like) {
                 // Dislike : Si like = -1, l'utilisateur n'aime pas l'article'.
                 case -1:
                     // console.log('Je n`aime pas');
@@ -25,11 +27,11 @@ exports.createLikeModelsArticle = (req, res, next) => {
 
                 case 0:
                     console.log('je sais pas');
-                    if (article_id.indexOf(user_id) != -1) {
-                        article_id.splice(user_id, 1)
+                    if (article_id.usersLiked.indexOf(user_id) != -1) {
+                        article_id.usersLiked.splice(user_id, 1)
                         article_id.like -= 1;
-                    } else if (article_id.indexOf(user_id) != -1) {
-                        article_id.splice(user_id, 1)
+                    } else if (article_id.usersDisliked.indexOf(user_id) != -1) {
+                        article_id.usersDisliked.splice(user_id, 1)
                         article_id.dislike -= 1;
                     }
                     break;
@@ -37,7 +39,7 @@ exports.createLikeModelsArticle = (req, res, next) => {
 
                 case 1:
                     console.log('j`aime');
-                    article_id.push(user_id);
+                    article_id.usersLiked.push(user_id);
                     article_id.like += 1;
                     break;
             };
