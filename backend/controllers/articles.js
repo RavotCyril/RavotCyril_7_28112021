@@ -16,8 +16,8 @@ exports.deleteAdminModelsArticle = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-
 // Créer un article / post
+
 exports.createModelsArticle = (req, res, next) => {
     
   var date = new Date();
@@ -54,20 +54,23 @@ exports.getOneModelsArticle = (req, res, next) => {
 
 exports.modifyModelsArticle = (req, res, next) => {
 
-    Models.Article.findOne({ where: { article_id: req.params.id } }).then(Article => {
-        const filename = Article.image.split('/images/')[1];
+    Models.Article.findOne()
+        const article = {
+        article_id: req.body.article_id,
+        sujet: req.body.sujet,
+        texte:req.body.texte,
+        date: req.body.date,
+        image:  req.file == undefined ? "" : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        user_id:req.body.user_id,
+    }
+        const filename = Models.Article.image.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
             // Une fois que l'ancienne image est supprimée dans le dossier image.On peut mettre à jour le reste des données de l'article
-            const article = {
-                ...req.body.article,
-                image: req.file == undefined ? "" : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-            }
-            Models.Article.update({...article }, { where: {  article_id: req.params.id } })
+            Models.update({...article }, { where: {  article_id: req.params.id } })
                 .then(() => res.status(200).json({ message: 'article modifié !' }))
                 .catch(error => res.status(400).json({ message: error.message }));
         })
-    }).catch(() => res.status(500).json({ message: 'Erreur Article non modifié !' }));
-};
+}
 // Supprimer un article / DELETE 
 exports.deleteModelsArticle = (req, res, next) => {
     Models.Article.findOne({ where: { article_id: req.params.id } })

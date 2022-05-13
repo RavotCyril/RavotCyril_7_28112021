@@ -3,25 +3,43 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+/* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrash,
+  faPencil,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
+
 function Articles({ setListArticles, article, id, articleUser_id }) {
+  const [articleIsModify, articleSetIsModify] = useState(false);
+  const [dateArticle, setDateArticle] = useState(article.date);
+  const [sujetArticle, setSujetArticle] = useState(article.sujet);
+  const [texteArticle, setTexteArticle] = useState(article.texte);
+  const [imageArticle, setImageArticle] = useState(article.image);
   /*  Crud pour Modifier un Article*/
-  const [mydata, setData] = useState("");
 
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
-  const HandleUpdate = (id) => {
+  const HandleUpdate = (article, id) => {
+    const data = {
+      date: dateArticle ? dateArticle : article.date,
+      sujet: sujetArticle ? sujetArticle : article.sujet,
+      texte: texteArticle ? texteArticle : article.texte,
+      image: imageArticle ? imageArticle : article.image,
+      user_id: articleUser_id,
+    };
     axios({
       method: "put",
       url: "http://localhost:3000/api/articles/" + id,
-      data: setData,
+      data: data,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        console.log(mydata);
-        // window.location.href = "http://localhost:3001/Article";
+        articleSetIsModify(false);
       })
 
       .catch((err) => {
@@ -56,28 +74,77 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
   };
   return (
     <div>
-      {user_id === articleUser_id ? (
-        <div className="d-flex mx-auto">
+      <div className="d-flex mx-auto">
+        {articleIsModify ? (
+          <article>
+            <p
+              defaultValue={dateArticle ? dateArticle : article.date}
+              onChange={(e) => setDateArticle(e.target.value)}
+            ></p>
+            <p
+              defaultValue={sujetArticle ? sujetArticle : article.sujet}
+              onChange={(e) => setSujetArticle(e.target.value)}
+            ></p>
+            <p
+              defaultValue={imageArticle ? imageArticle : article.image}
+              onChange={(e) => setImageArticle(e.target.value)}
+            />
+            <textarea
+              defaultValue={texteArticle ? texteArticle : article.texte}
+              onChange={(e) => setTexteArticle(e.target.value)}
+            ></textarea>
+          </article>
+        ) : (
+          <article>
+            <p>{dateArticle ? dateArticle : article.date}</p>
+            <p>{sujetArticle ? sujetArticle : article.sujet}</p>
+            <p>{imageArticle ? imageArticle : article.image}</p>
+            <textarea
+              defaultValue={texteArticle ? texteArticle : article.texte}
+            ></textarea>
+          </article>
+        )}
+        {articleIsModify ? (
           <button
-            className="btn btn-danger mx-3"
+            className="BouttonValider"
             onClick={() => {
-              if (window.confirm("Confirmer pour supprimer cette article?"))
-                handleDelete(id);
+              if (texteArticle === "") {
+                alert(
+                  "Modification vide ! Veuillez remplir votre nouveau commentaire !"
+                );
+              }
+              HandleUpdate(article, id);
             }}
           >
-            Supprimer
+            <FontAwesomeIcon
+              className="btn btn-primary mx-2"
+              icon={faCircleCheck}
+            />
+            Valider
           </button>
+        ) : (
           <button
-            className="btn btn-dark"
-            onClick={() => {
-              if (window.confirm("Confirmer pour modifier cette article?"))
-                HandleUpdate(id);
-            }}
+            className="BouttonModifier"
+            onClick={() => articleSetIsModify(true)}
           >
+            <FontAwesomeIcon className="btn btn-dark mx-2" icon={faPencil} />
             modifier
           </button>
-        </div>
-      ) : null}
+        )}
+        {user_id === articleUser_id ? (
+          <button className="BouttonDelete">
+            <FontAwesomeIcon
+              className="btn btn-danger mx-3"
+              icon={faTrash}
+              onClick={() => {
+                if (window.confirm("Confirmer pour supprimer cette article?"))
+                  handleDelete(id);
+              }}
+            />
+            Supprimer
+          </button>
+        ) : null}
+      </div>
       <br></br>
     </div>
   );

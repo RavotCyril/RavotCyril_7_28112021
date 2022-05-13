@@ -76,14 +76,11 @@ body {
 .Textarea-Article {
   padding: 15px;
 }
-.BoutonValider {
+.BouttonValider {
   border: none;
   background: transparent;
   margin: 0px auto;
-}
-.BoutonModifier {
-  border: none;
-  background: transparent;
+  color: black;
 }
 
 .Like,
@@ -117,10 +114,10 @@ body {
 }
 
 .BouttonDelete,
-.BouttonUpdate {
+.BouttonModifier {
   background: none;
   border: none;
-  padding: 5px 0px;
+  color: black;
 }
 .Date-Italic {
   font-style: italic;

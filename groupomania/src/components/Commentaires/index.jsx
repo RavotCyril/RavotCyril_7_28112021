@@ -23,7 +23,6 @@ function Commentaires({ id_article, id_user, user }) {
   const [texte, setCommentaire] = useState("");
   const [isModify, setisModify] = useState(false);
   const [editedContent, setEditContent] = useState("");
-
   /* Fonction pour capturer ce que l'on écrit dans l'input Texte du commentaire */
 
   function handleChangeCommentaire(event) {
@@ -90,7 +89,7 @@ function Commentaires({ id_article, id_user, user }) {
       });
   }, []);
 
-  //TODO Faire un bouton valider qui remplace le bouton modifier lors de l'etat modifier is true
+  //TODO Faire un boutton valider qui remplace le boutton modifier lors de l'etat modifier is true
   //a ce moment là appeler la méthode axios put et passer tout l'objet commentaire pour qu'il soit modifié en bdd
 
   /* Fonction methode Put pour modifier un commentaire  */
@@ -171,7 +170,7 @@ function Commentaires({ id_article, id_user, user }) {
         name="submit"
         className="form-control btn btn-primary mx-auto"
         value="Poster un commentaire"
-        aria-describedby="Bouton de validation pour créer le commentaire"
+        aria-describedby="Boutton de validation pour créer le commentaire"
         onClick={(e) => {
           handleSubmitCommentaire(e, id_article);
         }}
@@ -199,18 +198,21 @@ function Commentaires({ id_article, id_user, user }) {
                       {date}
                     </span>
                   </div>
-                  {isModify ? (
-                    <textarea
+                  {isModify && commentaire.commentaire_id ? (
+                    <input
                       className="my-2"
+                      defaultValue={
+                        editedContent ? editedContent : commentaire.texte
+                      }
                       onChange={(e) => setEditContent(e.target.value)}
-                    ></textarea>
+                    ></input>
                   ) : (
                     <p>{editedContent ? editedContent : commentaire.texte}</p>
                   )}
                   <div className="col-12 Boutton-Commentaires d-flex mx-auto">
-                    {isModify ? (
+                    {isModify && commentaire.commentaire_id ? (
                       <button
-                        className="BoutonValider"
+                        className="BouttonValider"
                         onClick={() => {
                           if (editedContent === "") {
                             alert(
@@ -228,8 +230,10 @@ function Commentaires({ id_article, id_user, user }) {
                       </button>
                     ) : (
                       <button
-                        className="BoutonModifier"
-                        onClick={() => setisModify(true)}
+                        className="BouttonModifier"
+                        onClick={(commentaire) =>
+                          setisModify(true, commentaire.commentaire_id)
+                        }
                       >
                         <FontAwesomeIcon
                           className="btn btn-dark mx-2"

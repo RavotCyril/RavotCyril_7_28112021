@@ -24,12 +24,10 @@ function Article() {
 
   const [sujet, setSujet] = useState("");
   const [texte, setTexte] = useState("");
-
   /* Fonction pour capturer ce que l'on écrit dans l'input Sujet  */
   function handleChangeTopic(e) {
     setSujet(e.target.value);
   }
-
   /* Fonction pour capturer ce que l'on écrit dans l'input Texte  */
 
   function handleChangeTexte(event) {
@@ -61,6 +59,7 @@ function Article() {
       mydata.append("date", date);
       mydata.append("image", input.file);
       mydata.append("user_id", user_id);
+
       axios({
         method: "post",
         url: "http://localhost:3000/api/articles/",
@@ -229,29 +228,30 @@ function Article() {
         </article>
       ) : null}
       <div id="MyForum" className="pageMyForums container-fluid">
-        <div className="row">
-          <div className="sujet"></div>
-          <div className="btn-container"></div>
-        </div>
         <div className="Container-Article">
           {listArticles != null
             ? listArticles.map((article) => {
                 return (
-                  <article
-                    className="Article"
-                    key={article.article_id}
-                    id={article.article_id}
-                  >
-                    <p className="Article-date">{article.date}</p>
-                    <h2>{article.sujet}</h2>
+                  <article className="Article" key={article.article_id}>
+                    <p key={article.date} className="Article-date">
+                      {article.date}
+                    </p>
+                    <h2 key={article.sujet}>{article.sujet}</h2>
                     <br></br>
                     <div className="Div-Image">
                       <a href={article.image}>
-                        <img src={article.image} alt="Fichier selectionné" />
+                        <img
+                          key={article.image}
+                          href={article.image}
+                          src={article.image}
+                          alt="Fichier selectionné"
+                        />
                       </a>
                     </div>
                     <br></br>
-                    <p className="Article-texte">{article.texte}</p>
+                    <p key={article.texte} className="Article-texte">
+                      {article.texte}
+                    </p>
                     <br></br>
                     {user.roleId === 1 ? (
                       <button className="AdminIcon">
@@ -282,7 +282,7 @@ function Article() {
                     <br></br>
                     <Articles
                       setListArticles={setListArticles}
-                      article={listArticles}
+                      article={article}
                       id={article.article_id}
                       articleUser_id={article.user_id}
                     />
