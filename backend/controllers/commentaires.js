@@ -35,7 +35,7 @@ exports.getAllModelsCommentaire = (req, res, next) => {
 
 exports.modifyModelsCommentaire = (req, res, next) => {
     // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
-    Models.Commentaire.findOne()
+    Models.Commentaire.findOne({ where: { commentaire_id: req.params.id } })
     const commentaire = {
         commentaire_id: req.body.commentaire_id,
         texte: req.body.texte,

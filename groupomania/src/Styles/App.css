@@ -53,6 +53,7 @@ body {
   margin: 50px auto;
   padding: 10px;
 }
+
 .Div-Image {
   text-align: center;
 }
@@ -62,6 +63,9 @@ body {
   box-shadow: 1px 1px 10px black;
   border: 1px solid black;
   text-align: center;
+}
+.CommentaireTexte {
+  padding: 25px;
 }
 
 .Article-date {

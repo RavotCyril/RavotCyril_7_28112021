@@ -5,10 +5,10 @@ const fs = require('fs');
 
 exports.deleteAdminModelsArticle = (req, res, next) => {
     Models.Article.findOne({ where: { article_id: req.params.id } })
-        .then(Models => {
-            const filename = Models.image.split('/images/')[1];
+        .then(models => {
+            const filename = models.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
-                Models.destroy({ where: { article_id: req.params.id } })
+                Models.Article.destroy({ where: { article_id: req.params.id } })
                     .then(() => res.status(200).json({message: 'article supprimé !' }))
                     .catch(error => res.status(400).json({ error }));
             });
@@ -52,32 +52,40 @@ exports.getOneModelsArticle = (req, res, next) => {
 };
 // Modifier un article / PUT  
 
-exports.modifyModelsArticle = (req, res, next) => {
 
-    Models.Article.findOne()
-        const article = {
-        article_id: req.body.article_id,
-        sujet: req.body.sujet,
-        texte:req.body.texte,
-        date: req.body.date,
-        image:  req.file == undefined ? "" : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        user_id:req.body.user_id,
-    }
-        const filename = Models.Article.image.split('/images/')[1];
-        fs.unlink(`images/${filename}`, () => {
-            // Une fois que l'ancienne image est supprimée dans le dossier image.On peut mettre à jour le reste des données de l'article
-            Models.update({...article }, { where: {  article_id: req.params.id } })
+exports.modifyModelsArticle = (req, res, next) => {
+    if (req.file) {
+        // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
+    Models.Article.findOne({ where: { article_id: req.params.id } })
+        .then(models => {
+            const filename = models.image.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => {
+ // Une fois que l'ancienne image est supprimée dans le dossier image.On peut mettre à jour le reste des données de l'article. 
+                    const article = {
+                        ...JSON.parse(req.body),
+                        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                    }
+            Models.Article.update({ article_id: req.params.id }, {...article, article_id: req.params.id })
                 .then(() => res.status(200).json({ message: 'article modifié !' }))
                 .catch(error => res.status(400).json({ message: error.message }));
+            })
         })
+        .catch(error => res.status(500).json({ error }));
+        } else {
+        // Si l'image n'est jamais modifiée
+        const article = {...req.body };
+        Models.Article.update({ article_id: req.params.id }, {...article, article_id: req.params.id })
+            .then(() => res.status(200).json({ message: 'article modifié !' }))
+            .catch(error => res.status(400).json({ error }));
+    }
 }
 // Supprimer un article / DELETE 
 exports.deleteModelsArticle = (req, res, next) => {
     Models.Article.findOne({ where: { article_id: req.params.id } })
-        .then(Models => {
-            const filename = Models.image.split('/images/')[1];
+        .then(models => {
+            const filename = models.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
-                Models.destroy({ where: { article_id: req.params.id } })
+                Models.Article.destroy({ where: { article_id: req.params.id } })
                     .then((filename) => res.status(200).json({ filename,message: 'article supprimé !' }))
                     .catch(error => res.status(400).json({ error }));
             });

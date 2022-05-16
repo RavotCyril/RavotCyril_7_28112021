@@ -13,9 +13,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function Commentaires({ id_article, id_user, user }) {
-  var dateT = new Date();
-  var date = new Intl.DateTimeFormat("fr-Fr").format(dateT);
-
+  var date = new Date();
+  // date = date.toString("MMM,yyy");
+  const dateParser = (date) => {
+    let newDate = new Date(date).toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    return newDate;
+  };
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
 
@@ -194,8 +204,7 @@ function Commentaires({ id_article, id_user, user }) {
                   <div className="col-12">
                     <span className="Article-date">{user.firstname}</span>
                     <span className="Date-Italic">
-                      &nbsp;
-                      {date}
+                      &nbsp; Posté le {dateParser(date)}
                     </span>
                   </div>
                   {isModify && commentaire.commentaire_id ? (
@@ -207,7 +216,9 @@ function Commentaires({ id_article, id_user, user }) {
                       onChange={(e) => setEditContent(e.target.value)}
                     ></input>
                   ) : (
-                    <p>{editedContent ? editedContent : commentaire.texte}</p>
+                    <p className="CommentaireTexte">
+                      {editedContent ? editedContent : commentaire.texte}
+                    </p>
                   )}
                   <div className="col-12 Boutton-Commentaires d-flex mx-auto">
                     {isModify && commentaire.commentaire_id ? (

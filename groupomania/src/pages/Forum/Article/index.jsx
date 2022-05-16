@@ -3,12 +3,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import Articles from "../../../components/Articles";
 import Services from "../../../Services/";
-import Commentaires from "../../../components/Commentaires";
-import Votes from "../../../components/Votes";
 
 /* Vérification de la validité du token 
       -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
@@ -18,10 +14,20 @@ import Votes from "../../../components/Votes";
 var user_id = JSON.parse(localStorage.getItem("user_id"));
 function Article() {
   var date = new Date();
-  date = date.toString("MMM,yyy");
+  // date = date.toString("MMM,yyy");
+  const dateParser = (date) => {
+    let newDate = new Date(date).toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    return newDate;
+  };
 
   /* Constante useState Sujet + Texte */
-
   const [sujet, setSujet] = useState("");
   const [texte, setTexte] = useState("");
   /* Fonction pour capturer ce que l'on écrit dans l'input Sujet  */
@@ -81,78 +87,6 @@ function Article() {
           }
         });
     }
-  };
-
-  const [listArticles, setListArticles] = useState(["null"]);
-  const [user, setUser] = useState([]);
-
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:3000/api/user/" + user_id,
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-        "Content-Type": "application/json",
-      },
-    })
-      .then((user) => {
-        setUser(user.data);
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
-  }, []);
-  /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:3000/api/articles/",
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      },
-    })
-      .then((res) => {
-        setListArticles(res.data);
-      })
-      .catch((err) => {
-        if (!err.response) {
-          console.log("Erreur serveur");
-        } else if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        } else {
-          console.log(err.response.data.message);
-        }
-      });
-  }, []);
-  /* Function de l'administrateur pour supprimer les articles des utilisateurs   */
-  const adminHandleDelete = (article_id) => {
-    axios({
-      method: "delete",
-      url: "http://localhost:3000/api/admin/" + article_id,
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      },
-    })
-      .then((res) => {
-        const newList = listArticles.filter((x) => x.article_id !== article_id);
-        setListArticles(newList);
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
   };
 
   return (
@@ -227,75 +161,7 @@ function Article() {
           </form>
         </article>
       ) : null}
-      <div id="MyForum" className="pageMyForums container-fluid">
-        <div className="Container-Article">
-          {listArticles != null
-            ? listArticles.map((article) => {
-                return (
-                  <article className="Article" key={article.article_id}>
-                    <p key={article.date} className="Article-date">
-                      {article.date}
-                    </p>
-                    <h2 key={article.sujet}>{article.sujet}</h2>
-                    <br></br>
-                    <div className="Div-Image">
-                      <a href={article.image}>
-                        <img
-                          key={article.image}
-                          href={article.image}
-                          src={article.image}
-                          alt="Fichier selectionné"
-                        />
-                      </a>
-                    </div>
-                    <br></br>
-                    <p key={article.texte} className="Article-texte">
-                      {article.texte}
-                    </p>
-                    <br></br>
-                    {user.roleId === 1 ? (
-                      <button className="AdminIcon">
-                        <FontAwesomeIcon
-                          size="xl"
-                          icon={faWindowClose}
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                "L'administrateur veut il bien supprimer cette article?"
-                              )
-                            ) {
-                              adminHandleDelete(article.article_id);
-                            }
-                          }}
-                        />
-                      </button>
-                    ) : null}
-                    <div className="Textarea-Article col-8 mx-auto">
-                      <Commentaires
-                        setListArticles={setListArticles}
-                        article={listArticles}
-                        id_article={article.article_id}
-                        id_user={article.user_id}
-                        user={user}
-                      />
-                    </div>
-                    <br></br>
-                    <Articles
-                      setListArticles={setListArticles}
-                      article={article}
-                      id={article.article_id}
-                      articleUser_id={article.user_id}
-                    />
-                    <Votes
-                      article_id={article.article_id}
-                      user_id={article.user_id}
-                    />
-                  </article>
-                );
-              })
-            : null}
-        </div>
-      </div>
+      <Articles />
     </main>
   );
 }
