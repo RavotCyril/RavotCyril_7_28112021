@@ -18,6 +18,7 @@ const initialState = {
   dislike: 0,
   active: null,
 };
+
 /* Permet d'avoir l'état en fonction des likes, dislikes, active avec le switch en fonction du click  */
 const reducer = (state, action) => {
   const { like, dislike, active } = state;
@@ -77,6 +78,7 @@ function Votes({ article_id, user_id }) {
       <div>
         <button className="Like">
           <FontAwesomeIcon
+            color="green"
             className="Like"
             size="xl"
             icon={faThumbsUp}
@@ -93,6 +95,7 @@ function Votes({ article_id, user_id }) {
         </button>
         <button className="Dislike">
           <FontAwesomeIcon
+            color="red"
             className="Dislike"
             size="xl"
             icon={faThumbsDown}

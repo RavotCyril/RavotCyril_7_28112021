@@ -29,21 +29,47 @@ function Articles() {
     });
     return newDate;
   };
-  const [articleIsModify, articleSetIsModify] = useState(false);
-  const [dateArticle, setDateArticle] = useState();
-  const [sujetArticle, setSujetArticle] = useState();
-  const [texteArticle, setTexteArticle] = useState();
-  const [imageArticle, setImageArticle] = useState();
   /*  Crud pour Modifier un Article*/
+
+  const handleSujetArticle = (value, id_article) => {
+    const newlist = listArticles.map((item) => {
+      if (item.article_id === id_article) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+          sujet: value,
+        };
+        return updateItem;
+      }
+      return item;
+    });
+    setListArticles(newlist);
+  };
 
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
+
+  /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
+  et de la transmettre à la constante image */
+  const [image, setInputFile] = useState({
+    file: [],
+    filepreview: null,
+  });
+
+  const HandleChangeFile = (event) => {
+    setInputFile({
+      ...image,
+      /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
+      file: event.target.files[0],
+      filepreview: URL.createObjectURL(event.target.files[0]),
+    });
+  };
   const HandleUpdate = (article, article_id) => {
     const data = {
       date: dateArticle ? dateArticle : article.date,
       sujet: sujetArticle ? sujetArticle : article.sujet,
       texte: texteArticle ? texteArticle : article.texte,
-      image: imageArticle ? imageArticle : article.image,
+      image: image ? image.file : article.image,
       user_id: article.user_id,
     };
     axios({
@@ -68,6 +94,20 @@ function Articles() {
         }
       });
   };
+
+  function handleModify(id_article) {
+    const newlist = listArticles.map((item) => {
+      if (item.article_id === id_article) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+        };
+        return updateItem;
+      }
+      return item;
+    });
+    setListArticles(newlist);
+  }
 
   const [listArticles, setListArticles] = useState(["null"]);
   const [user, setUser] = useState([]);
@@ -174,7 +214,7 @@ function Articles() {
                 .map((article) => {
                   return (
                     <article className="Article" key={article.article_id}>
-                      {articleIsModify ? (
+                      {article.isModify ? (
                         <div>
                           <p
                             defaultValue={
@@ -186,47 +226,49 @@ function Articles() {
                           >
                             Posté le {dateParser(date)}
                           </p>
-                          <h2
+                          <textarea
                             defaultValue={
                               sujetArticle ? sujetArticle : article.sujet
                             }
-                            onChange={(e) => setSujetArticle(e.target.value)}
+                            onChange={(e) =>
+                              handleSujetArticle(
+                                e.target.value,
+                                article.id_article
+                              )
+                            }
                             key={article.sujet}
-                          >
-                            {article.sujet}
-                          </h2>
+                          ></textarea>
                           <br></br>
-                          <div className="Div-Image">
-                            <a href={article.image}>
-                              <input
-                                defaultValue={
-                                  imageArticle ? imageArticle : article.image
-                                }
-                                accept="image/*"
-                                className="InputImage col-8 mx-auto"
-                                type="file"
-                                name="image"
-                                onChange={(e) =>
-                                  setImageArticle(e.target.value)
-                                }
-                                key={article.image}
-                                href={article.image}
-                                src={article.image}
-                                alt="Fichier selectionné"
-                              />
-                            </a>
+                          <div className="row">
+                            <input
+                              key={article.image}
+                              accept="image/*"
+                              className="InputImage col-8 mx-auto"
+                              type="file"
+                              name="image"
+                              onChange={HandleChangeFile}
+                            />
                           </div>
                           <br></br>
-                          <p
+                          <div className="Row">
+                            {image.filepreview !== null ? (
+                              <div className="Div-Image col-12 col-sm-12 mx-auto text-center">
+                                <img
+                                  src={image.filepreview}
+                                  alt="Img téléchargé"
+                                />
+                              </div>
+                            ) : null}
+                          </div>
+                          <br></br>
+                          <br></br>
+                          <textarea
                             defaultValue={
                               texteArticle ? texteArticle : article.texte
                             }
                             onChange={(e) => setTexteArticle(e.target.value)}
-                            key={article.texte}
                             className="Article-texte"
-                          >
-                            {article.texte}
-                          </p>
+                          ></textarea>
                           <br></br>
                         </div>
                       ) : (
@@ -237,18 +279,13 @@ function Articles() {
                           <h2>{sujetArticle ? sujetArticle : article.sujet}</h2>
                           <br></br>
                           <div className="Div-Image">
-                            {imageArticle ? (
-                              imageArticle
-                            ) : (
-                              <a href={article.image}>
-                                <img
-                                  key={article.image}
-                                  href={article.image}
-                                  src={article.image}
-                                  alt="Img sélectionné"
-                                />
-                              </a>
-                            )}
+                            <a href={article.image}>
+                              <img
+                                href={article.image}
+                                src={article.image}
+                                alt="Img sélectionné"
+                              />
+                            </a>
                           </div>
                           <br></br>
                           <p>{texteArticle ? texteArticle : article.texte}</p>
@@ -284,7 +321,7 @@ function Articles() {
                       />
                       <br></br>
                       <br></br>
-                      {articleIsModify ? (
+                      {article.isModify ? (
                         <button
                           className="BouttonValider"
                           onClick={() => {
@@ -305,7 +342,7 @@ function Articles() {
                       ) : (
                         <button
                           className="BouttonModifier"
-                          onClick={() => articleSetIsModify(true)}
+                          onClick={() => handleModify(article.article_id)}
                         >
                           <FontAwesomeIcon
                             className="btn btn-dark mx-2"

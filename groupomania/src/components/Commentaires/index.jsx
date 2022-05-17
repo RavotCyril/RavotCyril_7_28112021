@@ -31,7 +31,7 @@ function Commentaires({ id_article, id_user, user }) {
 
   const [listCommentaires, setListCommentaires] = useState([]);
   const [texte, setCommentaire] = useState("");
-  const [isModify, setisModify] = useState(false);
+  const [isModify, setIsModify] = useState(false);
   const [editedContent, setEditContent] = useState("");
   /* Fonction pour capturer ce que l'on écrit dans l'input Texte du commentaire */
 
@@ -98,12 +98,11 @@ function Commentaires({ id_article, id_user, user }) {
         }
       });
   }, []);
-
   //TODO Faire un boutton valider qui remplace le boutton modifier lors de l'etat modifier is true
   //a ce moment là appeler la méthode axios put et passer tout l'objet commentaire pour qu'il soit modifié en bdd
 
   /* Fonction methode Put pour modifier un commentaire  */
-  const HandleUpdate = ({ commentaire, commentaire_id }) => {
+  const HandleUpdate = (commentaire, commentaire_id) => {
     const data = {
       texte: editedContent ? editedContent : commentaire.texte,
       date: date,
@@ -117,8 +116,8 @@ function Commentaires({ id_article, id_user, user }) {
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
-      .then((res) => {
-        setisModify(false);
+      .then(() => {
+        setIsModify(false);
       })
 
       .catch((err) => {
@@ -159,7 +158,6 @@ function Commentaires({ id_article, id_user, user }) {
         }
       });
   };
-
   return (
     <div>
       <input
@@ -169,8 +167,8 @@ function Commentaires({ id_article, id_user, user }) {
         name="texte"
         value={texte}
         onChange={handleChangeCommentaire}
-        rows={5}
-        cols={5}
+        rows={10}
+        cols={10}
         wrap="hard"
       ></input>
       <br></br>
@@ -202,30 +200,36 @@ function Commentaires({ id_article, id_user, user }) {
                       &nbsp; Posté le {dateParser(date)}
                     </span>
                   </div>
-                  {isModify && commentaire.commentaire_id ? (
-                    <input
-                      className="my-2"
+                  {isModify ? (
+                    <textarea
+                      title="Ajouter un commentaire"
+                      type="text"
+                      name="texte"
+                      rows={10}
+                      cols={10}
+                      wrap="hard"
+                      className="col-6 CommentaireTexte"
                       defaultValue={
                         editedContent ? editedContent : commentaire.texte
                       }
                       onChange={(e) => setEditContent(e.target.value)}
-                    ></input>
+                    ></textarea>
                   ) : (
                     <p className="col-6 CommentaireTexte">
                       {editedContent ? editedContent : commentaire.texte}
                     </p>
                   )}
                   <div className="col-6 Boutton-Commentaires d-flex mx-auto">
-                    {isModify && commentaire.commentaire_id ? (
+                    {isModify ? (
                       <button
                         className="BouttonValider"
-                        onClick={() => {
+                        onClick={(commentaire_id) => {
                           if (editedContent === "") {
                             alert(
                               "Modification vide ! Veuillez remplir votre nouveau commentaire !"
                             );
                           }
-                          HandleUpdate(commentaire, commentaire.commentaire_id);
+                          HandleUpdate(commentaire, commentaire_id);
                         }}
                       >
                         <FontAwesomeIcon
@@ -236,10 +240,10 @@ function Commentaires({ id_article, id_user, user }) {
                       </button>
                     ) : (
                       <button
+                        key={commentaire.commentaire_id}
+                        id={commentaire.commentaire_id}
                         className="BouttonModifier"
-                        onClick={(commentaire) =>
-                          setisModify(true, commentaire.commentaire_id)
-                        }
+                        onClick={() => setIsModify(true)}
                       >
                         <FontAwesomeIcon
                           className="btn btn-dark mx-2"

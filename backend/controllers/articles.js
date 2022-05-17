@@ -77,18 +77,29 @@ exports.modifyModelsArticle = (req, res, next) => {
                         ...JSON.parse(req.body),
                         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                     }
-            Models.Article.update({ article_id: req.params.id }, {...article, article_id: req.params.id })
+            Models.Article.update( {...article, article_id: req.params.id },{ where: {article_id: req.params.id} })
                 .then(() => res.status(200).json({ message: 'article modifié !' }))
-                .catch(error => res.status(400).json({ message: error.message }));
+                .catch(error => 
+                    {
+                        console.log("erreur"+error.message)
+                        res.status(400).json({ message: error.message })});
             })
         })
         .catch(error => res.status(500).json({ error }));
         } else {
         // Si l'image n'est jamais modifiée
+        //  const article = {
+        //                 ...req.body,
+        //                 image: 
+        //             }
         const article = {...req.body };
-        Models.Article.update({ article_id: req.params.id }, {...article, article_id: req.params.id })
+        article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        Models.Article.update({...article, article_id: req.params.id },{ where: {article_id: req.params.id} })
             .then(() => res.status(200).json({ message: 'article modifié !' }))
-            .catch(error => res.status(400).json({ error }));
+            .catch(error => {
+                console.log(req.body)
+                console.log(error.message)
+                res.status(400).json({ message : error.message })});
     }
 }
 // Supprimer un article / DELETE 
