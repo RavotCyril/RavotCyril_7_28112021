@@ -1,13 +1,12 @@
 /* Importations des bibliothèques react + component + Article ...*/
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Services from "../../../Services/";
-import Commentaires from "../../../components/Commentaires";
-import Votes from "../../../components/Votes";
+import Commentaires from "../../components/Commentaires";
+import Votes from "../../components/Votes";
 
 import {
   faTrash,
@@ -16,27 +15,40 @@ import {
   faWindowClose,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Articles({ setListArticles, article, id, articleUser_id }) {
+function Articles() {
+  var date = new Date();
+  // date = date.toString("MMM,yyy");
+  const dateParser = (date) => {
+    let newDate = new Date(date).toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    return newDate;
+  };
   const [articleIsModify, articleSetIsModify] = useState(false);
-  const [dateArticle, setDateArticle] = useState(article.date);
-  const [sujetArticle, setSujetArticle] = useState(article.sujet);
-  const [texteArticle, setTexteArticle] = useState(article.texte);
-  const [imageArticle, setImageArticle] = useState(article.image);
+  const [dateArticle, setDateArticle] = useState();
+  const [sujetArticle, setSujetArticle] = useState();
+  const [texteArticle, setTexteArticle] = useState();
+  const [imageArticle, setImageArticle] = useState();
   /*  Crud pour Modifier un Article*/
 
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
-  const HandleUpdate = (article, id) => {
+  const HandleUpdate = (article, article_id) => {
     const data = {
       date: dateArticle ? dateArticle : article.date,
       sujet: sujetArticle ? sujetArticle : article.sujet,
       texte: texteArticle ? texteArticle : article.texte,
       image: imageArticle ? imageArticle : article.image,
-      user_id: articleUser_id,
+      user_id: article.user_id,
     };
     axios({
       method: "put",
-      url: "http://localhost:3000/api/articles/" + id,
+      url: "http://localhost:3000/api/articles/" + article_id,
       data: data,
       headers: {
         Authorization:
@@ -80,7 +92,7 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
           console.log("erreur serveur");
         }
       });
-  }, []);
+  }, [user_id]);
   /* Permet de récupérer les données de tous les articles de l'application et de les afficher sur le mur */
   useEffect(() => {
     axios({
@@ -131,17 +143,17 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
   };
   /* Crud pour Supprimer,un Article  */
 
-  const handleDelete = (id) => {
+  const handleDelete = (article_id) => {
     axios({
       method: "delete",
-      url: "http://localhost:3000/api/articles/" + id,
+      url: "http://localhost:3000/api/articles/" + article_id,
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
       },
     })
       .then((res) => {
-        const newList = article.filter((x) => x.article_id !== id);
+        const newList = listArticles.filter((x) => x.article_id !== article_id);
         setListArticles(newList);
         window.location.href = "http://localhost:3001/Article";
       })
@@ -186,10 +198,14 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
                           <br></br>
                           <div className="Div-Image">
                             <a href={article.image}>
-                              <img
+                              <input
                                 defaultValue={
                                   imageArticle ? imageArticle : article.image
                                 }
+                                accept="image/*"
+                                className="InputImage col-8 mx-auto"
+                                type="file"
+                                name="image"
                                 onChange={(e) =>
                                   setImageArticle(e.target.value)
                                 }
@@ -215,11 +231,26 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
                         </div>
                       ) : (
                         <div>
-                          <p>{dateArticle ? dateArticle : article.date}</p>
+                          <p className="Article-date">
+                            {dateArticle ? dateArticle : article.date}
+                          </p>
                           <h2>{sujetArticle ? sujetArticle : article.sujet}</h2>
-                          <div>
-                            {imageArticle ? imageArticle : article.image}
+                          <br></br>
+                          <div className="Div-Image">
+                            {imageArticle ? (
+                              imageArticle
+                            ) : (
+                              <a href={article.image}>
+                                <img
+                                  key={article.image}
+                                  href={article.image}
+                                  src={article.image}
+                                  alt="Img sélectionné"
+                                />
+                              </a>
+                            )}
                           </div>
+                          <br></br>
                           <p>{texteArticle ? texteArticle : article.texte}</p>
                         </div>
                       )}
@@ -247,11 +278,12 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
                           user={user}
                         />
                       </div>
-                      <br></br>
                       <Votes
                         article_id={article.article_id}
                         user_id={article.user_id}
                       />
+                      <br></br>
+                      <br></br>
                       {articleIsModify ? (
                         <button
                           className="BouttonValider"
@@ -261,7 +293,7 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
                                 "Modification vide ! Veuillez remplir votre nouveau commentaire !"
                               );
                             }
-                            HandleUpdate(article, id);
+                            HandleUpdate(article, article.article_id);
                           }}
                         >
                           <FontAwesomeIcon
@@ -282,7 +314,7 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
                           modifier
                         </button>
                       )}
-                      {user_id === articleUser_id ? (
+                      {user_id === article.user_id ? (
                         <button className="BouttonDelete">
                           <FontAwesomeIcon
                             className="btn btn-danger mx-3"
@@ -293,7 +325,7 @@ function Articles({ setListArticles, article, id, articleUser_id }) {
                                   "Confirmer pour supprimer cette article?"
                                 )
                               )
-                                handleDelete(id);
+                                handleDelete(article.article_id);
                             }}
                           />
                           Supprimer

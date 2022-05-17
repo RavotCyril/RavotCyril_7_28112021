@@ -19,9 +19,21 @@ exports.deleteAdminModelsArticle = (req, res, next) => {
 // Créer un article / post
 
 exports.createModelsArticle = (req, res, next) => {
-    
-  var date = new Date();
-  date = date.toString();
+     var date = new Date();
+  // date = date.toString("MMM,yyy");
+  const dateParser = (date) => {
+    let newDate = new Date(date).toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    return newDate;
+  };
+  date = dateParser(date);
+  
     Models.Article.create({
             article_id: req.body.article_id,
             sujet: req.body.sujet,

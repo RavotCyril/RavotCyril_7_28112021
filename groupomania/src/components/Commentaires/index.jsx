@@ -59,7 +59,7 @@ function Commentaires({ id_article, id_user, user }) {
             ...listCommentaires,
             res.data.Commentaire,
           ]);
-          // window.location.href = "http://localhost:3001/Article";
+          setCommentaire("");
         })
         .catch((err) => {
           if (!err.response) {
@@ -195,11 +195,6 @@ function Commentaires({ id_article, id_user, user }) {
                   key={commentaire.commentaire_id}
                   id={commentaire.commentaire_id}
                   className="row"
-                  type="text"
-                  name="texte"
-                  rows={5}
-                  cols={5}
-                  wrap="hard"
                 >
                   <div className="col-12">
                     <span className="Article-date">{user.firstname}</span>
@@ -216,11 +211,11 @@ function Commentaires({ id_article, id_user, user }) {
                       onChange={(e) => setEditContent(e.target.value)}
                     ></input>
                   ) : (
-                    <p className="CommentaireTexte">
+                    <p className="col-6 CommentaireTexte">
                       {editedContent ? editedContent : commentaire.texte}
                     </p>
                   )}
-                  <div className="col-12 Boutton-Commentaires d-flex mx-auto">
+                  <div className="col-6 Boutton-Commentaires d-flex mx-auto">
                     {isModify && commentaire.commentaire_id ? (
                       <button
                         className="BouttonValider"

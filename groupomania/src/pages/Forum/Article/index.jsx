@@ -1,5 +1,5 @@
 /* Importations des bibliothèques react + axios + react-router-dom + NavLink  */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
@@ -26,7 +26,7 @@ function Article() {
     });
     return newDate;
   };
-
+  date = dateParser(date);
   /* Constante useState Sujet + Texte */
   const [sujet, setSujet] = useState("");
   const [texte, setTexte] = useState("");
@@ -42,14 +42,13 @@ function Article() {
 
   /* Function useEffect qui permet de selectionner l'image dans l'input File ( Url) 
   et de la transmettre à la constante image */
-  const [input, setInputFile] = useState({
+  const [image, setInputFile] = useState({
     file: [],
     filepreview: null,
   });
-
   const HandleChangeFile = (event) => {
     setInputFile({
-      ...input,
+      ...image,
       /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
       file: event.target.files[0],
       filepreview: URL.createObjectURL(event.target.files[0]),
@@ -58,12 +57,12 @@ function Article() {
   /* Crud pour Créer un Article  */
   const HandleSubmit = (event) => {
     event.preventDefault();
-    if (sujet && texte && input.file && date) {
+    if (sujet && texte && image.file && date) {
       const mydata = new FormData();
       mydata.append("sujet", sujet);
       mydata.append("texte", texte);
       mydata.append("date", date);
-      mydata.append("image", input.file);
+      mydata.append("image", image.file);
       mydata.append("user_id", user_id);
 
       axios({
@@ -98,7 +97,13 @@ function Article() {
           <form className="UnArticle">
             <div className="row">
               <div className="col-12 mx-auto text-center sujet">
-                <br />
+                <p
+                  className="col-6 text-left Article-date"
+                  type="text"
+                  name="date"
+                >
+                  {date}
+                </p>
                 <h2>Sujet&nbsp;&nbsp;</h2>
                 <input
                   className="col-3 mx-auto text-center sujet"
@@ -122,9 +127,9 @@ function Article() {
             </div>
             <br></br>
             <div className="Row">
-              {input.filepreview !== null ? (
+              {image.filepreview !== null ? (
                 <div className="Div-Image col-12 col-sm-12 mx-auto text-center">
-                  <img src={input.filepreview} alt="Img téléchargé" />
+                  <img src={image.filepreview} alt="Img téléchargé" />
                 </div>
               ) : null}
             </div>
