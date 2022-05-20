@@ -3,13 +3,27 @@ const Models = require('../models/commentaires');
 // Créer un commentaire / post
 
 exports.createModelsCommentaire = (req, res, next) => {
+         var date = new Date();
+  // date = date.toString("MMM,yyy");
+  const dateParser = (date) => {
+    let newDate = new Date(date).toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    return newDate;
+  };
+  date = dateParser(date);
     Models.Commentaire.create({
         commentaire_id: req.body.commentaire_id,
         texte: req.body.texte,
-        date:req.body.date,
+        date:date,
         id_article: req.body.id_article,
         id_user: req.body.id_user
-        }).then((Commentaire) => res.status(201).json(({Commentaire, message: 'commentaire créé !' })))
+        }).then(() => res.status(201).json(({message: 'commentaire créé !' })))
         .catch(error => res.status(400).json({ message: error.message }));
 };
 
@@ -34,17 +48,15 @@ exports.getAllModelsCommentaire = (req, res, next) => {
 // Modifier un commentaire / PUT  
 
 exports.modifyModelsCommentaire = (req, res, next) => {
-    // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
+    console.log(req.body)
+
     Models.Commentaire.findOne({ where: { commentaire_id: req.params.id } })
     const commentaire = {
-        commentaire_id: req.body.commentaire_id,
-        texte: req.body.texte,
-        date:req.body.date,
-        id_article: req.body.id_article,
-        id_user: req.body.id_user
+            ...req.body,
     }
     Models.Commentaire.update({...commentaire }, { where: { commentaire_id: req.params.id } })
-        .then(() => res.status(200).json({ message: 'commentaire modifié !' }))
+            // req.file == undefined ?
+        .then(() => res.status(200).json(commentaire))
         .catch(error => res.status(400).json({ error }));
 };
 

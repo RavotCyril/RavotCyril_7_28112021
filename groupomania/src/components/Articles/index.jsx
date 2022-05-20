@@ -30,14 +30,42 @@ function Articles() {
     return newDate;
   };
   /*  Crud pour Modifier un Article*/
-
-  const handleSujetArticle = (value, id_article) => {
+  const setDateArticle = (value, article_id) => {
     const newlist = listArticles.map((item) => {
-      if (item.article_id === id_article) {
+      if (item.article_id === article_id) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+          date: value,
+        };
+        return updateItem;
+      }
+      return item;
+    });
+    setListArticles(newlist);
+  };
+  const handleSujetArticle = (value, article_id) => {
+    const newlist = listArticles.map((item) => {
+      if (item.article_id === article_id) {
         const updateItem = {
           ...item,
           isModify: true,
           sujet: value,
+        };
+        return updateItem;
+      }
+      return item;
+    });
+    setListArticles(newlist);
+  };
+
+  const handleTexteArticle = (value, article_id) => {
+    const newlist = listArticles.map((item) => {
+      if (item.article_id === article_id) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+          texte: value,
         };
         return updateItem;
       }
@@ -56,22 +84,36 @@ function Articles() {
     filepreview: null,
   });
 
-  const HandleChangeFile = (event) => {
-    setInputFile({
-      ...image,
-      /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
-      file: event.target.files[0],
-      filepreview: URL.createObjectURL(event.target.files[0]),
+  const HandleChangeFile = (article_id, value) => {
+    const newlist = listArticles.map((item) => {
+      if (item.article_id === article_id) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+        };
+        setInputFile({
+          ...image,
+          /* Propriété et event pour capturer ce que l'on sélectionne dans l'input File  */
+          file: value,
+          filepreview: URL.createObjectURL(value),
+        });
+        return updateItem;
+      }
+      return item;
     });
+    setListArticles(newlist);
   };
+
   const HandleUpdate = (article, article_id) => {
-    const data = {
-      date: dateArticle ? dateArticle : article.date,
-      sujet: sujetArticle ? sujetArticle : article.sujet,
-      texte: texteArticle ? texteArticle : article.texte,
-      image: image ? image.file : article.image,
-      user_id: article.user_id,
-    };
+    //event.preventDefault();
+
+    const data = new FormData();
+    data.append("date", article.date);
+    data.append("sujet", article.sujet);
+    data.append("image", image.file);
+    data.append("texte", article.texte);
+    data.append("user_id", article.user_id);
+
     axios({
       method: "put",
       url: "http://localhost:3000/api/articles/" + article_id,
@@ -79,25 +121,40 @@ function Articles() {
       headers: {
         Authorization:
           "bearer " + JSON.parse(localStorage.getItem("Identification")),
+        "Content-Type": "multipart/form-data",
       },
     })
       .then((res) => {
-        articleSetIsModify(false);
-        window.location.href = "http://localhost:3001/Article";
+        //window.location.href = "http://localhost:3001/Article";
+        console.log(res.data);
+        const newlist = listArticles.map((item) => {
+          if (item.article_id === article_id) {
+            console.log(item);
+            const updateItem = {
+              ...item,
+              isModify: false,
+              image: res.data.image,
+            };
+            return updateItem;
+          }
+          return item;
+        });
+        setListArticles(newlist);
       })
 
       .catch((err) => {
-        if (err.response.status === 400) {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
         }
       });
   };
-
-  function handleModify(id_article) {
+  function handleModify(article_id) {
     const newlist = listArticles.map((item) => {
-      if (item.article_id === id_article) {
+      if (item.article_id === article_id) {
         const updateItem = {
           ...item,
           isModify: true,
@@ -126,7 +183,9 @@ function Articles() {
         setUser(user.data);
       })
       .catch((err) => {
-        if (err.response.status === 400) {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
           console.log("Tout les champs n'ont pas été correctement remplis");
         } else if (err.response.status === 500) {
           console.log("erreur serveur");
@@ -213,27 +272,29 @@ function Articles() {
             ? listArticles
                 .map((article) => {
                   return (
-                    <article className="Article" key={article.article_id}>
+                    <article
+                      className="Article"
+                      key={article.article_id}
+                      id={article.article_id}
+                    >
                       {article.isModify ? (
                         <div>
                           <p
-                            defaultValue={
-                              dateArticle ? dateArticle : article.date
+                            defaultValue={article.date}
+                            onChange={(e) =>
+                              setDateArticle(e.target.value, article.article_id)
                             }
-                            onChange={(e) => setDateArticle(e.target.value)}
                             key={article.date}
                             className="Article-date"
                           >
                             Posté le {dateParser(date)}
                           </p>
                           <textarea
-                            defaultValue={
-                              sujetArticle ? sujetArticle : article.sujet
-                            }
+                            defaultValue={article.sujet}
                             onChange={(e) =>
                               handleSujetArticle(
                                 e.target.value,
-                                article.id_article
+                                article.article_id
                               )
                             }
                             key={article.sujet}
@@ -246,7 +307,12 @@ function Articles() {
                               className="InputImage col-8 mx-auto"
                               type="file"
                               name="image"
-                              onChange={HandleChangeFile}
+                              onChange={(e) =>
+                                HandleChangeFile(
+                                  article.article_id,
+                                  e.target.files[0]
+                                )
+                              }
                             />
                           </div>
                           <br></br>
@@ -263,20 +329,21 @@ function Articles() {
                           <br></br>
                           <br></br>
                           <textarea
-                            defaultValue={
-                              texteArticle ? texteArticle : article.texte
+                            defaultValue={article.texte}
+                            onChange={(e) =>
+                              handleTexteArticle(
+                                e.target.value,
+                                article.article_id
+                              )
                             }
-                            onChange={(e) => setTexteArticle(e.target.value)}
                             className="Article-texte"
                           ></textarea>
                           <br></br>
                         </div>
                       ) : (
                         <div>
-                          <p className="Article-date">
-                            {dateArticle ? dateArticle : article.date}
-                          </p>
-                          <h2>{sujetArticle ? sujetArticle : article.sujet}</h2>
+                          <p className="Article-date">{article.date}</p>
+                          <h2>{article.sujet}</h2>
                           <br></br>
                           <div className="Div-Image">
                             <a href={article.image}>
@@ -288,7 +355,7 @@ function Articles() {
                             </a>
                           </div>
                           <br></br>
-                          <p>{texteArticle ? texteArticle : article.texte}</p>
+                          <p>{article.texte}</p>
                         </div>
                       )}
                       {user.roleId === 1 ? (
@@ -310,7 +377,7 @@ function Articles() {
                       ) : null}
                       <div className="Textarea-Article col-8 mx-auto">
                         <Commentaires
-                          id_article={article.article_id}
+                          article_id={article.article_id}
                           id_user={article.user_id}
                           user={user}
                         />
@@ -325,9 +392,9 @@ function Articles() {
                         <button
                           className="BouttonValider"
                           onClick={() => {
-                            if (texteArticle === "") {
+                            if (handleTexteArticle === "") {
                               alert(
-                                "Modification vide ! Veuillez remplir votre nouveau commentaire !"
+                                "Modification vide ! Veuillez remplir votre nouveau texte !"
                               );
                             }
                             HandleUpdate(article, article.article_id);

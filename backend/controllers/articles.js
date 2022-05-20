@@ -67,41 +67,52 @@ exports.getOneModelsArticle = (req, res, next) => {
 
 exports.modifyModelsArticle = (req, res, next) => {
     if (req.file) {
-        // Si l'image est modifiée L'ancienne image dans le  dossier/ Image doit être supprimé.
+      
     Models.Article.findOne({ where: { article_id: req.params.id } })
         .then(models => {
+
+    /*  Si l'image est modifiée L'ancienne image dans le  dossier
+        Image doit être supprimé en ne prends que le nom du fichier avec la méthode split.
+        filename = nom du fichier 
+        /images/ + Url fichier    
+    */
             const filename = models.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
- // Une fois que l'ancienne image est supprimée dans le dossier image.On peut mettre à jour le reste des données de l'article. 
-                    const article = {
-                        ...JSON.parse(req.body),
-                        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-                    }
+
+    /*  Une fois que l'ancienne image est supprimée dans le dossier image.
+        On peut mettre à jour le reste des données de l'article. 
+    */
+            const article = {
+            ...req.body,
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            }
             Models.Article.update( {...article, article_id: req.params.id },{ where: {article_id: req.params.id} })
-                .then(() => res.status(200).json({ message: 'article modifié !' }))
+                .then(() => {res.status(200).json(article)
+                
+                })
                 .catch(error => 
-                    {
-                        console.log("erreur"+error.message)
-                        res.status(400).json({ message: error.message })});
+         {
+            res.status(400).json({ message: error.message })});
             })
         })
         .catch(error => res.status(500).json({ error }));
         } else {
-        // Si l'image n'est jamais modifiée
-        //  const article = {
-        //                 ...req.body,
-        //                 image: 
-        //             }
+    /*  Sinon si on ne modifie pas l'image.
+        Req.File est indéfinit.On récupère l'image existante avec filename.
+        Ou sinon on récupère le fichier avec le req.protocol
+        Ensuite, on peut mettre à jour le reste des données de l'article. 
+    */
         const article = {...req.body };
-        article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        const filename = article.image.split('/images/')[1];
+            console.log("test-sans modification",article.image.split('/images/')[1])
+        article.image = req.file == undefined ? filename : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
         Models.Article.update({...article, article_id: req.params.id },{ where: {article_id: req.params.id} })
             .then(() => res.status(200).json({ message: 'article modifié !' }))
             .catch(error => {
-                console.log(req.body)
-                console.log(error.message)
                 res.status(400).json({ message : error.message })});
     }
 }
+
 // Supprimer un article / DELETE 
 exports.deleteModelsArticle = (req, res, next) => {
     Models.Article.findOne({ where: { article_id: req.params.id } })

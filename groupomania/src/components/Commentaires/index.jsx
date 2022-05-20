@@ -12,7 +12,7 @@ import {
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Commentaires({ id_article, id_user, user }) {
+function Commentaires({ article_id, id_user, user }) {
   var date = new Date();
   // date = date.toString("MMM,yyy");
   const dateParser = (date) => {
@@ -26,13 +26,10 @@ function Commentaires({ id_article, id_user, user }) {
     });
     return newDate;
   };
+
   /* user_id du compte connecté */
   var user_id = JSON.parse(localStorage.getItem("user_id"));
 
-  const [listCommentaires, setListCommentaires] = useState([]);
-  const [texte, setCommentaire] = useState("");
-  const [isModify, setIsModify] = useState(false);
-  const [editedContent, setEditContent] = useState("");
   /* Fonction pour capturer ce que l'on écrit dans l'input Texte du commentaire */
 
   function handleChangeCommentaire(event) {
@@ -55,11 +52,7 @@ function Commentaires({ id_article, id_user, user }) {
           }
         )
         .then((res) => {
-          setListCommentaires((listCommentaires) => [
-            ...listCommentaires,
-            res.data.Commentaire,
-          ]);
-          setCommentaire("");
+          window.location.href = "http://localhost:3001/Article";
         })
         .catch((err) => {
           if (!err.response) {
@@ -74,6 +67,96 @@ function Commentaires({ id_article, id_user, user }) {
       alert("Veuillez écrire un commentaire le champ est vide");
     }
   };
+
+  function handleModify(commentaire_id) {
+    const newlist = listCommentaires.map((item) => {
+      if (item.commentaire_id === commentaire_id) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+        };
+        return updateItem;
+      }
+      return item;
+    });
+    setListCommentaires(newlist);
+  }
+  /*  Crud pour Modifier un commentaire date*/
+  const setDateCommentaire = (value, commentaire_id) => {
+    const newlist = listCommentaires.map((item) => {
+      if (item.commentaire_id === commentaire_id) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+          date: value,
+        };
+        return updateItem;
+      }
+      return item;
+    });
+    setListCommentaires(newlist);
+  };
+
+  /* Fonction methode Put pour modifier un commentaire Texte  */
+  const handleTexteCommentaire = (value, commentaire_id) => {
+    console.log(value, commentaire_id);
+    const newlist = listCommentaires.map((item) => {
+      if (item.commentaire_id === commentaire_id) {
+        const updateItem = {
+          ...item,
+          isModify: true,
+          texte: value,
+        };
+        return updateItem;
+      }
+      return item;
+    });
+    setListCommentaires(newlist);
+  };
+
+  const HandleUpdate = (commentaire, commentaire_id) => {
+    // const data = new FormData();
+    // data.append("texte", commentaire.texte);
+    // data.append("date", commentaire.date);
+    // data.append("id_article", commentaire.id_article);
+    // data.append("id_user", commentaire.id_user);
+    // console.log(commentaire);
+    axios({
+      method: "put",
+      url: "http://localhost:3000/api/commentaires/" + commentaire_id,
+      data: commentaire,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+      },
+    })
+      .then((res) => {
+        const newlist = listCommentaires.map((item) => {
+          if (item.commentaire_id === commentaire_id) {
+            const updateItem = {
+              ...res.data,
+              isModify: false,
+            };
+            return updateItem;
+          }
+          return item;
+        });
+        setListCommentaires(newlist);
+        // window.location.href = "http://localhost:3001/Article";
+      })
+
+      .catch((err) => {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  };
+  const [listCommentaires, setListCommentaires] = useState(["null"]);
+  const [texte, setCommentaire] = useState("");
 
   /* Fonction méthode Get Permet de lire  les commentaires  */
   useEffect(() => {
@@ -98,38 +181,6 @@ function Commentaires({ id_article, id_user, user }) {
         }
       });
   }, []);
-  //TODO Faire un boutton valider qui remplace le boutton modifier lors de l'etat modifier is true
-  //a ce moment là appeler la méthode axios put et passer tout l'objet commentaire pour qu'il soit modifié en bdd
-
-  /* Fonction methode Put pour modifier un commentaire  */
-  const HandleUpdate = (commentaire, commentaire_id) => {
-    const data = {
-      texte: editedContent ? editedContent : commentaire.texte,
-      date: date,
-    };
-    axios({
-      method: "put",
-      url: "http://localhost:3000/api/commentaires/" + commentaire_id,
-      data: data,
-      headers: {
-        Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("Identification")),
-      },
-    })
-      .then(() => {
-        setIsModify(false);
-      })
-
-      .catch((err) => {
-        if (!err.response) {
-          console.log("Erreur serveur");
-        } else if (err.response.status === 400) {
-          console.log("Tout les champs n'ont pas été correctement remplis");
-        } else if (err.response.status === 500) {
-          console.log("erreur serveur");
-        }
-      });
-  };
   /* Fonction methode delete pour Supprimer un commentaire   */
 
   const handleDelete = (commentaire_id) => {
@@ -146,7 +197,6 @@ function Commentaires({ id_article, id_user, user }) {
           (x) => x.commentaire_id !== commentaire_id
         );
         setListCommentaires(newList);
-        // window.location.href = "http://localhost:3001/Article";
       })
       .catch((err) => {
         if (!err.response) {
@@ -180,99 +230,122 @@ function Commentaires({ id_article, id_user, user }) {
         value="Poster un commentaire"
         aria-describedby="Boutton de validation pour créer le commentaire"
         onClick={(e) => {
-          handleSubmitCommentaire(e, id_article);
+          handleSubmitCommentaire(e, article_id);
         }}
       />
       <br></br>
       <br></br>
       {listCommentaires != null
-        ? listCommentaires.map((commentaire) => {
-            if (commentaire.id_article === id_article)
-              return (
-                <div
-                  key={commentaire.commentaire_id}
-                  id={commentaire.commentaire_id}
-                  className="row"
-                >
-                  <div className="col-12">
-                    <span className="Article-date">{user.firstname}</span>
-                    <span className="Date-Italic">
-                      &nbsp; Posté le {dateParser(date)}
-                    </span>
-                  </div>
-                  {isModify ? (
-                    <textarea
-                      title="Ajouter un commentaire"
-                      type="text"
-                      name="texte"
-                      rows={10}
-                      cols={10}
-                      wrap="hard"
-                      className="col-6 CommentaireTexte"
-                      defaultValue={
-                        editedContent ? editedContent : commentaire.texte
-                      }
-                      onChange={(e) => setEditContent(e.target.value)}
-                    ></textarea>
-                  ) : (
-                    <p className="col-6 CommentaireTexte">
-                      {editedContent ? editedContent : commentaire.texte}
-                    </p>
-                  )}
-                  <div className="col-6 Boutton-Commentaires d-flex mx-auto">
-                    {isModify ? (
-                      <button
-                        className="BouttonValider"
-                        onClick={(commentaire_id) => {
-                          if (editedContent === "") {
-                            alert(
-                              "Modification vide ! Veuillez remplir votre nouveau commentaire !"
-                            );
-                          }
-                          HandleUpdate(commentaire, commentaire_id);
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          className="btn btn-primary mx-2"
-                          icon={faCircleCheck}
-                        />
-                        Valider
-                      </button>
-                    ) : (
-                      <button
-                        key={commentaire.commentaire_id}
-                        id={commentaire.commentaire_id}
-                        className="BouttonModifier"
-                        onClick={() => setIsModify(true)}
-                      >
-                        <FontAwesomeIcon
-                          className="btn btn-dark mx-2"
-                          icon={faPencil}
-                        />
-                        Modifier
-                      </button>
-                    )}
-                    {user_id === commentaire.id_user ? (
-                      <button className="BouttonDelete">
-                        <FontAwesomeIcon
-                          className="btn btn-danger mx-3"
-                          icon={faTrash}
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                "Confirmer pour supprimer ce commentaire ?"
+        ? listCommentaires
+            .map((commentaire) => {
+              if (commentaire.id_article === article_id)
+                return (
+                  <div
+                    key={commentaire.commentaire_id}
+                    id={commentaire.commentaire_id}
+                    className="row"
+                  >
+                    {commentaire.isModify ? (
+                      <div>
+                        <div className="col-12">
+                          <span className="Article-date">{user.firstname}</span>
+                          <span
+                            defaultValue={commentaire.date}
+                            className="Date-Italic"
+                            key={commentaire.date}
+                            onChange={(e) =>
+                              setDateCommentaire(
+                                e.target.value,
+                                commentaire.commentaire_id
                               )
+                            }
+                          >
+                            &nbsp; Posté le {dateParser(date)}
+                          </span>
+                        </div>
+                        <textarea
+                          title="Ajouter un commentaire"
+                          className="col-6 CommentaireTexte"
+                          defaultValue={commentaire.texte}
+                          onChange={(e) =>
+                            handleTexteCommentaire(
+                              e.target.value,
+                              commentaire.commentaire_id
                             )
-                              handleDelete(commentaire.commentaire_id);
+                          }
+                        ></textarea>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="col-12">
+                          <span className="Article-date">{user.firstname}</span>
+                          <span className="Date-Italic">
+                            &nbsp; Posté le &nbsp;{commentaire.date}
+                          </span>
+                        </div>
+                        <p className="col-6 CommentaireTexte">
+                          {commentaire.texte}
+                        </p>
+                      </div>
+                    )}
+                    <div className="col-6 Boutton-Commentaires d-flex mx-auto">
+                      {commentaire.isModify ? (
+                        <button
+                          className="BouttonValider"
+                          onClick={() => {
+                            if (handleTexteCommentaire === "") {
+                              alert(
+                                "Modification vide ! Veuillez remplir votre nouveau commentaire !"
+                              );
+                            }
+                            HandleUpdate(
+                              commentaire,
+                              commentaire.commentaire_id
+                            );
                           }}
-                        />
-                        Supprimer
-                      </button>
-                    ) : null}
+                        >
+                          <FontAwesomeIcon
+                            className="btn btn-primary mx-2"
+                            icon={faCircleCheck}
+                          />
+                          Valider
+                        </button>
+                      ) : (
+                        <button
+                          className="BouttonModifier"
+                          onClick={() =>
+                            handleModify(commentaire.commentaire_id)
+                          }
+                        >
+                          <FontAwesomeIcon
+                            className="btn btn-dark mx-2"
+                            icon={faPencil}
+                          />
+                          Modifier
+                        </button>
+                      )}
+                      {user_id === commentaire.id_user ? (
+                        <button className="BouttonDelete">
+                          <FontAwesomeIcon
+                            className="btn btn-danger mx-3"
+                            icon={faTrash}
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  "Confirmer pour supprimer ce commentaire ?"
+                                )
+                              )
+                                handleDelete(commentaire.commentaire_id);
+                            }}
+                          />
+                          Supprimer
+                        </button>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-              );
-          })
+                );
+            })
+            .sort((a, b) => b.date - a.date)
         : null}
     </div>
   );
