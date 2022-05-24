@@ -15,6 +15,7 @@ function Services() {
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
+  const customId = "custom-id-yes";
   var token = JSON.parse(localStorage.getItem("Identification"));
   var date = Math.round(new Date().getTime() / 1000);
   var decoded = jwt_decode(token);
@@ -26,6 +27,7 @@ function Services() {
     toast.error(
       "Suite à une trop longue inactivité votre session a expiré veuillez vous reconnecter",
       {
+        toastId: customId,
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,

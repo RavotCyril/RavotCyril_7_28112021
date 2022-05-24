@@ -23,7 +23,7 @@ exports.createModelsCommentaire = (req, res, next) => {
         date:date,
         id_article: req.body.id_article,
         id_user: req.body.id_user
-        }).then(() => res.status(201).json(({message: 'commentaire créé !' })))
+        }).then(() => res.status(201).json(({message: 'commentaire créé !'})))
         .catch(error => res.status(400).json({ message: error.message }));
 };
 
@@ -33,8 +33,8 @@ exports.getAllModelsCommentaire = (req, res, next) => {
 
     Models.Commentaire.findAll()
         .then(
-            (Models) => {
-                res.status(200).json(Models);
+            (Models) => {                
+                res.status(200).json(Models)
             }
         ).catch(
             (error) => {
@@ -55,7 +55,7 @@ exports.modifyModelsCommentaire = (req, res, next) => {
             ...req.body,
     }
     Models.Commentaire.update({...commentaire }, { where: { commentaire_id: req.params.id } })
-            // req.file == undefined ?
+    
         .then(() => res.status(200).json(commentaire))
         .catch(error => res.status(400).json({ error }));
 };

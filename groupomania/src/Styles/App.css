@@ -86,7 +86,11 @@ body {
   margin: 0px auto;
   color: black;
 }
-
+.BouttonAfficherCommentaire {
+  border: none;
+  background: transparent;
+  color: black;
+}
 .Like,
 .Dislike {
   border: none;

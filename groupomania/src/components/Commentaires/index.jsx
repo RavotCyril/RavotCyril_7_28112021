@@ -12,7 +12,41 @@ import {
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Commentaires({ article_id, id_user, user }) {
+function Commentaires({ article_id }) {
+  /* user_id du compte connecté */
+  var user_id = JSON.parse(localStorage.getItem("user_id"));
+
+  /* Permet d'afficher et de récupérer le prénom de la personne connecté sur le forum */
+  const [user, setUser] = useState([]);
+  const [id_user, setId_user] = useState([]);
+
+  function handleId_User(id_user) {
+    setId_user(id_user);
+  }
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:3000/api/user/" + id_user,
+      headers: {
+        Authorization:
+          "bearer " + JSON.parse(localStorage.getItem("Identification")),
+        "Content-Type": "application/json",
+      },
+    })
+      .then((user) => {
+        setUser(user.data);
+      })
+      .catch((err) => {
+        if (!err.response) {
+          console.log("Erreur serveur");
+        } else if (err.response.status === 400) {
+          console.log("Tout les champs n'ont pas été correctement remplis");
+        } else if (err.response.status === 500) {
+          console.log("erreur serveur");
+        }
+      });
+  }, []);
+
   var date = new Date();
   // date = date.toString("MMM,yyy");
   const dateParser = (date) => {
@@ -26,12 +60,7 @@ function Commentaires({ article_id, id_user, user }) {
     });
     return newDate;
   };
-
-  /* user_id du compte connecté */
-  var user_id = JSON.parse(localStorage.getItem("user_id"));
-
   /* Fonction pour capturer ce que l'on écrit dans l'input Texte du commentaire */
-
   function handleChangeCommentaire(event) {
     setCommentaire(event.target.value);
   }
@@ -39,6 +68,7 @@ function Commentaires({ article_id, id_user, user }) {
 
   const handleSubmitCommentaire = (event, id_article) => {
     event.preventDefault();
+
     if (texte !== "") {
       axios
         .post(
@@ -99,7 +129,6 @@ function Commentaires({ article_id, id_user, user }) {
 
   /* Fonction methode Put pour modifier un commentaire Texte  */
   const handleTexteCommentaire = (value, commentaire_id) => {
-    console.log(value, commentaire_id);
     const newlist = listCommentaires.map((item) => {
       if (item.commentaire_id === commentaire_id) {
         const updateItem = {
@@ -115,12 +144,6 @@ function Commentaires({ article_id, id_user, user }) {
   };
 
   const HandleUpdate = (commentaire, commentaire_id) => {
-    // const data = new FormData();
-    // data.append("texte", commentaire.texte);
-    // data.append("date", commentaire.date);
-    // data.append("id_article", commentaire.id_article);
-    // data.append("id_user", commentaire.id_user);
-    // console.log(commentaire);
     axios({
       method: "put",
       url: "http://localhost:3000/api/commentaires/" + commentaire_id,
@@ -142,7 +165,6 @@ function Commentaires({ article_id, id_user, user }) {
           return item;
         });
         setListCommentaires(newlist);
-        // window.location.href = "http://localhost:3001/Article";
       })
 
       .catch((err) => {
@@ -169,6 +191,31 @@ function Commentaires({ article_id, id_user, user }) {
       },
     })
       .then((res) => {
+        res.data.map((commentaire) => {
+          axios({
+            method: "get",
+            url: "http://localhost:3000/api/user/" + commentaire.id_user,
+            headers: {
+              Authorization:
+                "bearer " + JSON.parse(localStorage.getItem("Identification")),
+              "Content-Type": "application/json",
+            },
+          })
+            .then((user) => {
+              res.data.author = user.firstname;
+            })
+            .catch((err) => {
+              if (!err.response) {
+                console.log("Erreur serveur");
+              } else if (err.response.status === 400) {
+                console.log(
+                  "Tout les champs n'ont pas été correctement remplis"
+                );
+              } else if (err.response.status === 500) {
+                console.log("erreur serveur");
+              }
+            });
+        });
         setListCommentaires(res.data);
       })
       .catch((err) => {
@@ -235,6 +282,7 @@ function Commentaires({ article_id, id_user, user }) {
       />
       <br></br>
       <br></br>
+
       {listCommentaires != null
         ? listCommentaires
             .map((commentaire) => {
@@ -245,6 +293,7 @@ function Commentaires({ article_id, id_user, user }) {
                     id={commentaire.commentaire_id}
                     className="row"
                   >
+                    <p>{commentaire.author}</p>
                     {commentaire.isModify ? (
                       <div>
                         <div className="col-12">
@@ -260,7 +309,8 @@ function Commentaires({ article_id, id_user, user }) {
                               )
                             }
                           >
-                            &nbsp; Posté le {dateParser(date)}
+                            &nbsp; Posté le
+                            {dateParser(date)}
                           </span>
                         </div>
                         <textarea
@@ -275,73 +325,97 @@ function Commentaires({ article_id, id_user, user }) {
                           }
                         ></textarea>
                       </div>
-                    ) : (
+                    ) : null}
+                    {handleId_User ? (
                       <div>
-                        <div className="col-12">
-                          <span className="Article-date">{user.firstname}</span>
-                          <span className="Date-Italic">
-                            &nbsp; Posté le &nbsp;{commentaire.date}
-                          </span>
-                        </div>
-                        <p className="col-6 CommentaireTexte">
-                          {commentaire.texte}
-                        </p>
-                      </div>
-                    )}
-                    <div className="col-6 Boutton-Commentaires d-flex mx-auto">
-                      {commentaire.isModify ? (
                         <button
-                          className="BouttonValider"
+                          className="BouttonAfficherCommentaire"
+                          style={{ display: handleId_User ? "block" : "none" }}
                           onClick={() => {
-                            if (handleTexteCommentaire === "") {
-                              alert(
-                                "Modification vide ! Veuillez remplir votre nouveau commentaire !"
-                              );
-                            }
-                            HandleUpdate(
-                              commentaire,
-                              commentaire.commentaire_id
-                            );
+                            handleId_User(commentaire.id_user);
                           }}
                         >
-                          <FontAwesomeIcon
-                            className="btn btn-primary mx-2"
-                            icon={faCircleCheck}
-                          />
-                          Valider
+                          Afficher les commentaires
+                          <div className="col-12">
+                            <span className="Article-date">
+                              {user.firstname}
+                            </span>
+                            <span className="Date-Italic">
+                              &nbsp; Posté le &nbsp;{commentaire.date}
+                            </span>
+                          </div>
+                          <p className="col-6 CommentaireTexte">
+                            {commentaire.texte}
+                          </p>
+                          <div className="col-6 Boutton-Commentaires d-flex mx-auto">
+                            {commentaire.isModify ? (
+                              <button
+                                className="BouttonValider"
+                                onClick={() => {
+                                  if (handleTexteCommentaire === "") {
+                                    alert(
+                                      "Modification vide ! Veuillez remplir votre nouveau commentaire !"
+                                    );
+                                  }
+                                  HandleUpdate(
+                                    commentaire,
+                                    commentaire.commentaire_id
+                                  );
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  className="btn btn-primary mx-2"
+                                  icon={faCircleCheck}
+                                />
+                                Valider
+                              </button>
+                            ) : user_id === commentaire.id_user ? (
+                              <button
+                                className="BouttonModifier"
+                                onClick={() =>
+                                  handleModify(commentaire.commentaire_id)
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  className="btn btn-dark mx-2"
+                                  icon={faPencil}
+                                />
+                                Modifier
+                              </button>
+                            ) : null}
+                            {user_id === commentaire.id_user ? (
+                              <button className="BouttonDelete">
+                                <FontAwesomeIcon
+                                  className="btn btn-danger mx-3"
+                                  icon={faTrash}
+                                  onClick={() => {
+                                    if (
+                                      window.confirm(
+                                        "Confirmer pour supprimer ce commentaire ?"
+                                      )
+                                    )
+                                      handleDelete(commentaire.commentaire_id);
+                                  }}
+                                />
+                                Supprimer
+                              </button>
+                            ) : null}
+                          </div>
                         </button>
-                      ) : (
+                      </div>
+                    ) : (
+                      <div>
                         <button
-                          className="BouttonModifier"
-                          onClick={() =>
-                            handleModify(commentaire.commentaire_id)
-                          }
+                          className="BouttonAfficherCommentaire"
+                          style={{ display: handleId_User ? "block" : "none" }}
+                          onClick={() => {
+                            handleId_User(commentaire.id_user);
+                          }}
                         >
-                          <FontAwesomeIcon
-                            className="btn btn-dark mx-2"
-                            icon={faPencil}
-                          />
-                          Modifier
+                          Afficher les commentaires !
                         </button>
-                      )}
-                      {user_id === commentaire.id_user ? (
-                        <button className="BouttonDelete">
-                          <FontAwesomeIcon
-                            className="btn btn-danger mx-3"
-                            icon={faTrash}
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  "Confirmer pour supprimer ce commentaire ?"
-                                )
-                              )
-                                handleDelete(commentaire.commentaire_id);
-                            }}
-                          />
-                          Supprimer
-                        </button>
-                      ) : null}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 );
             })

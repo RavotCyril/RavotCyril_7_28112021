@@ -376,11 +376,7 @@ function Articles() {
                         </button>
                       ) : null}
                       <div className="Textarea-Article col-8 mx-auto">
-                        <Commentaires
-                          article_id={article.article_id}
-                          id_user={article.user_id}
-                          user={user}
-                        />
+                        <Commentaires article_id={article.article_id} />
                       </div>
                       <Votes
                         article_id={article.article_id}
@@ -406,7 +402,7 @@ function Articles() {
                           />
                           Valider
                         </button>
-                      ) : (
+                      ) : user_id === article.user_id ? (
                         <button
                           className="BouttonModifier"
                           onClick={() => handleModify(article.article_id)}
@@ -417,7 +413,7 @@ function Articles() {
                           />
                           modifier
                         </button>
-                      )}
+                      ) : null}
                       {user_id === article.user_id ? (
                         <button className="BouttonDelete">
                           <FontAwesomeIcon
