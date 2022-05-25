@@ -87,10 +87,15 @@ body {
   color: black;
 }
 .BouttonAfficherCommentaire {
+  display: block;
   border: none;
   background: transparent;
   color: black;
 }
+.CacheLesCommentaires {
+  display: none;
+}
+
 .Like,
 .Dislike {
   border: none;
