@@ -185,6 +185,7 @@ function Commentaires({ article_id }) {
           })
             .then((user) => {
               res.data.author = user.data.firstname;
+              setListCommentaires(res.data);
             })
             .catch((err) => {
               if (!err.response) {
@@ -198,7 +199,6 @@ function Commentaires({ article_id }) {
               }
             })
         );
-        setListCommentaires(res.data);
       })
       .catch((err) => {
         if (!err.response) {
@@ -210,8 +210,9 @@ function Commentaires({ article_id }) {
         }
       });
   }, []);
+
   /* Fonction methode delete pour Supprimer un commentaire   */
-  console.log(listCommentaires);
+
   const handleDelete = (commentaire_id) => {
     axios({
       method: "delete",

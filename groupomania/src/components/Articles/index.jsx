@@ -124,11 +124,8 @@ function Articles() {
       },
     })
       .then((res) => {
-        //window.location.href = "http://localhost:3001/Article";
-        console.log(res.data);
         const newlist = listArticles.map((item) => {
           if (item.article_id === article_id) {
-            console.log(item);
             const updateItem = {
               ...item,
               isModify: false,
@@ -217,7 +214,6 @@ function Articles() {
   }, []);
   /* Fonction de l'administrateur pour supprimer les articles des utilisateurs   */
   const adminHandleDelete = (article_id) => {
-    console.log("test");
     axios({
       method: "delete",
       url: "http://localhost:3000/api/admin/" + article_id,
@@ -227,10 +223,8 @@ function Articles() {
       },
     })
       .then((res) => {
-        console.log(res.data);
         const newList = listArticles.filter((x) => x.article_id !== article_id);
         setListArticles(newList);
-        window.location.href = "http://localhost:3001/Article";
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -254,7 +248,6 @@ function Articles() {
       .then((res) => {
         const newList = listArticles.filter((x) => x.article_id !== article_id);
         setListArticles(newList);
-        window.location.href = "http://localhost:3001/Article";
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -329,7 +322,6 @@ function Articles() {
                           <br></br>
                           <br></br>
                           <textarea
-                            key={article.texte}
                             defaultValue={article.texte}
                             onChange={(e) =>
                               handleTexteArticle(
