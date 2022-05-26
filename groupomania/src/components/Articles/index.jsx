@@ -6,7 +6,6 @@ import axios from "axios";
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Commentaires from "../../components/Commentaires";
-import Votes from "../../components/Votes";
 
 import {
   faTrash,
@@ -168,7 +167,6 @@ function Articles() {
 
   const [listArticles, setListArticles] = useState(["null"]);
   const [user, setUser] = useState([]);
-
   useEffect(() => {
     axios({
       method: "get",
@@ -217,8 +215,9 @@ function Articles() {
         }
       });
   }, []);
-  /* Function de l'administrateur pour supprimer les articles des utilisateurs   */
+  /* Fonction de l'administrateur pour supprimer les articles des utilisateurs   */
   const adminHandleDelete = (article_id) => {
+    console.log("test");
     axios({
       method: "delete",
       url: "http://localhost:3000/api/admin/" + article_id,
@@ -228,6 +227,7 @@ function Articles() {
       },
     })
       .then((res) => {
+        console.log(res.data);
         const newList = listArticles.filter((x) => x.article_id !== article_id);
         setListArticles(newList);
         window.location.href = "http://localhost:3001/Article";
@@ -360,30 +360,21 @@ function Articles() {
                         </div>
                       )}
                       {user.roleId === 1 ? (
-                        <button className="AdminIcon">
-                          <FontAwesomeIcon
-                            size="xl"
-                            icon={faWindowClose}
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  "L'administrateur veut il bien supprimer cette article?"
-                                )
-                              ) {
-                                adminHandleDelete(article.article_id);
-                              }
-                            }}
-                          />
+                        <button
+                          className="AdminIcon"
+                          onClick={() => {
+                            window.confirm(
+                              "L'administrateur veut il bien supprimer cette article?"
+                            );
+                            adminHandleDelete(article.article_id);
+                          }}
+                        >
+                          <FontAwesomeIcon size="xl" icon={faWindowClose} />
                         </button>
                       ) : null}
                       <div className="Textarea-Article col-8 mx-auto">
                         <Commentaires article_id={article.article_id} />
                       </div>
-                      <Votes
-                        article_id={article.article_id}
-                        user_id={article.user_id}
-                      />
-                      <br></br>
                       <br></br>
                       {article.isModify ? (
                         <button

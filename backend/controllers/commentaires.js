@@ -4,7 +4,6 @@ const Models = require('../models/commentaires');
 
 exports.createModelsCommentaire = (req, res, next) => {
          var date = new Date();
-  // date = date.toString("MMM,yyy");
   const dateParser = (date) => {
     let newDate = new Date(date).toLocaleDateString("fr-FR", {
       year: "numeric",
@@ -63,7 +62,7 @@ exports.modifyModelsCommentaire = (req, res, next) => {
 // Supprimer un commentaire / DELETE 
 
 exports.deleteModelsCommentaire = (req, res, next) => {
-    Models.Commentaire.findOne()
+    Models.Commentaire.findOne({ where: { commentaire_id: req.params.id } })
         .then(Models => {
             Models.destroy({ commentaire_id: req.params.id })
                 .then(() => res.status(200).json({ message: 'commentaire supprimé !' }))

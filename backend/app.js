@@ -17,7 +17,6 @@ const path = require('path');
 const userRoutes = require('./routes/user');
 const articlesRoutes = require('./routes/articles');
 const commentairesRoutes = require('./routes/commentaires');
-const votesRoutes = require('./routes/votes');
 const app = express();
 
 // Middlewares
@@ -77,6 +76,5 @@ app.use('/api/articles', articlesRoutes);
 
 app.use('/api/commentaires', commentairesRoutes);
 
-app.use('/api/votes', votesRoutes);
 
 module.exports = app;

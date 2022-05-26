@@ -47,7 +47,7 @@ function Header() {
 
   function toUnsubscribe() {
     axios
-      .delete("http://localhost:3000/api/user/:id", configData)
+      .delete("http://localhost:3000/api/user/" + user_id, configData)
       .then((user) => {
         console.log(user);
         localStorage.clear();

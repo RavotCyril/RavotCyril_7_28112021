@@ -10,7 +10,6 @@ import Error from "./components/Error";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Votes from "./components/Votes";
 
 /* Importations Pages */
 
@@ -37,7 +36,6 @@ root.render(
         <Route path="/Commentaires" element={<Commentaires />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/Votes" element={<Votes />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>

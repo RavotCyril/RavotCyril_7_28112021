@@ -34,18 +34,5 @@ const Article = sequelize.define('article', {
 
 exports.Article = Article;
 
-/* Model  Vote*/
-
-const Vote = sequelize.define('vote', {
-    vote_id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-    like: { type: Sequelize.INTEGER },
-    dislike: { type: Sequelize.INTEGER },
-    article_id: { type: Sequelize.INTEGER },
-    user_id: { type: Sequelize.INTEGER },
-    usersLiked: { type: Sequelize.INTEGER},
-    usersDisliked: { type: Sequelize.INTEGER },
-}, { tableName: 'vote', timestamps: false, underscored: true });
-
-exports.Vote = Vote;
 // Article.belongsTo(Vote); //l'utilisateur à un rôle.
 // sequelize.sync({force:true});

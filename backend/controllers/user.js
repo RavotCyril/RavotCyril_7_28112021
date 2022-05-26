@@ -75,9 +75,9 @@ exports.getUser = (req, res, next) => {
 /* Exporte la fonction Delete pour supprimer son compte utilisateur */
 
 exports.deleteUser = (req, res, next) => {
-  Models.User.findOne()
+  Models.User.findOne({ where: { user_id: req.params.id } })
         .then(Models => {
-                Models.destroy({ user_id: req.params.id })
+                Models.destroy({ where: { user_id: req.params.id  } })
                     .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
                     .catch(error => res.status(400).json({ message: 'Utilisateur non supprimé' }));
             })

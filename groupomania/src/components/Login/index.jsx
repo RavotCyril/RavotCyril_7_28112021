@@ -41,7 +41,7 @@ function Login() {
     if (passwordRegex.test(password)) {
       setPassword(null);
     } else if (!passwordRegex.test(password)) {
-      setPassword("Mot de passe incorecte !");
+      setPassword("Mot de passe incorrect !");
     }
   };
   /* Function Validation de l'input password + l'input Email avec la touche entrée du clavier  */
@@ -95,8 +95,6 @@ function Login() {
             setEmail("Email non enregistré ou mal formulé !");
           }
         });
-    } else {
-      alert("veuillez remplir correctement les champs Email, Password");
     }
   };
 
@@ -158,6 +156,7 @@ function Login() {
         </h1>
         <p className="invalid">
           {errorEmail}
+          <br></br>
           {errorPassword}
           {errorServeur}
         </p>

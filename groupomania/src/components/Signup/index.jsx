@@ -41,7 +41,6 @@ function Signup() {
         })
         // enregistrer le hash et permet de sécuriser le mot de passe et de le remplacer ( Crypté ).
         .then((res) => {
-          console.log(res);
           window.location.href = "http://localhost:3001/login";
         })
         .catch((err) => {
