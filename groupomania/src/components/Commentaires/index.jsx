@@ -176,7 +176,7 @@ function Commentaires({ article_id }) {
       },
     })
       .then((res) => {
-        res.data.map((commentaire) => {
+        res.data.map((commentaire) =>
           axios({
             method: "get",
             url: "http://localhost:3000/api/user/" + commentaire.id_user,
@@ -200,8 +200,8 @@ function Commentaires({ article_id }) {
               } else if (err.response.status === 500) {
                 console.log("erreur serveur");
               }
-            });
-        });
+            })
+        );
         setListCommentaires(res.data);
       })
       .catch((err) => {
@@ -215,11 +215,6 @@ function Commentaires({ article_id }) {
       });
   }, []);
 
-  // console.log(
-  //   listCommentaires.map((commentaire) => {
-  //     return commentaire;
-  //   })
-  // );
   /* Fonction methode delete pour Supprimer un commentaire   */
 
   const handleDelete = (commentaire_id) => {
@@ -288,116 +283,115 @@ function Commentaires({ article_id }) {
           (listCommentaires != null
             ? listCommentaires
                 .map((commentaire) => {
-                  if (commentaire.id_article === article_id)
-                    return (
-                      <div
-                        key={commentaire.commentaire_id}
-                        id={commentaire.commentaire_id}
-                        className="row"
-                      >
-                        {commentaire.isModify ? (
-                          <div>
-                            <div className="col-12">
-                              <span className="Article-date">
-                                {commentaire.author}
-                              </span>
-                              <span
-                                defaultValue={commentaire.date}
-                                className="Date-Italic"
-                                key={commentaire.date}
-                                onChange={(e) =>
-                                  setDateCommentaire(
-                                    e.target.value,
-                                    commentaire.commentaire_id
-                                  )
-                                }
-                              >
-                                &nbsp; Posté le &nbsp;
-                                {dateParser(date)}
-                              </span>
-                            </div>
-                            <textarea
-                              title="Ajouter un commentaire"
-                              className="col-6 CommentaireTexte"
-                              defaultValue={commentaire.texte}
-                              onChange={(e) =>
-                                handleTexteCommentaire(
-                                  e.target.value,
-                                  commentaire.commentaire_id
-                                )
-                              }
-                            ></textarea>
-                          </div>
-                        ) : null}
+                  return (
+                    <div
+                      key={commentaire.commentaire_id}
+                      id={commentaire.commentaire_id}
+                      className="row"
+                    >
+                      {commentaire.isModify ? (
                         <div>
                           <div className="col-12">
                             <span className="Article-date">
                               {commentaire.author}
                             </span>
-                            <span className="Date-Italic">
-                              &nbsp; Posté le &nbsp;{commentaire.date}
+                            <span
+                              defaultValue={commentaire.date}
+                              className="Date-Italic"
+                              key={commentaire.date}
+                              onChange={(e) =>
+                                setDateCommentaire(
+                                  e.target.value,
+                                  commentaire.commentaire_id
+                                )
+                              }
+                            >
+                              &nbsp; Posté le &nbsp;
+                              {dateParser(date)}
                             </span>
                           </div>
-                          <p className="col-6 CommentaireTexte">
-                            {commentaire.texte}
-                          </p>
-                          <div className="col-6 Boutton-Commentaires d-flex mx-auto">
-                            {commentaire.isModify ? (
-                              <button
-                                className="BouttonValider"
-                                onClick={() => {
-                                  if (handleTexteCommentaire === "") {
-                                    alert(
-                                      "Modification vide ! Veuillez remplir votre nouveau commentaire !"
-                                    );
-                                  }
-                                  HandleUpdate(
-                                    commentaire,
-                                    commentaire.commentaire_id
+                          <textarea
+                            title="Ajouter un commentaire"
+                            className="col-6 CommentaireTexte"
+                            defaultValue={commentaire.texte}
+                            onChange={(e) =>
+                              handleTexteCommentaire(
+                                e.target.value,
+                                commentaire.commentaire_id
+                              )
+                            }
+                          ></textarea>
+                        </div>
+                      ) : null}
+                      <div>
+                        <div className="col-12">
+                          <span className="Article-date">
+                            {commentaire.author}
+                          </span>
+                          <span className="Date-Italic">
+                            &nbsp; Posté le &nbsp;{commentaire.date}
+                          </span>
+                        </div>
+                        <p className="col-6 CommentaireTexte">
+                          {commentaire.texte}
+                        </p>
+                        <div className="col-6 Boutton-Commentaires d-flex mx-auto">
+                          {commentaire.isModify ? (
+                            <button
+                              className="BouttonValider"
+                              onClick={() => {
+                                if (handleTexteCommentaire === "") {
+                                  alert(
+                                    "Modification vide ! Veuillez remplir votre nouveau commentaire !"
                                   );
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  className="btn btn-primary mx-2"
-                                  icon={faCircleCheck}
-                                />
-                                Valider
-                              </button>
-                            ) : user_id === commentaire.id_user ? (
-                              <button
-                                className="BouttonModifier"
-                                onClick={() =>
-                                  handleModify(commentaire.commentaire_id)
                                 }
-                              >
-                                <FontAwesomeIcon
-                                  className="btn btn-dark mx-2"
-                                  icon={faPencil}
-                                />
-                                Modifier
-                              </button>
-                            ) : null}
-                            {user_id === commentaire.id_user ? (
-                              <button className="BouttonDelete">
-                                <FontAwesomeIcon
-                                  className="btn btn-danger mx-3"
-                                  icon={faTrash}
-                                  onClick={() => {
-                                    if (
-                                      window.confirm(
-                                        "Confirmer pour supprimer ce commentaire ?"
-                                      )
+                                HandleUpdate(
+                                  commentaire,
+                                  commentaire.commentaire_id
+                                );
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                className="btn btn-primary mx-2"
+                                icon={faCircleCheck}
+                              />
+                              Valider
+                            </button>
+                          ) : user_id === commentaire.id_user ? (
+                            <button
+                              className="BouttonModifier"
+                              onClick={() =>
+                                handleModify(commentaire.commentaire_id)
+                              }
+                            >
+                              <FontAwesomeIcon
+                                className="btn btn-dark mx-2"
+                                icon={faPencil}
+                              />
+                              Modifier
+                            </button>
+                          ) : null}
+                          {user_id === commentaire.id_user ? (
+                            <button className="BouttonDelete">
+                              <FontAwesomeIcon
+                                className="btn btn-danger mx-3"
+                                icon={faTrash}
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "Confirmer pour supprimer ce commentaire ?"
                                     )
-                                      handleDelete(commentaire.commentaire_id);
-                                  }}
-                                />
-                                Supprimer
-                              </button>
-                            ) : null}
-                          </div>
+                                  )
+                                    handleDelete(commentaire.commentaire_id);
+                                }}
+                              />
+                              Supprimer
+                            </button>
+                          ) : null}
                         </div>
                       </div>
-                    );
+                    </div>
+                  );
                 })
                 .sort((a, b) => b.date - a.date)
             : null)}

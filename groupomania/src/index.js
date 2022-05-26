@@ -1,6 +1,6 @@
 /* Importations de react - react-dom - BrowserRouter - Router, Route, Routes  */
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 /* Importations Components */
@@ -23,7 +23,9 @@ import "./Styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 /* Prop de rendu de la page Index avec toute les routes des components - pages de l'application  */
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
   <React.StrictMode>
     <Router>
       <Header />
@@ -39,6 +41,5 @@ ReactDOM.render(
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );

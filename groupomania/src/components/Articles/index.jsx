@@ -273,23 +273,24 @@ function Articles() {
                 .map((article) => {
                   return (
                     <article
-                      className="Article"
                       key={article.article_id}
                       id={article.article_id}
+                      className="Article"
                     >
                       {article.isModify ? (
                         <div>
                           <p
+                            key={article.date}
                             defaultValue={article.date}
                             onChange={(e) =>
                               setDateArticle(e.target.value, article.article_id)
                             }
-                            key={article.date}
                             className="Article-date"
                           >
                             Posté le {dateParser(date)}
                           </p>
                           <textarea
+                            key={article.sujet}
                             defaultValue={article.sujet}
                             onChange={(e) =>
                               handleSujetArticle(
@@ -297,7 +298,6 @@ function Articles() {
                                 article.article_id
                               )
                             }
-                            key={article.sujet}
                           ></textarea>
                           <br></br>
                           <div className="row">
@@ -329,6 +329,7 @@ function Articles() {
                           <br></br>
                           <br></br>
                           <textarea
+                            key={article.texte}
                             defaultValue={article.texte}
                             onChange={(e) =>
                               handleTexteArticle(
