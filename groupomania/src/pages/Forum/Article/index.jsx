@@ -4,13 +4,13 @@ import axios from "axios";
 
 /* Styles CSS  Profil ( Prénom plus inscription - deconnection ) + Fermeture Article Admin  */
 import Articles from "../../../components/Articles";
-import Services from "../../../Services/";
-
-/* Vérification de la validité du token 
+/* Vérification de la validité du token avec l'import  de la page Services
       -> Token valide et lecture autorisé pour les pages avec la demande de l'authentification.
       -> Token non valide token expiré et deconnexion de l'application sur les pages avec authentification 
      ( Un jeton faux ou mal formé générera une erreur InvalidTokenError.)
     */
+import Services from "../../../Services/";
+
 var user_id = JSON.parse(localStorage.getItem("user_id"));
 function Article() {
   var date = new Date();

@@ -31,7 +31,7 @@ function Commentaires({ article_id }) {
     }
   };
   var date = new Date();
-  // date = date.toString("MMM,yyy");
+
   const dateParser = (date) => {
     let newDate = new Date(date).toLocaleDateString("fr-FR", {
       year: "numeric",

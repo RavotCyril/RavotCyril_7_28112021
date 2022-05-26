@@ -16,7 +16,6 @@ import {
 
 function Articles() {
   var date = new Date();
-  // date = date.toString("MMM,yyy");
   const dateParser = (date) => {
     let newDate = new Date(date).toLocaleDateString("fr-FR", {
       year: "numeric",
