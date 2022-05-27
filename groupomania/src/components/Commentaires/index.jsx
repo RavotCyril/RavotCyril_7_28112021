@@ -161,6 +161,7 @@ function Commentaires({ article_id }) {
   };
   const [listCommentaires, setListCommentaires] = useState(["null"]);
   const [texte, setCommentaire] = useState("");
+  console.log(listCommentaires);
 
   /* Fonction méthode Get Permet de lire  les commentaires  */
   useEffect(() => {
@@ -173,6 +174,7 @@ function Commentaires({ article_id }) {
       },
     })
       .then((res) => {
+        setListCommentaires(res.data);
         res.data.map((commentaire) =>
           axios({
             method: "get",
@@ -184,8 +186,15 @@ function Commentaires({ article_id }) {
             },
           })
             .then((user) => {
-              res.data.author = user.data.firstname;
-              setListCommentaires(res.data);
+              console.log(listCommentaires);
+              const newlist = listCommentaires.map((item) => {
+                console.log(listCommentaires, user.data.user_id);
+                if (item.id_user === user.data.user_id) {
+                  item.author = user.data.firstname;
+                }
+              });
+              console.log(listCommentaires);
+              setListCommentaires(newlist);
             })
             .catch((err) => {
               if (!err.response) {
@@ -254,16 +263,19 @@ function Commentaires({ article_id }) {
       ></input>
       <br></br>
       <br></br>
-      <input
-        type="button"
-        name="submit"
-        className="form-control btn btn-primary mx-auto"
-        value="Poster un commentaire"
-        aria-describedby="Boutton de validation pour créer le commentaire"
-        onClick={(e) => {
-          handleSubmitCommentaire(e, article_id);
-        }}
-      />
+      <div className="InputPosterUnCommentaire">
+        <input
+          id="InputPostCommentaire-Sujet"
+          type="button"
+          name="submit"
+          className="form-control btn btn-primary mx-auto"
+          value="Poster un commentaire"
+          aria-describedby="Boutton de validation pour créer le commentaire"
+          onClick={(e) => {
+            handleSubmitCommentaire(e, article_id);
+          }}
+        />
+      </div>
       <br></br>
       <br></br>
       <div>

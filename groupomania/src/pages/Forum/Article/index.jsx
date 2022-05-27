@@ -152,6 +152,7 @@ function Article() {
             <div className="row">
               <div className="col-10 mx-auto">
                 <input
+                  id="InputPostCommentaire-Sujet"
                   type="submit"
                   name="submit"
                   className="form-control btn btn-primary col-4 my-4 mx-auto"

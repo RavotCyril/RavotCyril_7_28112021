@@ -138,7 +138,7 @@ function Signup() {
             }}
           />
         </div>
-        <div className="col-4 mx-auto">
+        <div className="col-6 col-sm-4 mx-auto">
           <input
             type="button"
             name="submit"
