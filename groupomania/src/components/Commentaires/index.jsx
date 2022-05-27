@@ -173,32 +173,7 @@ function Commentaires({ article_id }) {
       },
     })
       .then((res) => {
-        res.data.map((commentaire) =>
-          axios({
-            method: "get",
-            url: "http://localhost:3000/api/user/" + commentaire.id_user,
-            headers: {
-              Authorization:
-                "bearer " + JSON.parse(localStorage.getItem("Identification")),
-              "Content-Type": "application/json",
-            },
-          })
-            .then((user) => {
-              res.data.author = user.data.firstname;
-              setListCommentaires(res.data);
-            })
-            .catch((err) => {
-              if (!err.response) {
-                console.log("Erreur serveur");
-              } else if (err.response.status === 400) {
-                console.log(
-                  "Tout les champs n'ont pas été correctement remplis"
-                );
-              } else if (err.response.status === 500) {
-                console.log("erreur serveur");
-              }
-            })
-        );
+        setListCommentaires(res.data);
       })
       .catch((err) => {
         if (!err.response) {
@@ -254,16 +229,19 @@ function Commentaires({ article_id }) {
       ></input>
       <br></br>
       <br></br>
-      <input
-        type="button"
-        name="submit"
-        className="form-control btn btn-primary mx-auto"
-        value="Poster un commentaire"
-        aria-describedby="Boutton de validation pour créer le commentaire"
-        onClick={(e) => {
-          handleSubmitCommentaire(e, article_id);
-        }}
-      />
+      <div className="InputPosterUnCommentaire">
+        <input
+          id="InputPostCommentaire-Sujet"
+          type="button"
+          name="submit"
+          className="form-control btn btn-primary mx-auto"
+          value="Poster un commentaire"
+          aria-describedby="Boutton de validation pour créer le commentaire"
+          onClick={(e) => {
+            handleSubmitCommentaire(e, article_id);
+          }}
+        />
+      </div>
       <br></br>
       <br></br>
       <div>
@@ -289,9 +267,6 @@ function Commentaires({ article_id }) {
                         {commentaire.isModify ? (
                           <div>
                             <div className="col-12">
-                              <span className="Article-date">
-                                {commentaire.author}
-                              </span>
                               <span
                                 defaultValue={commentaire.date}
                                 className="Date-Italic"
@@ -322,9 +297,6 @@ function Commentaires({ article_id }) {
                         ) : null}
                         <div>
                           <div className="col-12">
-                            <span className="Article-date">
-                              {commentaire.author}
-                            </span>
                             <span className="Date-Italic">
                               &nbsp; Posté le &nbsp;
                               {commentaire.date}

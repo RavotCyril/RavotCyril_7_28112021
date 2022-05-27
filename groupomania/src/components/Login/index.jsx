@@ -193,7 +193,7 @@ function Login() {
               type="button"
               name="submit"
               required
-              className="btn btn-primary col-4 my-4 mx-auto"
+              className="btn btn-primary col-6 col-sm-4 my-4 mx-auto"
               value="Se connecter"
               onClick={() => {
                 testLogin();

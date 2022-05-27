@@ -363,7 +363,7 @@ function Articles() {
                           <FontAwesomeIcon size="xl" icon={faWindowClose} />
                         </button>
                       ) : null}
-                      <div className="Textarea-Article col-8 mx-auto">
+                      <div className="Textarea-Article col-12 col-sm-8 mx-auto">
                         <Commentaires article_id={article.article_id} />
                       </div>
                       <br></br>
@@ -400,7 +400,7 @@ function Articles() {
                       {user_id === article.user_id ? (
                         <button className="BouttonDelete">
                           <FontAwesomeIcon
-                            className="btn btn-danger mx-3"
+                            className="btn btn-danger mx-2"
                             icon={faTrash}
                             onClick={() => {
                               if (
