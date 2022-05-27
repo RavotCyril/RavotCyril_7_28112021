@@ -161,6 +161,7 @@ function Commentaires({ article_id }) {
   };
   const [listCommentaires, setListCommentaires] = useState(["null"]);
   const [texte, setCommentaire] = useState("");
+  console.log(listCommentaires);
 
   /* Fonction méthode Get Permet de lire  les commentaires  */
   useEffect(() => {
