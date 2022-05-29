@@ -23,3 +23,10 @@ A la racine du projet faire cd backend
 ->Vérifier que nodemon est bien installé ou l'installer nodemon avec : npm install -g nodemon
 
 -> nodemon server
+
+
+Bade de données : 
+
+Intallation de MySQL :
+
+Télécharger et installer MySQL avec le liens suivant : https://dev.mysql.com/downloads/installer/
