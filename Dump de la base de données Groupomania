@@ -15,7 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
 --
 -- Table structure for table `user`
 --
@@ -35,6 +34,16 @@ CREATE TABLE `user` (
   KEY `roleId` (`roleId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (12,'cyril','cyril.ravot@hotmail.fr','$2b$10$b0TvzC3O95dG22hLuNOOuuqYmZxnNTqnUZN9FHQpafPHZojHT4qrC',1),(16,'test4','test4@hotmail.fr','$2b$10$qrGLrnLNTYOzCJjSshZUQOmpGJzvwxPHMnPIxSX.ua3GXFBW8SAUu',2);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -58,6 +67,16 @@ CREATE TABLE `role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `role`
+--
+
+LOCK TABLES `role` WRITE;
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (1,'Administrateur'),(2,'Utilisateur');
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -86,6 +105,16 @@ CREATE TABLE `article` (
   UNIQUE KEY `texte` (`texte`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `article`
+--
+
+LOCK TABLES `article` WRITE;
+/*!40000 ALTER TABLE `article` DISABLE KEYS */;
+INSERT INTO `article` VALUES (45,'Alimentation ','Salut, tout le monde ! Vous aimez manger quoi comme aliments  ?\r\nMoi je suis plus tôt , légumineuses + fruits et légumes.','26 mai 2022, 16:48:50','http://localhost:3000/images/1653576530416.Alimentation.jpg',12),(46,'Reseau Social','Salut, à tous ! Vous êtes plus tôt quel réseau social en ce moment ?\r\n\r\nYouTube ? \r\nFacebook ? \r\nInstagram ? ','26 mai 2022, 16:49:30','http://localhost:3000/images/1653576570594.Reseau-Social.jpg',12),(47,'Sport','Salut, à tous ! Je pratique beaucoup de badminton et les échecs en club depuis l\'âge de 7 ans. \r\nEt vous ? Vous pratiquez quel sport ?','26 mai 2022, 16:50:20','http://localhost:3000/images/1653576620286.Sport.png',13),(48,'Giphy','Quelle est votre opinion sur l\'univers ? \r\n','26 mai 2022, 16:52:00','http://localhost:3000/images/1653576720253.giphy.gif',13),(49,'Test2','Test2','28 mai 2022, 09:54:27','http://localhost:3000/images/1653724529567.Reseau-Social.jpg',12);
+/*!40000 ALTER TABLE `article` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -112,6 +141,16 @@ CREATE TABLE `commentaire` (
   PRIMARY KEY (`commentaire_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `commentaire`
+--
+
+LOCK TABLES `commentaire` WRITE;
+/*!40000 ALTER TABLE `commentaire` DISABLE KEYS */;
+INSERT INTO `commentaire` VALUES (113,'top ','26 mai 2022, 08:27:05',43,12),(114,'cool ! ','26 mai 2022, 08:32:39',43,16),(115,'cool','26 mai 2022, 15:42:32',37,16),(117,'Moi je préfère manger des trucs salés ! ','26 mai 2022, 16:50:45',45,13),(118,'Salut ! Moi je suis plus tôt facebook. ','26 mai 2022, 16:50:58',46,13),(119,'ça me fascine ! Il est tellement incroyable... On ne comprend pas encore grand chose je pense.','26 mai 2022, 16:53:06',48,12),(120,'Moi je pratique plus tôt les séries Netflix :) ! ','26 mai 2022, 16:53:36',47,12),(122,'Trop cool ! ','27 mai 2022, 06:08:06',48,12),(123,'top ! ','27 mai 2022, 14:24:26',48,12),(124,'top ! ','27 mai 2022, 19:12:29',46,12),(125,'Bof ! ','28 mai 2022, 09:54:48',49,12);
+/*!40000 ALTER TABLE `commentaire` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -123,6 +162,4 @@ CREATE TABLE `commentaire` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 
--- Dump completed on 2022-05-29 13:32:54
-
-
+-- Dump completed on 2022-05-30  1:10:07
