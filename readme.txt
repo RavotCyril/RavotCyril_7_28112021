@@ -1,4 +1,5 @@
 Groupomania
+=======
 
 Créer un réseau social d’entreprise 
 
@@ -16,6 +17,7 @@ Installation de Npm ou Yarn.  ( En global ou dans le dossier du projet ).
 Npm Install ou Yarn Start
 
 frontend :  
+=======
 
 Allé dans le dossier groupomania.
 A la racine du projet faire cd groupomania
@@ -28,6 +30,7 @@ A la racine du projet faire cd groupomania
 
 
 backend :  
+=======
 
 Allé dans le dossier Backend.
 A la racine du projet faire cd backend
@@ -40,6 +43,7 @@ A la racine du projet faire cd backend
 
 
 Bade de données : 
+=======
 
 Intallation de MySQL :
 
