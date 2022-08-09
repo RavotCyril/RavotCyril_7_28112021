@@ -39,7 +39,7 @@ A la racine du projet faire cd backend
 -> nodemon server
 
 
-# Bade de données : 
+# Base de données : 
 
 Intallation de MySQL :
 
